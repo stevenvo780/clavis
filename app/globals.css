@@ -35,19 +35,19 @@
   --border: #e5dfd2;
   --text: #14202e;
   --text-muted: #51606f;
-  --primary: #2f8478;
+  --primary: #2b7a70;
   --primary-strong: #1f5c55;
   --on-primary: #ffffff;
   --accent: #9a6712;
   --accent-strong: #7a540f;
   --on-accent: #ffffff;
-  --link: #2f8478;
-  --ring: #2f8478;
-  --success: #2f8478;
+  --link: #2b7a70;
+  --ring: #2b7a70;
+  --success: #2b7a70;
   --warning: #92610a;
   --danger: #b42318;
   /* Signature gradient: use on hero/accent strips */
-  --gradient-signature: linear-gradient(110deg,#e0a85e 0%,#cf6a3c 35%,#2f8478 100%);
+  --gradient-signature: linear-gradient(110deg,#e0a85e 0%,#cf6a3c 35%,#2b7a70 100%);
   /* Gold deep enough for >=4.5:1 text on the cream surface-2 (#F4F1E9). */
   --accent-deep: #7a540f;
 }
