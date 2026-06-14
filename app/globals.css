@@ -6,25 +6,26 @@
    ============================================================ */
 :root,
 [data-theme="dark"] {
-  --bg: #0a0f1a;
-  --surface: #0f1726;
-  --surface-2: #16213a;
-  --border: #243049;
-  --text: #e9eef6;
-  --text-muted: #a2b3c9;
-  --primary: #2dd4bf;
-  --primary-strong: #14b8a6;
+  --bg: #0b1417;
+  --surface: #0f1c20;
+  --surface-2: #11211f;
+  --border: rgba(243,236,224,0.10);
+  --text: #f3ece0;
+  --text-muted: #c9c2b6;
+  --primary: #43b5a6;
+  --primary-strong: #2f8478;
   --on-primary: #07241f;
-  --accent: #f0c453;
-  --accent-strong: #e0a82e;
-  --on-accent: #231a05;
-  --link: #5eead4;
-  --ring: #2dd4bf;
+  --accent: #e0a85e;
+  --accent-strong: #cf6a3c;
+  --on-accent: #1a0e00;
+  --link: #6fd3c4;
+  --ring: #43b5a6;
   --success: #34d399;
   --warning: #fbbf24;
   --danger: #f87171;
-  /* On the dark surfaces the standard gold already clears AA. */
-  --accent-deep: #f0c453;
+  /* Signature gradient: use on hero/accent strips */
+  --gradient-signature: linear-gradient(110deg,#e0a85e 0%,#cf6a3c 35%,#43b5a6 100%);
+  --accent-deep: #e0a85e;
 }
 
 [data-theme="light"] {
@@ -34,17 +35,19 @@
   --border: #e5dfd2;
   --text: #14202e;
   --text-muted: #51606f;
-  --primary: #0f766e;
-  --primary-strong: #115e59;
+  --primary: #2f8478;
+  --primary-strong: #1f5c55;
   --on-primary: #ffffff;
-  --accent: #b5791a;
-  --accent-strong: #9a6712;
+  --accent: #9a6712;
+  --accent-strong: #7a540f;
   --on-accent: #ffffff;
-  --link: #0f766e;
-  --ring: #0f766e;
-  --success: #0f766e;
+  --link: #2f8478;
+  --ring: #2f8478;
+  --success: #2f8478;
   --warning: #92610a;
   --danger: #b42318;
+  /* Signature gradient: use on hero/accent strips */
+  --gradient-signature: linear-gradient(110deg,#e0a85e 0%,#cf6a3c 35%,#2f8478 100%);
   /* Gold deep enough for >=4.5:1 text on the cream surface-2 (#F4F1E9). */
   --accent-deep: #7a540f;
 }
@@ -196,8 +199,8 @@ summary:focus-visible,
 }
 
 .prose pre {
-  background: #0f1726;
-  color: #e9eef6;
+  background: #0f1c20;
+  color: #f3ece0;
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;
