@@ -23,19 +23,19 @@ export default async function NeuroArticle({ params }: { params: Promise<{ slug:
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex gap-10">
-      <ModuleSidebar module="neurofilosofia" items={allItems} activeSlug={slug} accentColor="violet" />
+      <ModuleSidebar module="neurofilosofia" items={allItems} activeSlug={slug} />
       <article className="flex-1 min-w-0">
         <div className="mb-6">
-          <Link href="/neurofilosofia" className="text-sm text-violet-700 hover:underline">
+          <Link href="/neurofilosofia" className="text-sm hover:underline" style={{ color: 'var(--link)' }}>
             &larr; Neurofilosofia
           </Link>
-          <span className="mx-2 text-gray-300">/</span>
-          <span className="text-sm text-gray-400">{item.section}</span>
+          <span className="mx-2" style={{ color: 'var(--text-muted)' }}>/</span>
+          <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{item.section}</span>
         </div>
-        <h1 className="text-3xl font-bold font-serif text-gray-900 mb-8">{item.title}</h1>
+        <h1 className="text-3xl font-bold font-serif mb-8" style={{ color: 'var(--text)' }}>{item.title}</h1>
         <MarkdownRenderer content={item.content} />
-        <div className="mt-12 pt-6 border-t border-gray-100">
-          <Link href="/neurofilosofia" className="text-sm text-violet-700 hover:underline">
+        <div className="mt-12 pt-6 border-t" style={{ borderColor: 'var(--border)' }}>
+          <Link href="/neurofilosofia" className="text-sm hover:underline" style={{ color: 'var(--link)' }}>
             &larr; Volver al modulo
           </Link>
         </div>

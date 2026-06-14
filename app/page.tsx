@@ -3,7 +3,6 @@ import Link from 'next/link'
 const modules = [
   {
     href: '/griego',
-    accent: 'amber',
     symbol: 'α',
     label: 'Griego Clasico',
     labelEn: 'Classical Greek',
@@ -13,14 +12,9 @@ const modules = [
       'Verb conjugation lessons, declension tables, glossary, translation exercises, reference grammars and annotated translations from the university Ancient Greek course.',
     count: '15',
     countLabel: 'documentos',
-    border: 'border-amber-200 hover:border-amber-400',
-    bg: 'bg-amber-50 hover:bg-amber-100/60',
-    badge: 'bg-amber-100 text-amber-800',
-    pill: 'text-amber-700',
   },
   {
     href: '/neurofilosofia',
-    accent: 'violet',
     symbol: '⬡',
     label: 'Neurofilosofia',
     labelEn: 'Neurophilosophy',
@@ -30,14 +24,9 @@ const modules = [
       'Knowledge base for Philosophy of Neuroscience: lectures with detailed class notes, profiles of 25 key authors, cross-cutting themes, readings, formal logic and essays.',
     count: '149',
     countLabel: 'documentos',
-    border: 'border-violet-200 hover:border-violet-400',
-    bg: 'bg-violet-50 hover:bg-violet-100/60',
-    badge: 'bg-violet-100 text-violet-800',
-    pill: 'text-violet-700',
   },
   {
     href: '/filosofia-ciudad',
-    accent: 'teal',
     symbol: '◈',
     label: 'Filosofia de la Ciudad',
     labelEn: 'Philosophy of the City',
@@ -47,10 +36,6 @@ const modules = [
       'Academic archive for Philosophy of the City: ontology, power, politics. Lectures with detailed notes, core readings (Heidegger, Sassen, Yuk Hui, Calvino, Berman) and papers.',
     count: '62',
     countLabel: 'documentos',
-    border: 'border-teal-200 hover:border-teal-400',
-    bg: 'bg-teal-50 hover:bg-teal-100/60',
-    badge: 'bg-teal-100 text-teal-800',
-    pill: 'text-teal-700',
   },
 ]
 
@@ -59,21 +44,24 @@ export default function Home() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Hero */}
       <section className="py-20 text-center">
-        <span className="inline-block mb-4 text-sm font-mono tracking-widest text-indigo-500 uppercase">
+        <span
+          className="inline-block mb-4 text-sm font-mono tracking-widest uppercase"
+          style={{ color: 'var(--accent-deep)' }}
+        >
           Humanidades Digitales &bull; Digital Humanities
         </span>
-        <h1 className="font-serif text-5xl sm:text-6xl font-bold text-gray-900 leading-tight">
+        <h1 className="font-serif text-5xl sm:text-6xl font-bold leading-tight" style={{ color: 'var(--primary)' }}>
           Clavis
         </h1>
-        <p className="mt-2 text-2xl text-gray-400 font-light font-serif italic">
+        <p className="mt-2 text-2xl font-light font-serif italic" style={{ color: 'var(--text-muted)' }}>
           Portal academico de textos y conocimiento clasico
         </p>
-        <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-600">
+        <p className="mt-6 max-w-2xl mx-auto text-lg" style={{ color: 'var(--text)' }}>
           Tres modulos de trabajo universitario en un solo portal de consulta.
           Griego clasico, filosofia de las neurociencias y filosofia de la ciudad
           &mdash; todos navegables, buscables y sin registro.
         </p>
-        <p className="mt-2 max-w-2xl mx-auto text-base text-gray-400 italic">
+        <p className="mt-2 max-w-2xl mx-auto text-base italic" style={{ color: 'var(--text-muted)' }}>
           Three university knowledge modules in one open portal.
           Classical Greek, neurophilosophy, and philosophy of the city &mdash;
           browsable, searchable, no login required.
@@ -81,13 +69,13 @@ export default function Home() {
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/buscar"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-indigo-700 text-white font-medium hover:bg-indigo-800 transition-colors"
+            className="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors"
           >
             Buscar en todo el portal
           </Link>
           <Link
             href="#modulos"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-colors"
+            className="btn-ghost inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors"
           >
             Explorar modulos
           </Link>
@@ -101,23 +89,26 @@ export default function Home() {
             <Link
               key={mod.href}
               href={mod.href}
-              className={`group rounded-2xl border-2 p-6 transition-all duration-200 ${mod.border} ${mod.bg} flex flex-col gap-4`}
+              className="brand-card group rounded-2xl p-6 flex flex-col gap-4"
             >
               <div className="flex items-start justify-between">
-                <span className={`text-5xl font-serif font-bold ${mod.pill} opacity-60 group-hover:opacity-100 transition-opacity`}>
+                <span
+                  className="text-5xl font-serif font-bold opacity-70 group-hover:opacity-100 transition-opacity"
+                  style={{ color: 'var(--primary)' }}
+                >
                   {mod.symbol}
                 </span>
-                <span className={`text-xs font-mono px-2 py-1 rounded-full ${mod.badge}`}>
+                <span className="brand-badge text-xs font-mono px-2 py-1 rounded-full">
                   {mod.count} {mod.countLabel}
                 </span>
               </div>
               <div>
-                <h2 className="text-xl font-bold text-gray-900">{mod.label}</h2>
-                <p className="text-xs text-gray-400 mt-0.5 italic">{mod.labelEn}</p>
+                <h2 className="text-xl font-bold" style={{ color: 'var(--text)' }}>{mod.label}</h2>
+                <p className="text-xs mt-0.5 italic" style={{ color: 'var(--text-muted)' }}>{mod.labelEn}</p>
               </div>
-              <p className="text-sm text-gray-600 leading-relaxed">{mod.description}</p>
-              <p className="text-xs text-gray-400 italic leading-relaxed">{mod.descriptionEn}</p>
-              <span className={`text-sm font-medium ${mod.pill} mt-auto`}>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--text)' }}>{mod.description}</p>
+              <p className="text-xs italic leading-relaxed" style={{ color: 'var(--text-muted)' }}>{mod.descriptionEn}</p>
+              <span className="text-sm font-medium mt-auto" style={{ color: 'var(--primary)' }}>
                 Explorar &rarr;
               </span>
             </Link>
@@ -126,12 +117,12 @@ export default function Home() {
       </section>
 
       {/* Divider */}
-      <div className="border-t border-gray-100 my-16" />
+      <div className="border-t my-16" style={{ borderColor: 'var(--border)' }} />
 
       {/* About */}
       <section className="pb-16 max-w-3xl mx-auto text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Sobre Clavis</h2>
-        <p className="text-gray-600 leading-relaxed">
+        <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text)' }}>Sobre Clavis</h2>
+        <p className="leading-relaxed" style={{ color: 'var(--text)' }}>
           Clavis consolida materiales academicos universitarios en un portal de consulta abierta.
           Los contenidos provienen de cuatro repositorios de trabajo real:
           <strong> helenikos</strong>, <strong>GriegoFinal</strong>, <strong>neurofilosofia</strong>{' '}
@@ -139,7 +130,7 @@ export default function Home() {
           producido en el aula no quede atrapado en archivos locales, sino que pueda
           consultarse, compartirse y crecer.
         </p>
-        <p className="mt-4 text-gray-400 italic text-sm">
+        <p className="mt-4 italic text-sm" style={{ color: 'var(--text-muted)' }}>
           Clavis consolidates real university course materials into an open reference portal.
           Content comes from four working repositories. The goal: keep academic knowledge
           out of local files and make it browsable, shareable, and alive.

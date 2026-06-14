@@ -19,7 +19,7 @@ export default function MarkdownRenderer({ content }: Props) {
 
   return (
     <div
-      className="prose max-w-none text-gray-800"
+      className="prose max-w-none"
       // Safe: content is static, author-controlled markdown from local files.
       // No user input, no external URLs rendered as HTML.
       dangerouslySetInnerHTML={{ __html: html }}

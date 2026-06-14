@@ -1,41 +1,178 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   Sistema de marca canónico (teal + dorado). Fuente de verdad:
+   docs/05-activos/brand-tokens.md. Clavis usa modo CLARO.
+   ============================================================ */
+:root,
+[data-theme="dark"] {
+  --bg: #0a0f1a;
+  --surface: #0f1726;
+  --surface-2: #16213a;
+  --border: #243049;
+  --text: #e9eef6;
+  --text-muted: #a2b3c9;
+  --primary: #2dd4bf;
+  --primary-strong: #14b8a6;
+  --on-primary: #07241f;
+  --accent: #f0c453;
+  --accent-strong: #e0a82e;
+  --on-accent: #231a05;
+  --link: #5eead4;
+  --ring: #2dd4bf;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  /* On the dark surfaces the standard gold already clears AA. */
+  --accent-deep: #f0c453;
 }
 
+[data-theme="light"] {
+  --bg: #fbfaf6;
+  --surface: #ffffff;
+  --surface-2: #f4f1e9;
+  --border: #e5dfd2;
+  --text: #14202e;
+  --text-muted: #51606f;
+  --primary: #0f766e;
+  --primary-strong: #115e59;
+  --on-primary: #ffffff;
+  --accent: #b5791a;
+  --accent-strong: #9a6712;
+  --on-accent: #ffffff;
+  --link: #0f766e;
+  --ring: #0f766e;
+  --success: #0f766e;
+  --warning: #92610a;
+  --danger: #b42318;
+  /* Gold deep enough for >=4.5:1 text on the cream surface-2 (#F4F1E9). */
+  --accent-deep: #7a540f;
+}
+
+/* Map Tailwind theme tokens to the brand vars so `bg-brand-*`,
+   `text-brand-*`, `border-brand-*` utilities resolve to the palette. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-brand-bg: var(--bg);
+  --color-brand-surface: var(--surface);
+  --color-brand-surface2: var(--surface-2);
+  --color-brand-border: var(--border);
+  --color-brand-text: var(--text);
+  --color-brand-muted: var(--text-muted);
+  --color-brand-primary: var(--primary);
+  --color-brand-primary-strong: var(--primary-strong);
+  --color-brand-on-primary: var(--on-primary);
+  --color-brand-accent: var(--accent);
+  --color-brand-accent-strong: var(--accent-strong);
+  --color-brand-on-accent: var(--on-accent);
+  --color-brand-link: var(--link);
+  --color-brand-success: var(--success);
+  --color-brand-warning: var(--warning);
+  --color-brand-danger: var(--danger);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--bg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg);
+  color: var(--text);
   font-family: Georgia, 'Times New Roman', serif;
 }
 
+a {
+  color: var(--link);
+}
+
+/* Visible focus ring on every interactive element. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- Brand component helpers ---------- */
+.brand-navlink:hover { color: var(--primary); }
+.brand-menuitem { color: var(--text); }
+.brand-menuitem:hover { background: var(--surface-2); color: var(--primary); }
+
+.brand-surface {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+/* Card with hover lift toward the brand primary. */
+.brand-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+.brand-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 1px 0 0 var(--primary);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.btn-primary:hover { background: var(--primary-strong); }
+
+.btn-ghost {
+  border: 1px solid var(--border);
+  color: var(--text);
+  background: transparent;
+}
+.btn-ghost:hover { background: var(--surface-2); }
+
+/* Gold accent pill (badges / document counts). */
+.brand-badge {
+  background: var(--surface-2);
+  color: var(--accent-deep);
+  border: 1px solid var(--border);
+}
+
+/* Sidebar links. */
+.brand-sidelink { color: var(--text); }
+.brand-sidelink:hover { background: var(--surface-2); color: var(--primary-strong); }
+.brand-sidelink.is-active {
+  background: var(--surface-2);
+  color: var(--primary-strong);
+  font-weight: 600;
+}
+
+.brand-search:focus { border-color: var(--primary); }
+
+.text-primary { color: var(--primary); }
+.text-accent { color: var(--accent-strong); }
+.text-muted { color: var(--text-muted); }
+
+/* ---------- Prose (markdown render) ---------- */
 .prose {
   max-width: 72ch;
   line-height: 1.75;
+  color: var(--text);
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4 {
   font-weight: 700;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
+  color: var(--text);
 }
 
 .prose h1 { font-size: 2rem; }
-.prose h2 { font-size: 1.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.25rem; }
+.prose h2 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.25rem;
+}
 .prose h3 { font-size: 1.25rem; }
 
 .prose p { margin-bottom: 1em; }
@@ -48,15 +185,19 @@ body {
 }
 .prose table th,
 .prose table td {
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   padding: 0.5rem 0.75rem;
   text-align: left;
 }
-.prose table th { background: #f3f4f6; font-weight: 600; }
+.prose table th {
+  background: var(--surface-2);
+  font-weight: 600;
+  color: var(--text);
+}
 
 .prose pre {
-  background: #1e1e2e;
-  color: #cdd6f4;
+  background: #0f1726;
+  color: #e9eef6;
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;
@@ -64,24 +205,30 @@ body {
 }
 
 .prose code {
-  background: #f1f5f9;
+  background: var(--surface-2);
+  color: var(--text);
   padding: 0.1em 0.3em;
   border-radius: 0.25rem;
   font-size: 0.875em;
   font-family: monospace;
+}
+.prose pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
 }
 
 .prose ul, .prose ol { padding-left: 1.5em; margin-bottom: 1em; }
 .prose li { margin-bottom: 0.25em; }
 
 .prose blockquote {
-  border-left: 4px solid #6366f1;
+  border-left: 4px solid var(--primary);
   padding-left: 1rem;
   margin: 1.5em 0;
-  color: #6b7280;
+  color: var(--text-muted);
   font-style: italic;
 }
 
-.prose a { color: #4f46e5; text-decoration: underline; }
-.prose strong { font-weight: 700; }
+.prose a { color: var(--link); text-decoration: underline; }
+.prose strong { font-weight: 700; color: var(--text); }
 .prose em { font-style: italic; }
