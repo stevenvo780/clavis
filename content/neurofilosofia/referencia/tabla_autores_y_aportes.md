@@ -1,0 +1,31 @@
+# Tabla de autores y aportes
+
+- Bechtel, Mandik y Mundale: definen el campo de la filosofia de las neurociencias y explican el cruce entre ciencia cognitiva y neurociencia.
+- Daugman: muestra la historia y el poder de las metaforas del cerebro.
+- Hinton: explica el aprendizaje distribuido en redes neuronales.
+- Ray: ofrece base general de neurociencia humana.
+- Bickle: resume el aporte de Patricia y Paul Churchland y el materialismo eliminativo.
+- Bechtel: analiza como se valida la evidencia en neurociencia cognitiva.
+- Raichle: expone como la neuroimagen funcional permite visualizar actividad asociada con tareas mentales.
+- Trivino-Mosquera et al.: explican la vision desde la retina hasta la corteza.
+- Zeki: desarrolla la especializacion funcional del sistema visual.
+- de Brigard y Robins: articulan filosofia y neurociencia de la memoria.
+- Quian Quiroga, Fried y Koch: presentan neuronas muy selectivas o concept cells.
+- Baggio: ofrece panorama general de neurolinguistica.
+- Hickok, Bellugi y Klima: muestran que la lengua de senas es lenguaje pleno y tiene organizacion cerebral compleja.
+- LeDoux: vincula emocion, memoria y amigdala en el miedo condicionado.
+- Chen et al.: proponen un marco amplio para la interocepcion.
+- Barrett: relaciona emocion, regulacion corporal, inflamacion y enfermedad.
+- Ramirez-Bermudez, Perez-Gay y Aliseda: desarrollan los constructos neuropsiquiatricos como puentes entre psicopatologia y neuropatologia.
+- Suchy: redefine funciones ejecutivas desde una perspectiva funcional y ecologica.
+- Miller y Cummings: ofrecen historia y clinica de los lobulos frontales.
+- Bechtel: defiende una nocion funcional de representacion.
+- Moser y Moser: muestran el sistema de navegacion espacial del cerebro.
+- Nave, Deane, Miller y Clark: presentan una version encarnada y afectiva del cerebro predictivo.
+- Webb: usa un robot para modelar y explicar una conducta biologica.
+- Obhi y Haggard: revisan libre albedrio, intencion y potencial de preparacion.
+- Chirimuuta: critica las simplificaciones excesivas en historia y filosofia de la neurociencia.
+- Cobb: reconstruye la historia larga de la idea del cerebro.
+- Dehaene: explora imagenes y visualizacion de la mente en neurociencia.
+- Passingham: ofrece una introduccion breve y panoramica a la neurociencia cognitiva.
+

@@ -20,6 +20,9 @@
 # production
 /build
 
+# source repos (cloned locally for content migration, not committed)
+/_sources/
+
 # misc
 .DS_Store
 *.pem
