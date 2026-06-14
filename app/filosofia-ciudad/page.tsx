@@ -2,8 +2,6 @@ import { getContentByModule } from '@/lib/content'
 import ModuleIndex from '@/components/ModuleIndex'
 import Presentations from '@/components/Presentations'
 
-const DECKS = 'https://clavis-decks.vercel.app'
-
 export const metadata = {
   title: 'Filosofia de la Ciudad — Clavis',
   description: 'Archivo academico del curso Filosofia de la ciudad: ontologia, poder y politica.',
@@ -23,9 +21,9 @@ export default function FilosofiaCiudadPage() {
       <Presentations
         decks={[
           {
-            title: 'Sobre el limite de la IA en el conocimiento urbano',
-            subtitle: 'Ponencia con Yuk Hui — deflacion ontologica, autopoiesis y co-produccion asimetrica (jun 2026).',
-            url: `${DECKS}/ciudad/`,
+            title: 'Fragmentar el futuro — Sobre el limite de la inteligencia artificial',
+            subtitle: '(Yuk Hui, pp. 163–191) · 19 slides · Filosofía de la Ciudad · Unidad Urban AI',
+            url: 'https://ponencia-yuk-hui-critertec-a963d21e.vercel.app/',
           },
         ]}
       />
