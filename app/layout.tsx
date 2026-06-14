@@ -32,6 +32,7 @@ function NavBar() {
           <Link href="/griego" className="brand-navlink transition-colors">Griego Clasico</Link>
           <Link href="/neurofilosofia" className="brand-navlink transition-colors">Neurofilosofia</Link>
           <Link href="/filosofia-ciudad" className="brand-navlink transition-colors">Filosofia de la Ciudad</Link>
+          <Link href="/ponencias" className="brand-navlink transition-colors">Ponencias</Link>
           <Link href="/buscar" className="brand-navlink transition-colors">Buscar</Link>
         </nav>
         <details className="md:hidden relative">
@@ -48,6 +49,7 @@ function NavBar() {
             <Link href="/griego" className="brand-menuitem px-3 py-2 rounded text-sm">Griego Clasico</Link>
             <Link href="/neurofilosofia" className="brand-menuitem px-3 py-2 rounded text-sm">Neurofilosofia</Link>
             <Link href="/filosofia-ciudad" className="brand-menuitem px-3 py-2 rounded text-sm">Filosofia de la Ciudad</Link>
+            <Link href="/ponencias" className="brand-menuitem px-3 py-2 rounded text-sm">Ponencias</Link>
             <Link href="/buscar" className="brand-menuitem px-3 py-2 rounded text-sm">Buscar</Link>
           </div>
         </details>

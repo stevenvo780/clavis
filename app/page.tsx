@@ -37,6 +37,18 @@ const modules = [
     count: '62',
     countLabel: 'documentos',
   },
+  {
+    href: '/ponencias',
+    symbol: '◉',
+    label: 'Ponencias',
+    labelEn: 'Presentations',
+    description:
+      'Presentaciones academicas en filosofia e inteligencia artificial. Decks interactivos de Griego Clasico, Neurofilosofia y Filosofia de la Ciudad.',
+    descriptionEn:
+      'Academic presentations in philosophy and artificial intelligence. Interactive decks from Classical Greek, Neurophilosophy and Philosophy of the City.',
+    count: '3',
+    countLabel: 'ponencias',
+  },
 ]
 
 export default function Home() {
