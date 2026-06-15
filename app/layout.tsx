@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', type: 'image/x-icon', sizes: 'any' },
     ],
     apple: '/apple-touch-icon.png',
   },
@@ -36,7 +36,7 @@ function NavBar() {
             aria-label="Mouseîon — Portal de Steven Vallejo"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/favicon.svg" alt="" width={26} height={26} aria-hidden="true" />
+            <img src="/icon.svg" alt="" width={26} height={26} aria-hidden="true" />
             <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.95rem', letterSpacing: '-0.01em' }}>
               Paideía
             </span>
