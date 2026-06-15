@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
 @import "tailwindcss";
 
 /* ============================================================
@@ -80,7 +81,16 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: 'Inter', Georgia, sans-serif;
+}
+
+/* Cormorant Garamond for humanistic headings (clavis-specific) */
+h1, h2, h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+code, pre, kbd, samp, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
 }
 
 a {
@@ -164,6 +174,7 @@ summary:focus-visible,
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 700;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
@@ -213,7 +224,7 @@ summary:focus-visible,
   padding: 0.1em 0.3em;
   border-radius: 0.25rem;
   font-size: 0.875em;
-  font-family: monospace;
+  font-family: 'JetBrains Mono', monospace;
 }
 .prose pre code {
   background: transparent;
