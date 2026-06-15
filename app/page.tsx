@@ -63,10 +63,10 @@ export default function Home() {
           Humanidades Digitales &bull; Digital Humanities
         </span>
         <h1 className="font-serif text-5xl sm:text-6xl font-bold leading-tight" style={{ color: 'var(--primary)' }}>
-          Clavis
+          Paideía
         </h1>
         <p className="mt-2 text-2xl font-light font-serif italic" style={{ color: 'var(--text-muted)' }}>
-          Portal academico de textos y conocimiento clasico
+          portal de humanidades
         </p>
         <p className="mt-6 max-w-2xl mx-auto text-lg" style={{ color: 'var(--text)' }}>
           Tres modulos de trabajo universitario en un solo portal de consulta.
@@ -133,9 +133,9 @@ export default function Home() {
 
       {/* About */}
       <section className="pb-16 max-w-3xl mx-auto text-center">
-        <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text)' }}>Sobre Clavis</h2>
+        <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text)' }}>Sobre Paideía</h2>
         <p className="leading-relaxed" style={{ color: 'var(--text)' }}>
-          Clavis consolida materiales academicos universitarios en un portal de consulta abierta.
+          Paideía consolida materiales academicos universitarios en un portal de consulta abierta.
           Los contenidos provienen de cuatro repositorios de trabajo real:
           <strong> helenikos</strong>, <strong>GriegoFinal</strong>, <strong>neurofilosofia</strong>{' '}
           y <strong>FilosofiaCiudad</strong>. El objetivo es que el conocimiento academico
@@ -143,7 +143,7 @@ export default function Home() {
           consultarse, compartirse y crecer.
         </p>
         <p className="mt-4 italic text-sm" style={{ color: 'var(--text-muted)' }}>
-          Clavis consolidates real university course materials into an open reference portal.
+          Paideía consolidates real university course materials into an open reference portal.
           Content comes from four working repositories. The goal: keep academic knowledge
           out of local files and make it browsable, shareable, and alive.
         </p>

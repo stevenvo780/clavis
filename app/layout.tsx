@@ -3,12 +3,12 @@ import './globals.css'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Clavis — Portal de Humanidades Digitales',
+  title: 'Paideía — Portal de Humanidades',
   description:
-    'Portal academico de Humanidades Digitales: Griego Clasico, Neurofilosofia y Filosofia de la Ciudad.',
+    'Paideía: portal de humanidades con Griego Clasico, Neurofilosofia y Filosofia de la Ciudad. Parte de Mouseîon.',
   openGraph: {
-    title: 'Clavis — Digital Humanities Portal',
-    description: 'Academic knowledge base: Classical Greek, Neurophilosophy and Philosophy of the City.',
+    title: 'Paideía — Portal de Humanidades',
+    description: 'Paideía: humanities portal — Classical Greek, Neurophilosophy and Philosophy of the City. Part of Mouseîon.',
     type: 'website',
   },
   icons: {
@@ -27,29 +27,33 @@ function NavBar() {
       style={{ borderColor: 'var(--border)', background: 'var(--surface)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        {/* Wordmark: lemniscata + "Steven Vallejo" → enlaza al portal */}
+        {/* Wordmark: lemniscata + nombre griego + tag Mouseîon → enlaza al portal */}
         <div className="flex items-center gap-4">
           <a
             href="https://www.stevenvallejo.com"
             className="flex items-center gap-2 no-underline"
             style={{ color: 'var(--text)' }}
-            aria-label="Steven Vallejo — Portal"
+            aria-label="Mouseîon — Portal de Steven Vallejo"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/favicon.svg" alt="" width={26} height={26} aria-hidden="true" />
             <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.95rem', letterSpacing: '-0.01em' }}>
-              Steven Vallejo
+              Paideía
+            </span>
+            <span
+              style={{
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 400,
+                fontSize: '0.7rem',
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                color: 'var(--text-muted)',
+                paddingLeft: '0.25rem',
+              }}
+            >
+              Mouseîon
             </span>
           </a>
-          <span style={{ color: 'var(--border)', fontSize: '1.2rem', userSelect: 'none' }} aria-hidden="true">|</span>
-          <Link
-            href="/"
-            className="flex items-center gap-2 font-bold text-xl tracking-tight"
-            style={{ color: 'var(--primary)' }}
-          >
-            <span className="text-2xl" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>K</span>
-            <span>Clavis</span>
-          </Link>
         </div>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium" style={{ color: 'var(--text-muted)' }}>
           <Link href="/griego" className="brand-navlink transition-colors">Griego Clasico</Link>
@@ -88,22 +92,23 @@ function Footer() {
       style={{ borderColor: 'var(--border)', color: 'var(--text-muted)' }}
     >
       <p>
-        Clavis — Portal de Humanidades Digitales &middot;{' '}
-        <a href="https://github.com/stevenvo780" className="hover:underline" style={{ color: 'var(--link)' }}>
-          stevenvo780
+        Paideía — portal de humanidades &middot;{' '}
+        <span style={{ color: 'var(--text-muted)' }}>por</span>{' '}
+        <a href="https://www.stevenvallejo.com" className="hover:underline" style={{ color: 'var(--link)' }}>
+          Steven Vallejo
         </a>
       </p>
       <p className="mt-1 text-xs">
         Classical Greek &bull; Neurophilosophy &bull; Philosophy of the City
       </p>
 
-      {/* Ecosistema de Steven Vallejo */}
+      {/* Ecosistema Mouseîon */}
       <div
         className="mt-8 pt-6 border-t"
         style={{ borderColor: 'var(--border)' }}
       >
         <p className="text-xs font-medium mb-3" style={{ color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-          Parte del ecosistema de Steven Vallejo
+          Parte de Mouseîon
         </p>
         <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs" aria-label="Ecosistema">
           <a href="https://www.stevenvallejo.com/es#filosofia" className="hover:underline transition-colors" style={{ color: 'var(--link)' }}>
