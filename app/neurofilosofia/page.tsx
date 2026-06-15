@@ -3,8 +3,23 @@ import ModuleIndex from '@/components/ModuleIndex'
 import Presentations from '@/components/Presentations'
 
 export const metadata = {
-  title: 'Neurofilosofia — Clavis',
-  description: 'Base de conocimiento del curso Filosofia de las Neurociencias: 210 documentos.',
+  title: 'Neurofilosofia — portal de humanidades digitales · Mouseîon',
+  description: 'Base de conocimiento del curso Filosofia de las Neurociencias: clases, fichas de 25 autores (Chalmers, Friston, Tononi, Damasio), temas transversales, logica formal y ensayos. Parte de Paideía.',
+  alternates: { canonical: 'https://paideia.stevenvallejo.com/neurofilosofia' },
+  openGraph: {
+    title: 'Neurofilosofia · Paideía — Mouseîon',
+    description: 'Knowledge base for Philosophy of Neuroscience: 149+ documents, 25 author profiles, cross-cutting themes, formal logic and essays.',
+    url: 'https://paideia.stevenvallejo.com/neurofilosofia',
+    siteName: 'Mouseîon',
+    locale: 'es_ES',
+    images: [{ url: 'https://paideia.stevenvallejo.com/og-image.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image' as const,
+    title: 'Neurofilosofia · Paideía — Mouseîon',
+    description: 'Base de conocimiento: Filosofia de las Neurociencias. 149+ documentos, 25 autores clave, ensayos y logica formal.',
+    images: ['https://paideia.stevenvallejo.com/og-image.png'],
+  },
 }
 
 export default function NeurofilosofiaPage() {

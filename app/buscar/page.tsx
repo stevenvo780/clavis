@@ -2,8 +2,15 @@ import { getAllContent } from '@/lib/content'
 import SearchClient from './SearchClient'
 
 export const metadata = {
-  title: 'Buscar — Clavis',
-  description: 'Busca en todos los modulos del portal Clavis.',
+  title: 'Buscar — portal de humanidades digitales · Mouseîon',
+  description: 'Busqueda instantanea en todos los modulos de Paideía: Griego Clasico, Neurofilosofia y Filosofia de la Ciudad. Sin servidor, sin latencia.',
+  alternates: { canonical: 'https://paideia.stevenvallejo.com/buscar' },
+  openGraph: {
+    title: 'Buscar · Paideía — Mouseîon',
+    description: 'Instant full-text search across all Paideía modules: Classical Greek, Neurophilosophy and Philosophy of the City.',
+    url: 'https://paideia.stevenvallejo.com/buscar',
+    siteName: 'Mouseîon',
+  },
 }
 
 export default function BuscarPage() {

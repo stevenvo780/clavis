@@ -3,8 +3,23 @@ import ModuleIndex from '@/components/ModuleIndex'
 import Presentations from '@/components/Presentations'
 
 export const metadata = {
-  title: 'Filosofia de la Ciudad — Clavis',
-  description: 'Archivo academico del curso Filosofia de la ciudad: ontologia, poder y politica.',
+  title: 'Filosofia de la Ciudad — portal de humanidades digitales · Mouseîon',
+  description: 'Archivo academico del curso Filosofia de la ciudad: ontologia, poder y politica. Clases, lecturas de Heidegger, Sassen, Yuk Hui, Calvino y Berman, ponencias y trabajos finales. Parte de Paideía.',
+  alternates: { canonical: 'https://paideia.stevenvallejo.com/filosofia-ciudad' },
+  openGraph: {
+    title: 'Filosofia de la Ciudad · Paideía — Mouseîon',
+    description: 'Academic archive: Philosophy of the City — ontology, power, politics. Heidegger, Sassen, Yuk Hui, Calvino, Berman. 62+ documents.',
+    url: 'https://paideia.stevenvallejo.com/filosofia-ciudad',
+    siteName: 'Mouseîon',
+    locale: 'es_ES',
+    images: [{ url: 'https://paideia.stevenvallejo.com/og-image.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image' as const,
+    title: 'Filosofia de la Ciudad · Paideía — Mouseîon',
+    description: 'Archivo academico: ontologia, poder y politica urbana. 62+ documentos con Heidegger, Sassen, Yuk Hui.',
+    images: ['https://paideia.stevenvallejo.com/og-image.png'],
+  },
 }
 
 export default function FilosofiaCiudadPage() {

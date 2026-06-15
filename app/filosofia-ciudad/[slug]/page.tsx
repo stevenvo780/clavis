@@ -11,7 +11,21 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const item = getContentBySlug('filosofia-ciudad', slug)
-  return { title: item ? `${item.title} — Filosofia de la Ciudad — Clavis` : 'Clavis' }
+  if (!item) return { title: 'Paideía · Mouseîon' }
+  const canonicalUrl = `https://paideia.stevenvallejo.com/filosofia-ciudad/${slug}`
+  return {
+    title: `${item.title} — Filosofia de la Ciudad · Mouseîon`,
+    description: item.excerpt ? item.excerpt.slice(0, 155) : 'Documento del curso Filosofia de la Ciudad: ontologia, poder y politica. Parte de Paideía.',
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      title: `${item.title} · Paideía — Mouseîon`,
+      description: item.excerpt ? item.excerpt.slice(0, 155) : 'Filosofia de la Ciudad · Paideía',
+      url: canonicalUrl,
+      siteName: 'Mouseîon',
+      locale: 'es_ES',
+      images: [{ url: 'https://paideia.stevenvallejo.com/og-image.png', width: 1200, height: 630 }],
+    },
+  }
 }
 
 export default async function CiudadArticle({ params }: { params: Promise<{ slug: string }> }) {

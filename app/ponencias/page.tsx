@@ -1,6 +1,21 @@
 export const metadata = {
-  title: 'Ponencias — Clavis',
-  description: 'Presentaciones academicas en filosofia e inteligencia artificial.',
+  title: 'Ponencias — portal de humanidades digitales · Mouseîon',
+  description: 'Presentaciones academicas interactivas en filosofia e inteligencia artificial: Platon Fedon, Yuk Hui sobre IA, Geoffrey Hinton y redes neuronales. Parte de Paideía.',
+  alternates: { canonical: 'https://paideia.stevenvallejo.com/ponencias' },
+  openGraph: {
+    title: 'Ponencias · Paideía — Mouseîon',
+    description: 'Academic presentations in philosophy and AI: Plato Phaedo, Yuk Hui on AI limits, Geoffrey Hinton and neural networks.',
+    url: 'https://paideia.stevenvallejo.com/ponencias',
+    siteName: 'Mouseîon',
+    locale: 'es_ES',
+    images: [{ url: 'https://paideia.stevenvallejo.com/og-image.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image' as const,
+    title: 'Ponencias · Paideía — Mouseîon',
+    description: 'Presentaciones academicas: Platon, Yuk Hui (IA) y Hinton (redes neuronales). Parte de Paideía.',
+    images: ['https://paideia.stevenvallejo.com/og-image.png'],
+  },
 }
 
 const ponencias = [
