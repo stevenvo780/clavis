@@ -224,7 +224,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" data-theme="light">
+    <html lang="es">
       <head>
         <script
           type="application/ld+json"
