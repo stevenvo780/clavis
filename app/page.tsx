@@ -138,7 +138,7 @@ export default function Home() {
           Paideía consolida materiales académicos universitarios en un portal de consulta abierta.
           Los contenidos provienen de cuatro repositorios de trabajo real:
           <strong> helenikos</strong>, <strong>GriegoFinal</strong>, <strong>neurofilosofia</strong>{' '}
-          y <strong>FilosofiaCiudad</strong>. El objetivo es que el conocimiento academico
+          y <strong>FilosofiaCiudad</strong>. El objetivo es que el conocimiento académico
           producido en el aula no quede atrapado en archivos locales, sino que pueda
           consultarse, compartirse y crecer.
         </p>
