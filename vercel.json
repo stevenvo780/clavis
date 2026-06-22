@@ -4,8 +4,7 @@
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "clavis-weld.vercel.app" }],
       "destination": "https://paideia.stevenvallejo.com/$1",
-      "permanent": true,
-      "statusCode": 308
+      "permanent": true
     }
   ]
 }
