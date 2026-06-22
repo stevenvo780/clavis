@@ -16,10 +16,10 @@ export const metadata: Metadata = {
   authors: [{ name: 'Steven Vallejo', url: 'https://www.stevenvallejo.com' }],
   creator: 'Steven Vallejo',
   alternates: {
-    canonical: '/',
+    canonical: SITE_URL,
     languages: {
-      'es-ES': '/',
-      'en-US': '/',
+      'es-ES': SITE_URL,
+      'en-US': SITE_URL,
     },
   },
   openGraph: {
