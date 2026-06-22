@@ -49,9 +49,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
       { url: '/favicon.ico', type: 'image/x-icon', sizes: 'any' },
       { url: '/favicon-32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
     ],
     apple: '/apple-touch-icon.png',
   },
@@ -70,7 +70,7 @@ function NavBar() {
       style={{ borderColor: 'var(--border)', background: 'var(--surface)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        {/* Wordmark: lemniscata + nombre griego + tag Mouseîon → enlaza al portal */}
+        {/* Wordmark: isotipo de marca Eikon + nombre griego + tag Mouseîon → enlaza al portal */}
         <div className="flex items-center gap-4">
           <a
             href="https://www.stevenvallejo.com"
@@ -79,7 +79,7 @@ function NavBar() {
             aria-label="Mouseîon — Portal de Steven Vallejo"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icon.svg" alt="" width={26} height={26} aria-hidden="true" />
+            <img src="/logo-isotipo.png" alt="" width={26} height={26} aria-hidden="true" />
             <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.95rem', letterSpacing: '-0.01em' }}>
               Paideía
             </span>
