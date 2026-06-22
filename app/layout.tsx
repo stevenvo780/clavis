@@ -50,7 +50,9 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-32.png', type: 'image/png', sizes: '32x32' },
       { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
     ],
     apple: '/apple-touch-icon.png',
   },
@@ -98,9 +100,9 @@ function NavBar() {
           </a>
         </div>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium" style={{ color: 'var(--text-muted)' }}>
-          <Link href="/griego" className="brand-navlink transition-colors">Griego Clasico</Link>
-          <Link href="/neurofilosofia" className="brand-navlink transition-colors">Neurofilosofia</Link>
-          <Link href="/filosofia-ciudad" className="brand-navlink transition-colors">Filosofia de la Ciudad</Link>
+          <Link href="/griego" className="brand-navlink transition-colors">Griego Clásico</Link>
+          <Link href="/neurofilosofia" className="brand-navlink transition-colors">Neurofilosofía</Link>
+          <Link href="/filosofia-ciudad" className="brand-navlink transition-colors">Filosofía de la Ciudad</Link>
           <Link href="/ponencias" className="brand-navlink transition-colors">Ponencias</Link>
           <Link href="/buscar" className="brand-navlink transition-colors">Buscar</Link>
         </nav>
@@ -115,9 +117,9 @@ function NavBar() {
             className="absolute right-0 top-10 w-52 border rounded-lg shadow-lg flex flex-col p-2 gap-1 z-50"
             style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
           >
-            <Link href="/griego" className="brand-menuitem px-3 py-2 rounded text-sm">Griego Clasico</Link>
-            <Link href="/neurofilosofia" className="brand-menuitem px-3 py-2 rounded text-sm">Neurofilosofia</Link>
-            <Link href="/filosofia-ciudad" className="brand-menuitem px-3 py-2 rounded text-sm">Filosofia de la Ciudad</Link>
+            <Link href="/griego" className="brand-menuitem px-3 py-2 rounded text-sm">Griego Clásico</Link>
+            <Link href="/neurofilosofia" className="brand-menuitem px-3 py-2 rounded text-sm">Neurofilosofía</Link>
+            <Link href="/filosofia-ciudad" className="brand-menuitem px-3 py-2 rounded text-sm">Filosofía de la Ciudad</Link>
             <Link href="/ponencias" className="brand-menuitem px-3 py-2 rounded text-sm">Ponencias</Link>
             <Link href="/buscar" className="brand-menuitem px-3 py-2 rounded text-sm">Buscar</Link>
           </div>

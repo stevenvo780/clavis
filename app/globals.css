@@ -88,7 +88,8 @@ summary:focus-visible,
 }
 
 /* ---------- Brand component helpers ---------- */
-.brand-navlink:hover { color: var(--primary); }
+.brand-navlink { color: var(--text-muted); }
+.brand-navlink:hover { color: #e0a85e; }
 .brand-menuitem { color: var(--text); }
 .brand-menuitem:hover { background: var(--surface-2); color: var(--primary); }
 
@@ -111,10 +112,10 @@ summary:focus-visible,
 }
 
 .btn-primary {
-  background: var(--primary);
-  color: var(--on-primary);
+  background: #e0a85e;
+  color: #0b1417;
 }
-.btn-primary:hover { background: var(--primary-strong); }
+.btn-primary:hover { background: #c0522a; color: #fff; }
 
 .btn-ghost {
   border: 1px solid rgba(224,168,94,0.40);

@@ -4,7 +4,7 @@ const modules = [
   {
     href: '/griego',
     symbol: 'α',
-    label: 'Griego Clasico',
+    label: 'Griego Clásico',
     labelEn: 'Classical Greek',
     description:
       'Lecciones de conjugacion verbal, tablas de declinacion, glosario, ejercicios de traduccion, gramaticas de referencia y traducciones comentadas del curso universitario de griego antiguo.',
@@ -16,7 +16,7 @@ const modules = [
   {
     href: '/neurofilosofia',
     symbol: '⬡',
-    label: 'Neurofilosofia',
+    label: 'Neurofilosofía',
     labelEn: 'Neurophilosophy',
     description:
       'Base de conocimiento del curso Filosofia de las Neurociencias: clases con notas detalladas, fichas de 25 autores, temas transversales, lecturas, logica formal y ensayos.',
@@ -28,7 +28,7 @@ const modules = [
   {
     href: '/filosofia-ciudad',
     symbol: '◈',
-    label: 'Filosofia de la Ciudad',
+    label: 'Filosofía de la Ciudad',
     labelEn: 'Philosophy of the City',
     description:
       'Archivo academico del curso Filosofia de la ciudad: ontologia, poder y politica. Clases con notas detalladas, lecturas (Heidegger, Sassen, Yuk Hui, Calvino, Berman) y ponencias.',
@@ -69,8 +69,8 @@ export default function Home() {
           portal de humanidades
         </p>
         <p className="mt-6 max-w-2xl mx-auto text-lg" style={{ color: 'var(--text)' }}>
-          Tres modulos de trabajo universitario en un solo portal de consulta.
-          Griego clasico, filosofia de las neurociencias y filosofia de la ciudad
+          Tres módulos de trabajo universitario en un solo portal de consulta.
+          Griego clásico, filosofía de las neurociencias y filosofía de la ciudad
           &mdash; todos navegables, buscables y sin registro.
         </p>
         <p className="mt-2 max-w-2xl mx-auto text-base italic" style={{ color: 'var(--text-muted)' }}>
@@ -96,7 +96,7 @@ export default function Home() {
 
       {/* Modules */}
       <section id="modulos" className="py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {modules.map((mod) => (
             <Link
               key={mod.href}
@@ -106,7 +106,7 @@ export default function Home() {
               <div className="flex items-start justify-between">
                 <span
                   className="text-5xl font-serif font-bold opacity-70 group-hover:opacity-100 transition-opacity"
-                  style={{ color: 'var(--primary)' }}
+                  style={{ color: '#e0a85e' }}
                 >
                   {mod.symbol}
                 </span>
@@ -120,7 +120,7 @@ export default function Home() {
               </div>
               <p className="text-sm leading-relaxed" style={{ color: 'var(--text)' }}>{mod.description}</p>
               <p className="text-xs italic leading-relaxed" style={{ color: 'var(--text-muted)' }}>{mod.descriptionEn}</p>
-              <span className="text-sm font-medium mt-auto" style={{ color: 'var(--primary)' }}>
+              <span className="text-sm font-medium mt-auto" style={{ color: '#e0a85e' }}>
                 Explorar &rarr;
               </span>
             </Link>
