@@ -16,9 +16,9 @@ interface Props {
 }
 
 const MODULE_LABEL: Record<string, string> = {
-  griego: 'Griego Clasico',
-  neurofilosofia: 'Neurofilosofia',
-  'filosofia-ciudad': 'Filosofia de la Ciudad',
+  griego: 'Griego Clásico',
+  neurofilosofia: 'Neurofilosofía',
+  'filosofia-ciudad': 'Filosofía de la Ciudad',
 }
 
 export default function SearchClient({ allItems }: Props) {

@@ -7,7 +7,7 @@ const modules = [
     label: 'Griego Clásico',
     labelEn: 'Classical Greek',
     description:
-      'Lecciones de conjugacion verbal, tablas de declinacion, glosario, ejercicios de traduccion, gramaticas de referencia y traducciones comentadas del curso universitario de griego antiguo.',
+      'Lecciones de conjugación verbal, tablas de declinación, glosario, ejercicios de traducción, gramáticas de referencia y traducciones comentadas del curso universitario de griego antiguo.',
     descriptionEn:
       'Verb conjugation lessons, declension tables, glossary, translation exercises, reference grammars and annotated translations from the university Ancient Greek course.',
     count: '15',
@@ -19,7 +19,7 @@ const modules = [
     label: 'Neurofilosofía',
     labelEn: 'Neurophilosophy',
     description:
-      'Base de conocimiento del curso Filosofia de las Neurociencias: clases con notas detalladas, fichas de 25 autores, temas transversales, lecturas, logica formal y ensayos.',
+      'Base de conocimiento del curso Filosofía de las Neurociencias: clases con notas detalladas, fichas de 25 autores, temas transversales, lecturas, lógica formal y ensayos.',
     descriptionEn:
       'Knowledge base for Philosophy of Neuroscience: lectures with detailed class notes, profiles of 25 key authors, cross-cutting themes, readings, formal logic and essays.',
     count: '149',
@@ -31,7 +31,7 @@ const modules = [
     label: 'Filosofía de la Ciudad',
     labelEn: 'Philosophy of the City',
     description:
-      'Archivo academico del curso Filosofia de la ciudad: ontologia, poder y politica. Clases con notas detalladas, lecturas (Heidegger, Sassen, Yuk Hui, Calvino, Berman) y ponencias.',
+      'Archivo académico del curso Filosofía de la ciudad: ontología, poder y política. Clases con notas detalladas, lecturas (Heidegger, Sassen, Yuk Hui, Calvino, Berman) y ponencias.',
     descriptionEn:
       'Academic archive for Philosophy of the City: ontology, power, politics. Lectures with detailed notes, core readings (Heidegger, Sassen, Yuk Hui, Calvino, Berman) and papers.',
     count: '62',
@@ -43,7 +43,7 @@ const modules = [
     label: 'Ponencias',
     labelEn: 'Presentations',
     description:
-      'Presentaciones academicas en filosofia e inteligencia artificial. Decks interactivos de Griego Clasico, Neurofilosofia y Filosofia de la Ciudad.',
+      'Presentaciones académicas en filosofía e inteligencia artificial. Decks interactivos de Griego Clásico, Neurofilosofía y Filosofía de la Ciudad.',
     descriptionEn:
       'Academic presentations in philosophy and artificial intelligence. Interactive decks from Classical Greek, Neurophilosophy and Philosophy of the City.',
     count: '3',
@@ -89,7 +89,7 @@ export default function Home() {
             href="#modulos"
             className="btn-ghost inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors"
           >
-            Explorar modulos
+            Explorar módulos
           </Link>
         </div>
       </section>
@@ -135,7 +135,7 @@ export default function Home() {
       <section className="pb-16 max-w-3xl mx-auto text-center">
         <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text)' }}>Sobre Paideía</h2>
         <p className="leading-relaxed" style={{ color: 'var(--text)' }}>
-          Paideía consolida materiales academicos universitarios en un portal de consulta abierta.
+          Paideía consolida materiales académicos universitarios en un portal de consulta abierta.
           Los contenidos provienen de cuatro repositorios de trabajo real:
           <strong> helenikos</strong>, <strong>GriegoFinal</strong>, <strong>neurofilosofia</strong>{' '}
           y <strong>FilosofiaCiudad</strong>. El objetivo es que el conocimiento academico

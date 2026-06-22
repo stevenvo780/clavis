@@ -3,11 +3,11 @@ import ModuleIndex from '@/components/ModuleIndex'
 import Presentations from '@/components/Presentations'
 
 export const metadata = {
-  title: 'Filosofia de la Ciudad — portal de humanidades digitales · Mouseîon',
-  description: 'Archivo academico del curso Filosofia de la ciudad: ontologia, poder y politica. Clases, lecturas de Heidegger, Sassen, Yuk Hui, Calvino y Berman, ponencias y trabajos finales. Parte de Paideía.',
+  title: 'Filosofía de la Ciudad — portal de humanidades digitales · Mouseîon',
+  description: 'Archivo académico del curso Filosofía de la ciudad: ontología, poder y política. Clases, lecturas de Heidegger, Sassen, Yuk Hui, Calvino y Berman, ponencias y trabajos finales. Parte de Paideía.',
   alternates: { canonical: 'https://paideia.stevenvallejo.com/filosofia-ciudad' },
   openGraph: {
-    title: 'Filosofia de la Ciudad · Paideía — Mouseîon',
+    title: 'Filosofía de la Ciudad · Paideía — Mouseîon',
     description: 'Academic archive: Philosophy of the City — ontology, power, politics. Heidegger, Sassen, Yuk Hui, Calvino, Berman. 62+ documents.',
     url: 'https://paideia.stevenvallejo.com/filosofia-ciudad',
     siteName: 'Mouseîon',
@@ -16,8 +16,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image' as const,
-    title: 'Filosofia de la Ciudad · Paideía — Mouseîon',
-    description: 'Archivo academico: ontologia, poder y politica urbana. 62+ documentos con Heidegger, Sassen, Yuk Hui.',
+    title: 'Filosofía de la Ciudad · Paideía — Mouseîon',
+    description: 'Archivo académico: ontología, poder y política urbana. 62+ documentos con Heidegger, Sassen, Yuk Hui.',
     images: ['https://paideia.stevenvallejo.com/og-image.png'],
   },
 }
@@ -28,9 +28,9 @@ export default function FilosofiaCiudadPage() {
     <ModuleIndex
       module="filosofia-ciudad"
       items={items}
-      title="Filosofia de la Ciudad"
+      title="Filosofía de la Ciudad"
       titleEn="Philosophy of the City"
-      description="Archivo academico del curso Filosofia de la ciudad: ontologia, poder y politica. Cinco clases con apuntes y recursos, lecturas base de Heidegger, Saskia Sassen, Yuk Hui, Calvino y Berman, mas ponencias y trabajos finales."
+      description="Archivo académico del curso Filosofía de la ciudad: ontología, poder y política. Cinco clases con apuntes y recursos, lecturas base de Heidegger, Saskia Sassen, Yuk Hui, Calvino y Berman, más ponencias y trabajos finales."
       descriptionEn="Academic archive for Philosophy of the City: ontology, power, politics. Five classes with notes and resources, core readings from Heidegger, Saskia Sassen, Yuk Hui, Calvino and Berman, plus papers and final assignments."
     >
       <Presentations

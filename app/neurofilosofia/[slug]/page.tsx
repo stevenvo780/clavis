@@ -14,12 +14,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!item) return { title: 'Paideía · Mouseîon' }
   const canonicalUrl = `https://paideia.stevenvallejo.com/neurofilosofia/${slug}`
   return {
-    title: `${item.title} — Neurofilosofia · Mouseîon`,
-    description: item.excerpt ? item.excerpt.slice(0, 155) : 'Documento del curso Filosofia de las Neurociencias. Parte de Paideía.',
+    title: `${item.title} — Neurofilosofía · Mouseîon`,
+    description: item.excerpt ? item.excerpt.slice(0, 155) : 'Documento del curso Filosofía de las Neurociencias. Parte de Paideía.',
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title: `${item.title} · Paideía — Mouseîon`,
-      description: item.excerpt ? item.excerpt.slice(0, 155) : 'Neurofilosofia · Paideía',
+      description: item.excerpt ? item.excerpt.slice(0, 155) : 'Neurofilosofía · Paideía',
       url: canonicalUrl,
       siteName: 'Mouseîon',
       locale: 'es_ES',
@@ -41,7 +41,7 @@ export default async function NeuroArticle({ params }: { params: Promise<{ slug:
       <article className="flex-1 min-w-0">
         <div className="mb-6">
           <Link href="/neurofilosofia" className="text-sm hover:underline" style={{ color: 'var(--link)' }}>
-            &larr; Neurofilosofia
+            &larr; Neurofilosofía
           </Link>
           <span className="mx-2" style={{ color: 'var(--text-muted)' }}>/</span>
           <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{item.section}</span>

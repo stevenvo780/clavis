@@ -26,12 +26,12 @@ const ponencias = [
   },
   {
     title: 'Redes Neuronales — del perceptron al deep learning',
-    subtitle: 'Geoffrey Hinton · ~16 slides · Neurofilosofia',
+    subtitle: 'Geoffrey Hinton · ~16 slides · Neurofilosofía',
     url: 'https://hinton.stevenvallejo.com/',
   },
   {
     title: 'Fedon — La inmortalidad del alma',
-    subtitle: 'Platon · Griego Clasico',
+    subtitle: 'Platón · Griego Clásico',
     url: 'https://clavis-decks.vercel.app/platon/',
   },
 ]
@@ -51,8 +51,8 @@ export default function PonenciasPage() {
           Presentations
         </p>
         <p className="mt-3 max-w-2xl" style={{ color: 'var(--text)' }}>
-          Presentaciones academicas en filosofia e inteligencia artificial. Decks interactivos
-          elaborados a partir de los cursos de Griego Clasico, Neurofilosofia y Filosofia de la Ciudad.
+          Presentaciones académicas en filosofía e inteligencia artificial. Decks interactivos
+          elaborados a partir de los cursos de Griego Clásico, Neurofilosofía y Filosofía de la Ciudad.
         </p>
         <p className="mt-1 text-sm italic max-w-2xl" style={{ color: 'var(--text-muted)' }}>
           Academic presentations in philosophy and artificial intelligence. Interactive decks

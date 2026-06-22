@@ -3,7 +3,7 @@ import SearchClient from './SearchClient'
 
 export const metadata = {
   title: 'Buscar — portal de humanidades digitales · Mouseîon',
-  description: 'Busqueda instantanea en todos los modulos de Paideía: Griego Clasico, Neurofilosofia y Filosofia de la Ciudad. Sin servidor, sin latencia.',
+  description: 'Búsqueda instantánea en todos los módulos de Paideía: Griego Clásico, Neurofilosofía y Filosofía de la Ciudad. Sin servidor, sin latencia.',
   alternates: { canonical: 'https://paideia.stevenvallejo.com/buscar' },
   openGraph: {
     title: 'Buscar · Paideía — Mouseîon',

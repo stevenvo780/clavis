@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import Link from 'next/link'
+import MobileNav from '@/components/MobileNav'
 
 const SITE_URL = 'https://paideia.stevenvallejo.com'
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     template: '%s · Mouseîon',
   },
   description:
-    'Paideía: portal de humanidades digitales con Griego Clasico, Neurofilosofia y Filosofia de la Ciudad. Mas de 220 documentos academicos navegables. Parte del ecosistema Mouseîon de Steven Vallejo.',
+    'Paideía: portal de humanidades digitales con Griego Clásico, Neurofilosofía y Filosofía de la Ciudad. Más de 220 documentos académicos navegables. Parte del ecosistema Mouseîon de Steven Vallejo.',
   applicationName: 'Mouseîon',
   authors: [{ name: 'Steven Vallejo', url: 'https://www.stevenvallejo.com' }],
   creator: 'Steven Vallejo',
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Paideía — portal de humanidades digitales · Mouseîon',
     description:
-      'Portal de humanidades digitales: Griego Clasico, Neurofilosofia y Filosofia de la Ciudad. 220+ documentos. Parte de Mouseîon.',
+      'Portal de humanidades digitales: Griego Clásico, Neurofilosofía y Filosofía de la Ciudad. 220+ documentos. Parte de Mouseîon.',
     images: [`${SITE_URL}/og-image.png`],
   },
   icons: {
@@ -54,7 +55,9 @@ export const metadata: Metadata = {
       { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
       { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
     ],
-    apple: '/apple-touch-icon.png',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 }
 
@@ -106,24 +109,7 @@ function NavBar() {
           <Link href="/ponencias" className="brand-navlink transition-colors">Ponencias</Link>
           <Link href="/buscar" className="brand-navlink transition-colors">Buscar</Link>
         </nav>
-        <details className="md:hidden relative">
-          <summary
-            className="cursor-pointer list-none p-2 rounded border select-none"
-            style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
-          >
-            Menu
-          </summary>
-          <div
-            className="absolute right-0 top-10 w-52 border rounded-lg shadow-lg flex flex-col p-2 gap-1 z-50"
-            style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-          >
-            <Link href="/griego" className="brand-menuitem px-3 py-2 rounded text-sm">Griego Clásico</Link>
-            <Link href="/neurofilosofia" className="brand-menuitem px-3 py-2 rounded text-sm">Neurofilosofía</Link>
-            <Link href="/filosofia-ciudad" className="brand-menuitem px-3 py-2 rounded text-sm">Filosofía de la Ciudad</Link>
-            <Link href="/ponencias" className="brand-menuitem px-3 py-2 rounded text-sm">Ponencias</Link>
-            <Link href="/buscar" className="brand-menuitem px-3 py-2 rounded text-sm">Buscar</Link>
-          </div>
-        </details>
+        <MobileNav />
       </div>
     </header>
   )
@@ -156,16 +142,16 @@ function Footer() {
         </p>
         <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs" aria-label="Ecosistema">
           <a href="https://www.stevenvallejo.com/es#filosofia" className="hover:underline transition-colors" style={{ color: 'var(--link)' }}>
-            Filosofia
+            Filosofía
           </a>
           <a href="https://www.stevenvallejo.com/es#ciencias" className="hover:underline transition-colors" style={{ color: 'var(--link)' }}>
             Ciencias
           </a>
           <a href="https://www.stevenvallejo.com/es#informatica" className="hover:underline transition-colors" style={{ color: 'var(--link)' }}>
-            Informatica
+            Informática
           </a>
           <a href="https://www.stevenvallejo.com/es#ingenieria" className="hover:underline transition-colors" style={{ color: 'var(--link)' }}>
-            Ingenieria
+            Ingeniería
           </a>
         </nav>
       </div>
@@ -181,7 +167,7 @@ const jsonLd = {
       '@id': `${SITE_URL}/#website`,
       url: SITE_URL,
       name: 'Paideía',
-      description: 'Portal de humanidades digitales: Griego Clasico, Neurofilosofia y Filosofia de la Ciudad.',
+      description: 'Portal de humanidades digitales: Griego Clásico, Neurofilosofía y Filosofía de la Ciudad.',
       inLanguage: ['es-ES', 'en-US'],
       publisher: { '@id': `${SITE_URL}/#author` },
     },
@@ -193,7 +179,7 @@ const jsonLd = {
       applicationCategory: 'EducationApplication',
       operatingSystem: 'Web',
       description:
-        'Paideía es un portal de humanidades digitales con mas de 220 documentos academicos en Griego Clasico, Neurofilosofia y Filosofia de la Ciudad. Parte del ecosistema Mouseîon de Steven Vallejo.',
+        'Paideía es un portal de humanidades digitales con más de 220 documentos académicos en Griego Clásico, Neurofilosofía y Filosofía de la Ciudad. Parte del ecosistema Mouseîon de Steven Vallejo.',
       inLanguage: ['es-ES', 'en-US'],
       author: { '@id': `${SITE_URL}/#author` },
       isPartOf: {
@@ -216,7 +202,6 @@ const jsonLd = {
       sameAs: [
         'https://github.com/stevenvo780',
         'https://linkedin.com/in/stevenvo780',
-        'https://www.stevenvallejo.com',
       ],
       jobTitle: 'Ingeniero de Software · Filósofo',
     },

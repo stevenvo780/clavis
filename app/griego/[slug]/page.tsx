@@ -14,12 +14,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!item) return { title: 'Paideía · Mouseîon' }
   const canonicalUrl = `https://paideia.stevenvallejo.com/griego/${slug}`
   return {
-    title: `${item.title} — Griego Clasico · Mouseîon`,
-    description: item.excerpt ? item.excerpt.slice(0, 155) : 'Documento del curso universitario de Griego Clasico. Parte de Paideía.',
+    title: `${item.title} — Griego Clásico · Mouseîon`,
+    description: item.excerpt ? item.excerpt.slice(0, 155) : 'Documento del curso universitario de Griego Clásico. Parte de Paideía.',
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title: `${item.title} · Paideía — Mouseîon`,
-      description: item.excerpt ? item.excerpt.slice(0, 155) : 'Griego Clasico · Paideía',
+      description: item.excerpt ? item.excerpt.slice(0, 155) : 'Griego Clásico · Paideía',
       url: canonicalUrl,
       siteName: 'Mouseîon',
       locale: 'es_ES',
@@ -41,7 +41,7 @@ export default async function GriegoArticle({ params }: { params: Promise<{ slug
       <article className="flex-1 min-w-0">
         <div className="mb-6">
           <Link href="/griego" className="text-sm hover:underline" style={{ color: 'var(--link)' }}>
-            &larr; Griego Clasico
+            &larr; Griego Clásico
           </Link>
           <span className="mx-2" style={{ color: 'var(--text-muted)' }}>/</span>
           <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{item.section}</span>

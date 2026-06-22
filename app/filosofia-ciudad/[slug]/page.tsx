@@ -14,12 +14,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!item) return { title: 'Paideía · Mouseîon' }
   const canonicalUrl = `https://paideia.stevenvallejo.com/filosofia-ciudad/${slug}`
   return {
-    title: `${item.title} — Filosofia de la Ciudad · Mouseîon`,
-    description: item.excerpt ? item.excerpt.slice(0, 155) : 'Documento del curso Filosofia de la Ciudad: ontologia, poder y politica. Parte de Paideía.',
+    title: `${item.title} — Filosofía de la Ciudad · Mouseîon`,
+    description: item.excerpt ? item.excerpt.slice(0, 155) : 'Documento del curso Filosofía de la Ciudad: ontología, poder y política. Parte de Paideía.',
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title: `${item.title} · Paideía — Mouseîon`,
-      description: item.excerpt ? item.excerpt.slice(0, 155) : 'Filosofia de la Ciudad · Paideía',
+      description: item.excerpt ? item.excerpt.slice(0, 155) : 'Filosofía de la Ciudad · Paideía',
       url: canonicalUrl,
       siteName: 'Mouseîon',
       locale: 'es_ES',
@@ -41,7 +41,7 @@ export default async function CiudadArticle({ params }: { params: Promise<{ slug
       <article className="flex-1 min-w-0">
         <div className="mb-6">
           <Link href="/filosofia-ciudad" className="text-sm hover:underline" style={{ color: 'var(--link)' }}>
-            &larr; Filosofia de la Ciudad
+            &larr; Filosofía de la Ciudad
           </Link>
           <span className="mx-2" style={{ color: 'var(--text-muted)' }}>/</span>
           <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{item.section}</span>
