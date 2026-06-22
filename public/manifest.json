@@ -1,0 +1,30 @@
+{
+  "name": "Paideía — Humanidades Digitales · Mouseîon",
+  "short_name": "Paideía",
+  "description": "Portal de humanidades digitales: Griego Clásico, Neurofilosofía y Filosofía de la Ciudad. Parte del ecosistema Mouseîon de Steven Vallejo.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1417",
+  "theme_color": "#0b1417",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
