@@ -13,9 +13,9 @@
   --border: rgba(224,168,94,0.10);
   --text: #e8e0d4;
   --text-muted: #8fa3a8;
-  --primary: #0b1417;
-  --primary-strong: #0b1417;
-  --on-primary: #e8e0d4;
+  --primary: #e0a85e;
+  --primary-strong: #c0522a;
+  --on-primary: #0b1417;
   --accent: #e0a85e;
   --accent-strong: #c0522a;
   --accent-2: #b8873a;
@@ -117,11 +117,11 @@ summary:focus-visible,
 .btn-primary:hover { background: var(--primary-strong); }
 
 .btn-ghost {
-  border: 1px solid var(--border);
+  border: 1px solid rgba(224,168,94,0.40);
   color: var(--text);
   background: transparent;
 }
-.btn-ghost:hover { background: var(--surface-2); }
+.btn-ghost:hover { background: var(--surface-2); border-color: var(--accent); }
 
 /* Gold accent pill (badges / document counts). */
 .brand-badge {

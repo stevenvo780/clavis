@@ -96,7 +96,7 @@ export default function Home() {
 
       {/* Modules */}
       <section id="modulos" className="py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {modules.map((mod) => (
             <Link
               key={mod.href}

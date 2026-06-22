@@ -49,9 +49,8 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico', type: 'image/x-icon', sizes: 'any' },
-      { url: '/favicon-32.png', type: 'image/png', sizes: '32x32' },
-      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
     ],
     apple: '/apple-touch-icon.png',
   },
@@ -163,8 +162,8 @@ function Footer() {
           <a href="https://www.stevenvallejo.com/es#informatica" className="hover:underline transition-colors" style={{ color: 'var(--link)' }}>
             Informatica
           </a>
-          <a href="https://www.stevenvallejo.com/es#enterprise" className="hover:underline transition-colors" style={{ color: 'var(--link)' }}>
-            Enterprise
+          <a href="https://www.stevenvallejo.com/es#ingenieria" className="hover:underline transition-colors" style={{ color: 'var(--link)' }}>
+            Ingenieria
           </a>
         </nav>
       </div>
