@@ -88,7 +88,7 @@ function NavBar() {
             aria-label="Mouseîon — Portal de Steven Vallejo"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icon.svg" alt="" width={40} height={40} style={{ objectFit: 'contain' }} aria-hidden="true" />
+            <img src="/icon-192.png" alt="" width={44} height={44} style={{ objectFit: 'contain', borderRadius: '6px' }} aria-hidden="true" />
             <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.95rem', letterSpacing: '-0.01em' }}>
               Paideía
             </span>
