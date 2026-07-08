@@ -1,14 +1,27 @@
 import Link from 'next/link'
+import { works } from './trabajos/works'
+
+const SITE_URL = 'https://paideia.stevenvallejo.com'
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Paideía — Galería de filosofía',
+  url: SITE_URL,
+  author: { '@type': 'Person', name: 'Steven Vallejo', url: 'https://www.stevenvallejo.com' },
+}
 
 export default function Home() {
+  const ponencias = works.filter((w) => w.tipo === 'ponencia')
+  const ensayos = works.filter((w) => w.tipo === 'ensayo')
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Hero */}
-      <section className="py-20 text-center">
-        <span
-          className="inline-block mb-4 text-sm font-mono tracking-widest uppercase"
-          style={{ color: 'var(--accent-deep)' }}
-        >
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      {/* Hero compacto */}
+      <section className="pt-16 pb-8 text-center">
+        <span className="inline-block mb-4 text-sm font-mono tracking-widest uppercase" style={{ color: 'var(--accent-deep)' }}>
           Filosofía &bull; Philosophy
         </span>
         <h1 className="font-serif text-5xl sm:text-6xl font-bold leading-tight" style={{ color: 'var(--primary)' }}>
@@ -19,70 +32,67 @@ export default function Home() {
         </p>
         <p className="mt-6 max-w-2xl mx-auto text-lg" style={{ color: 'var(--text)' }}>
           Mi trabajo en filosofía: ensayos y ponencias propios sobre una pluralidad de temas —
-          mente y materia, ontología, filosofía de la ciudad, retórica, lógica formal, sistemas
-          complejos, filosofía de la religión y de la técnica.
+          mente y materia, ontología, filosofía de la ciudad, retórica, lógica, sistemas complejos,
+          filosofía de la religión y de la técnica.
         </p>
-        <p className="mt-2 max-w-2xl mx-auto text-base italic" style={{ color: 'var(--text-muted)' }}>
-          My work in philosophy: original essays and presentations across a plurality of topics —
-          mind and matter, ontology, urban philosophy, rhetoric, logic, complex systems.
-        </p>
-        <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <Link
-            href="/trabajos"
-            className="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors"
-          >
-            Ver la galería
-          </Link>
-          <Link
-            href="/buscar"
-            className="btn-ghost inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors"
-          >
+        <div className="mt-6 flex justify-center">
+          <Link href="/buscar" className="btn-ghost inline-flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-colors">
             Buscar en todo el portal
           </Link>
         </div>
       </section>
 
-      {/* Galería de trabajos — protagonista */}
+      {/* Ponencias */}
       <section className="py-8">
-        <h2 className="text-2xl font-bold mb-6" style={{ color: 'var(--text)' }}>
-          Ensayos y Ponencias
-        </h2>
-        <Link
-          href="/trabajos"
-          className="brand-card group rounded-2xl p-6 flex flex-col gap-4 mb-12 md:mb-16"
-        >
-          <div className="flex items-start justify-between">
-            <span
-              className="text-5xl font-serif font-bold opacity-70 group-hover:opacity-100 transition-opacity"
-              style={{ color: '#e0a85e' }}
-            >
-              ◎
-            </span>
-            <span className="brand-badge text-xs font-mono px-2 py-1 rounded-full">
-              10 trabajos
-            </span>
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Galería de trabajos filosóficos</h3>
-            <p className="text-xs mt-0.5 italic" style={{ color: 'var(--text-muted)' }}>Original research collection</p>
-          </div>
-          <p className="text-sm leading-relaxed" style={{ color: 'var(--text)' }}>
-            Investigación y ensayos propios que cruzan muchos temas: de la mente y el carbono a la
-            ciudad, de la retórica clásica a la crítica del gnosticismo, de la filosofía de la ciencia
-            a la filosofía de la programación.
-          </p>
-          <p className="text-xs italic leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-            Original essays and presentations spanning many topics — from mind and matter to the city,
-            from classical rhetoric to philosophy of science and of programming.
-          </p>
-          <span className="text-sm font-medium mt-auto" style={{ color: '#e0a85e' }}>
-            Explorar galería &rarr;
-          </span>
-        </Link>
+        <h2 className="text-3xl font-bold mb-8" style={{ color: 'var(--text)' }}>Ponencias</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {ponencias.map((work) => (
+            <a key={work.id} href={work.url} target="_blank" rel="noopener noreferrer"
+              className="brand-card group rounded-lg p-6 flex flex-col gap-4 no-underline hover:no-underline">
+              <div className="flex items-start justify-between gap-4">
+                <h3 className="text-xl font-bold leading-tight flex-1" style={{ color: 'var(--text)' }}>{work.titulo}</h3>
+                <span className="brand-badge text-xs font-mono px-2 py-1 rounded-full whitespace-nowrap">Ponencia</span>
+              </div>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--text)' }}>{work.abstract}</p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {work.topics.map((topic) => (
+                  <span key={topic} className="text-xs px-2 py-1 rounded-full font-medium"
+                    style={{ background: 'var(--surface-2)', color: 'var(--accent-deep)', border: '1px solid var(--border)' }}>{topic}</span>
+                ))}
+              </div>
+              <span className="mt-4 text-sm font-medium" style={{ color: '#e0a85e' }}>Ver →</span>
+            </a>
+          ))}
+        </div>
       </section>
 
-      {/* Archivo académico — secundario, sin protagonismo temático */}
-      <section className="pb-8">
+      {/* Ensayos */}
+      <section className="py-8">
+        <h2 className="text-3xl font-bold mb-8" style={{ color: 'var(--text)' }}>Ensayos</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {ensayos.map((work) => (
+            <a key={work.id} href={work.url} target="_blank" rel="noopener noreferrer"
+              className="brand-card group rounded-lg p-6 flex flex-col gap-4 no-underline hover:no-underline">
+              <div className="flex items-start justify-between gap-4">
+                <h3 className="text-xl font-bold leading-tight flex-1" style={{ color: 'var(--text)' }}>{work.titulo}</h3>
+                <span className="brand-badge text-xs font-mono px-2 py-1 rounded-full whitespace-nowrap">Ensayo</span>
+              </div>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--text)' }}>{work.abstract}</p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {work.topics.map((topic) => (
+                  <span key={topic} className="text-xs px-2 py-1 rounded-full font-medium"
+                    style={{ background: 'var(--surface-2)', color: 'var(--accent-deep)', border: '1px solid var(--border)' }}>{topic}</span>
+                ))}
+              </div>
+              <span className="mt-4 text-sm font-medium" style={{ color: '#e0a85e' }}>Ver →</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* Archivo académico — secundario */}
+      <div className="border-t my-12" style={{ borderColor: 'var(--border)' }} />
+      <section className="pb-16">
         <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
           También conservo un <strong style={{ color: 'var(--text)' }}>archivo académico</strong> abierto
           con notas de clase y materiales de curso:{' '}
@@ -90,27 +100,7 @@ export default function Home() {
           {' · '}
           <Link href="/neurofilosofia" className="hover:underline" style={{ color: 'var(--accent-deep)' }}>Neurofilosofía</Link>
           {' · '}
-          <Link href="/filosofia-ciudad" className="hover:underline" style={{ color: 'var(--accent-deep)' }}>Filosofía de la ciudad</Link>
-          {' · '}
-          <Link href="/ponencias" className="hover:underline" style={{ color: 'var(--accent-deep)' }}>Ponencias</Link>.
-        </p>
-      </section>
-
-      {/* Divider */}
-      <div className="border-t my-12" style={{ borderColor: 'var(--border)' }} />
-
-      {/* About */}
-      <section className="pb-16 max-w-3xl mx-auto text-center">
-        <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text)' }}>Sobre Paideía</h2>
-        <p className="leading-relaxed" style={{ color: 'var(--text)' }}>
-          Paideía es la galería de mi trabajo en filosofía: un portafolio creciente de ensayos y
-          ponencias propios que atraviesan muchos temas. Conserva además un archivo académico abierto,
-          para que el conocimiento no quede atrapado en archivos locales, sino que pueda consultarse,
-          compartirse y crecer.
-        </p>
-        <p className="mt-4 italic text-sm" style={{ color: 'var(--text-muted)' }}>
-          Paideía is the gallery of my work in philosophy: a growing portfolio of original essays and
-          presentations across many topics, plus an open academic archive — browsable, shareable, alive.
+          <Link href="/filosofia-ciudad" className="hover:underline" style={{ color: 'var(--accent-deep)' }}>Filosofía de la ciudad</Link>.
         </p>
       </section>
     </div>
