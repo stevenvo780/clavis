@@ -69,33 +69,71 @@ export default function Home() {
           portal de humanidades
         </p>
         <p className="mt-6 max-w-2xl mx-auto text-lg" style={{ color: 'var(--text)' }}>
-          Tres módulos de trabajo universitario en un solo portal de consulta.
-          Griego clásico, filosofía de las neurociencias y filosofía de la ciudad
-          &mdash; todos navegables, buscables y sin registro.
+          Galería de trabajos filosóficos originales. Ensayos y ponencias sobre neurofilosofía,
+          ontología, filosofía de la ciudad y complejidad. Además, archivos de módulos académicos:
+          Griego clásico, filosofía de las neurociencias y filosofía de la ciudad.
         </p>
         <p className="mt-2 max-w-2xl mx-auto text-base italic" style={{ color: 'var(--text-muted)' }}>
-          Three university knowledge modules in one open portal.
-          Classical Greek, neurophilosophy, and philosophy of the city &mdash;
-          browsable, searchable, no login required.
+          Original philosophical essays and presentations, plus academic knowledge modules:
+          Classical Greek, neurophilosophy, and philosophy of the city — all browsable, searchable, no login required.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            href="/buscar"
+            href="/trabajos"
             className="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors"
           >
-            Buscar en todo el portal
+            Ver trabajos filosóficos
           </Link>
           <Link
-            href="#modulos"
+            href="/buscar"
             className="btn-ghost inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors"
           >
-            Explorar módulos
+            Buscar en todo el portal
           </Link>
         </div>
       </section>
 
+      {/* Trabajos — Featured Section */}
+      <section className="py-8">
+        <h2 className="text-2xl font-bold mb-6" style={{ color: 'var(--text)' }}>
+          Trabajos Filosóficos
+        </h2>
+        <Link
+          href="/trabajos"
+          className="brand-card group rounded-2xl p-6 flex flex-col gap-4 mb-12 md:mb-16"
+        >
+          <div className="flex items-start justify-between">
+            <span
+              className="text-5xl font-serif font-bold opacity-70 group-hover:opacity-100 transition-opacity"
+              style={{ color: '#e0a85e' }}
+            >
+              ◎
+            </span>
+            <span className="brand-badge text-xs font-mono px-2 py-1 rounded-full">
+              10 trabajos
+            </span>
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Ensayos y Ponencias</h3>
+            <p className="text-xs mt-0.5 italic" style={{ color: 'var(--text-muted)' }}>Original research collection</p>
+          </div>
+          <p className="text-sm leading-relaxed" style={{ color: 'var(--text)' }}>
+            Galería de trabajos propios: investigación original en neurofilosofía, ontología, filosofía de la ciudad, teoría de sistemas complejos y filosofía computacional.
+          </p>
+          <p className="text-xs italic leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+            Collection of original philosophical essays and presentations on neurophilosophy, ontology, urban philosophy, complex systems and computational philosophy.
+          </p>
+          <span className="text-sm font-medium mt-auto" style={{ color: '#e0a85e' }}>
+            Explorar galería &rarr;
+          </span>
+        </Link>
+      </section>
+
       {/* Modules */}
       <section id="modulos" className="py-8">
+        <h2 className="text-2xl font-bold mb-6" style={{ color: 'var(--text)' }}>
+          Módulos Académicos
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {modules.map((mod) => (
             <Link
