@@ -1,6 +1,6 @@
 export const metadata = {
   title: 'Ponencias — portal de humanidades digitales · Mouseîon',
-  description: 'Presentaciones academicas interactivas en filosofia e inteligencia artificial: Platon Fedon, Yuk Hui sobre IA, Geoffrey Hinton y redes neuronales. Parte de Paideía.',
+  description: 'Presentaciones academicas interactivas en filosofia, IA y ciudad: silicio o tejido (mente y materia), cartografia critica de Medellin, la retorica como tecnica, Platon Fedon, Yuk Hui sobre IA y Geoffrey Hinton. Ponencias de Steven Vallejo, parte de Paideía.',
   alternates: { canonical: 'https://paideia.stevenvallejo.com/ponencias' },
   openGraph: {
     title: 'Ponencias · Paideía — Mouseîon',
@@ -19,6 +19,21 @@ export const metadata = {
 }
 
 const ponencias = [
+  {
+    title: '¿Silicio o Tejido? — Límites materiales y ontológicos de la mente',
+    subtitle: '¿Puede la mente emularse en silicio o requiere el carbono? · Neurofilosofía · Autopoiesis y conciencia',
+    url: 'https://neurocarbon.stevenvallejo.com/',
+  },
+  {
+    title: 'La ciudad bien asignada — cartografía crítica de una Medellín posible',
+    subtitle: 'Repensar y cartografiar la ciudad · Filosofía de la Ciudad · Urbanismo',
+    url: 'https://autopoesis.stevenvallejo.com/',
+  },
+  {
+    title: 'La retórica como τέχνη y no ἐμπειρία',
+    subtitle: 'El arte técnico de la retórica frente a la mera experiencia · Griego Clásico · Retórica',
+    url: 'https://retorica.stevenvallejo.com/',
+  },
   {
     title: 'Fragmentar el futuro — Sobre el limite de la inteligencia artificial',
     subtitle: 'Yuk Hui, pp. 163–191 · 19 slides · Filosofía de la Ciudad · Unidad Urban AI',
