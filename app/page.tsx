@@ -1,56 +1,5 @@
 import Link from 'next/link'
 
-const modules = [
-  {
-    href: '/griego',
-    symbol: 'α',
-    label: 'Griego Clásico',
-    labelEn: 'Classical Greek',
-    description:
-      'Lecciones de conjugación verbal, tablas de declinación, glosario, ejercicios de traducción, gramáticas de referencia y traducciones comentadas del curso universitario de griego antiguo.',
-    descriptionEn:
-      'Verb conjugation lessons, declension tables, glossary, translation exercises, reference grammars and annotated translations from the university Ancient Greek course.',
-    count: '15',
-    countLabel: 'documentos',
-  },
-  {
-    href: '/neurofilosofia',
-    symbol: '⬡',
-    label: 'Neurofilosofía',
-    labelEn: 'Neurophilosophy',
-    description:
-      'Base de conocimiento del curso Filosofía de las Neurociencias: clases con notas detalladas, fichas de 25 autores, temas transversales, lecturas, lógica formal y ensayos.',
-    descriptionEn:
-      'Knowledge base for Philosophy of Neuroscience: lectures with detailed class notes, profiles of 25 key authors, cross-cutting themes, readings, formal logic and essays.',
-    count: '149',
-    countLabel: 'documentos',
-  },
-  {
-    href: '/filosofia-ciudad',
-    symbol: '◈',
-    label: 'Filosofía de la Ciudad',
-    labelEn: 'Philosophy of the City',
-    description:
-      'Archivo académico del curso Filosofía de la ciudad: ontología, poder y política. Clases con notas detalladas, lecturas (Heidegger, Sassen, Yuk Hui, Calvino, Berman) y ponencias.',
-    descriptionEn:
-      'Academic archive for Philosophy of the City: ontology, power, politics. Lectures with detailed notes, core readings (Heidegger, Sassen, Yuk Hui, Calvino, Berman) and papers.',
-    count: '62',
-    countLabel: 'documentos',
-  },
-  {
-    href: '/ponencias',
-    symbol: '◉',
-    label: 'Ponencias',
-    labelEn: 'Presentations',
-    description:
-      'Presentaciones académicas en filosofía e inteligencia artificial. Decks interactivos de Griego Clásico, Neurofilosofía y Filosofía de la Ciudad.',
-    descriptionEn:
-      'Academic presentations in philosophy and artificial intelligence. Interactive decks from Classical Greek, Neurophilosophy and Philosophy of the City.',
-    count: '3',
-    countLabel: 'ponencias',
-  },
-]
-
 export default function Home() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,29 +9,29 @@ export default function Home() {
           className="inline-block mb-4 text-sm font-mono tracking-widest uppercase"
           style={{ color: 'var(--accent-deep)' }}
         >
-          Humanidades Digitales &bull; Digital Humanities
+          Filosofía &bull; Philosophy
         </span>
         <h1 className="font-serif text-5xl sm:text-6xl font-bold leading-tight" style={{ color: 'var(--primary)' }}>
           Paideía
         </h1>
         <p className="mt-2 text-2xl font-light font-serif italic" style={{ color: 'var(--text-muted)' }}>
-          portal de humanidades
+          galería de filosofía
         </p>
         <p className="mt-6 max-w-2xl mx-auto text-lg" style={{ color: 'var(--text)' }}>
-          Galería de trabajos filosóficos originales. Ensayos y ponencias sobre neurofilosofía,
-          ontología, filosofía de la ciudad y complejidad. Además, archivos de módulos académicos:
-          Griego clásico, filosofía de las neurociencias y filosofía de la ciudad.
+          Mi trabajo en filosofía: ensayos y ponencias propios sobre una pluralidad de temas —
+          mente y materia, ontología, filosofía de la ciudad, retórica, lógica formal, sistemas
+          complejos, filosofía de la religión y de la técnica.
         </p>
         <p className="mt-2 max-w-2xl mx-auto text-base italic" style={{ color: 'var(--text-muted)' }}>
-          Original philosophical essays and presentations, plus academic knowledge modules:
-          Classical Greek, neurophilosophy, and philosophy of the city — all browsable, searchable, no login required.
+          My work in philosophy: original essays and presentations across a plurality of topics —
+          mind and matter, ontology, urban philosophy, rhetoric, logic, complex systems.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/trabajos"
             className="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors"
           >
-            Ver trabajos filosóficos
+            Ver la galería
           </Link>
           <Link
             href="/buscar"
@@ -93,10 +42,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trabajos — Featured Section */}
+      {/* Galería de trabajos — protagonista */}
       <section className="py-8">
         <h2 className="text-2xl font-bold mb-6" style={{ color: 'var(--text)' }}>
-          Trabajos Filosóficos
+          Ensayos y Ponencias
         </h2>
         <Link
           href="/trabajos"
@@ -114,14 +63,17 @@ export default function Home() {
             </span>
           </div>
           <div>
-            <h3 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Ensayos y Ponencias</h3>
+            <h3 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Galería de trabajos filosóficos</h3>
             <p className="text-xs mt-0.5 italic" style={{ color: 'var(--text-muted)' }}>Original research collection</p>
           </div>
           <p className="text-sm leading-relaxed" style={{ color: 'var(--text)' }}>
-            Galería de trabajos propios: investigación original en neurofilosofía, ontología, filosofía de la ciudad, teoría de sistemas complejos y filosofía computacional.
+            Investigación y ensayos propios que cruzan muchos temas: de la mente y el carbono a la
+            ciudad, de la retórica clásica a la crítica del gnosticismo, de la filosofía de la ciencia
+            a la filosofía de la programación.
           </p>
           <p className="text-xs italic leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-            Collection of original philosophical essays and presentations on neurophilosophy, ontology, urban philosophy, complex systems and computational philosophy.
+            Original essays and presentations spanning many topics — from mind and matter to the city,
+            from classical rhetoric to philosophy of science and of programming.
           </p>
           <span className="text-sm font-medium mt-auto" style={{ color: '#e0a85e' }}>
             Explorar galería &rarr;
@@ -129,61 +81,36 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* Modules */}
-      <section id="modulos" className="py-8">
-        <h2 className="text-2xl font-bold mb-6" style={{ color: 'var(--text)' }}>
-          Módulos Académicos
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-          {modules.map((mod) => (
-            <Link
-              key={mod.href}
-              href={mod.href}
-              className="brand-card group rounded-2xl p-6 flex flex-col gap-4"
-            >
-              <div className="flex items-start justify-between">
-                <span
-                  className="text-5xl font-serif font-bold opacity-70 group-hover:opacity-100 transition-opacity"
-                  style={{ color: '#e0a85e' }}
-                >
-                  {mod.symbol}
-                </span>
-                <span className="brand-badge text-xs font-mono px-2 py-1 rounded-full">
-                  {mod.count} {mod.countLabel}
-                </span>
-              </div>
-              <div>
-                <h2 className="text-xl font-bold" style={{ color: 'var(--text)' }}>{mod.label}</h2>
-                <p className="text-xs mt-0.5 italic" style={{ color: 'var(--text-muted)' }}>{mod.labelEn}</p>
-              </div>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--text)' }}>{mod.description}</p>
-              <p className="text-xs italic leading-relaxed" style={{ color: 'var(--text-muted)' }}>{mod.descriptionEn}</p>
-              <span className="text-sm font-medium mt-auto" style={{ color: '#e0a85e' }}>
-                Explorar &rarr;
-              </span>
-            </Link>
-          ))}
-        </div>
+      {/* Archivo académico — secundario, sin protagonismo temático */}
+      <section className="pb-8">
+        <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+          También conservo un <strong style={{ color: 'var(--text)' }}>archivo académico</strong> abierto
+          con notas de clase y materiales de curso:{' '}
+          <Link href="/griego" className="hover:underline" style={{ color: 'var(--accent-deep)' }}>Griego clásico</Link>
+          {' · '}
+          <Link href="/neurofilosofia" className="hover:underline" style={{ color: 'var(--accent-deep)' }}>Neurofilosofía</Link>
+          {' · '}
+          <Link href="/filosofia-ciudad" className="hover:underline" style={{ color: 'var(--accent-deep)' }}>Filosofía de la ciudad</Link>
+          {' · '}
+          <Link href="/ponencias" className="hover:underline" style={{ color: 'var(--accent-deep)' }}>Ponencias</Link>.
+        </p>
       </section>
 
       {/* Divider */}
-      <div className="border-t my-16" style={{ borderColor: 'var(--border)' }} />
+      <div className="border-t my-12" style={{ borderColor: 'var(--border)' }} />
 
       {/* About */}
       <section className="pb-16 max-w-3xl mx-auto text-center">
         <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text)' }}>Sobre Paideía</h2>
         <p className="leading-relaxed" style={{ color: 'var(--text)' }}>
-          Paideía consolida materiales académicos universitarios en un portal de consulta abierta.
-          Los contenidos provienen de cuatro repositorios de trabajo real:
-          <strong> helenikos</strong>, <strong>GriegoFinal</strong>, <strong>neurofilosofia</strong>{' '}
-          y <strong>FilosofiaCiudad</strong>. El objetivo es que el conocimiento académico
-          producido en el aula no quede atrapado en archivos locales, sino que pueda
-          consultarse, compartirse y crecer.
+          Paideía es la galería de mi trabajo en filosofía: un portafolio creciente de ensayos y
+          ponencias propios que atraviesan muchos temas. Conserva además un archivo académico abierto,
+          para que el conocimiento no quede atrapado en archivos locales, sino que pueda consultarse,
+          compartirse y crecer.
         </p>
         <p className="mt-4 italic text-sm" style={{ color: 'var(--text-muted)' }}>
-          Paideía consolidates real university course materials into an open reference portal.
-          Content comes from four working repositories. The goal: keep academic knowledge
-          out of local files and make it browsable, shareable, and alive.
+          Paideía is the gallery of my work in philosophy: a growing portfolio of original essays and
+          presentations across many topics, plus an open academic archive — browsable, shareable, alive.
         </p>
       </section>
     </div>

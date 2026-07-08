@@ -109,9 +109,6 @@ function NavBar() {
         </div>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium" style={{ color: 'var(--text-muted)' }}>
           <Link href="/trabajos" className="brand-navlink transition-colors font-semibold">Trabajos</Link>
-          <Link href="/griego" className="brand-navlink transition-colors">Griego</Link>
-          <Link href="/neurofilosofia" className="brand-navlink transition-colors">Neurofilosofía</Link>
-          <Link href="/filosofia-ciudad" className="brand-navlink transition-colors">Filosofía</Link>
           <Link href="/buscar" className="brand-navlink transition-colors">Buscar</Link>
         </nav>
         <MobileNav />

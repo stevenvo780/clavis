@@ -26,9 +26,6 @@ export default function MobileNav() {
         >
           <Link href="/trabajos" className="brand-menuitem px-3 py-2 rounded text-sm font-semibold" onClick={() => setOpen(false)}>Trabajos</Link>
           <div className="border-t" style={{ borderColor: 'var(--border)' }} />
-          <Link href="/griego" className="brand-menuitem px-3 py-2 rounded text-sm" onClick={() => setOpen(false)}>Griego Clásico</Link>
-          <Link href="/neurofilosofia" className="brand-menuitem px-3 py-2 rounded text-sm" onClick={() => setOpen(false)}>Neurofilosofía</Link>
-          <Link href="/filosofia-ciudad" className="brand-menuitem px-3 py-2 rounded text-sm" onClick={() => setOpen(false)}>Filosofía de la Ciudad</Link>
           <Link href="/buscar" className="brand-menuitem px-3 py-2 rounded text-sm" onClick={() => setOpen(false)}>Buscar</Link>
         </div>
       )}
