@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const SITE_URL = 'https://paideia.stevenvallejo.com'
 
-export const jsonLd = () => ({
+const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   name: 'Trabajos Filosóficos',
@@ -19,7 +19,7 @@ export const jsonLd = () => ({
     name: 'Steven Vallejo',
     url: 'https://www.stevenvallejo.com',
   },
-})
+}
 
 export default function TrabajosPage() {
   const ponencias = works.filter(w => w.tipo === 'ponencia')
@@ -27,6 +27,10 @@ export default function TrabajosPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero */}
       <section className="py-20 text-center">
         <span
