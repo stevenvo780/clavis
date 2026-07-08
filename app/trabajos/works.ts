@@ -1,4 +1,4 @@
-export type WorkType = 'ponencia' | 'ensayo'
+export type WorkType = 'ponencia' | 'ensayo' | 'tesis'
 
 export interface Work {
   id: string
@@ -61,7 +61,7 @@ export const works: Work[] = [
   {
     id: 'preontologia-tesis',
     titulo: 'Estructuras Pre-Ontológicas (Tesis Doctoral)',
-    tipo: 'ensayo',
+    tipo: 'tesis',
     abstract: 'Tesis doctoral (con Jacob Agudelo, UdeA): las estructuras pre-ontológicas como regularidades operativas previas a la objetualidad, ancladas en un sustrato dinámico y validadas con la métrica EDI y compresión multiescala.',
     topics: ['filosofía de la ciencia', 'ontología', 'complejidad', 'preontología', 'EDI', 'tesis doctoral'],
     url: 'https://preontologia.stevenvallejo.com/',
