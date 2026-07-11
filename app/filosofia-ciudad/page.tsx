@@ -3,7 +3,7 @@ import ModuleIndex from '@/components/ModuleIndex'
 import Presentations from '@/components/Presentations'
 
 export const metadata = {
-  title: 'Filosofía de la Ciudad — portal de humanidades digitales · Mouseîon',
+  title: 'Filosofía de la Ciudad — portal de humanidades digitales',
   description: 'Archivo académico del curso Filosofía de la ciudad: ontología, poder y política. Clases, lecturas de Heidegger, Sassen, Yuk Hui, Calvino y Berman, ponencias y trabajos finales. Parte de Paideía.',
   alternates: { canonical: 'https://paideia.stevenvallejo.com/filosofia-ciudad' },
   openGraph: {
@@ -36,7 +36,7 @@ export default function FilosofiaCiudadPage() {
       <Presentations
         decks={[
           {
-            title: 'Fragmentar el futuro — Sobre el limite de la inteligencia artificial',
+            title: 'Fragmentar el futuro — Sobre el límite de la inteligencia artificial',
             subtitle: '(Yuk Hui, pp. 163–191) · 19 slides · Filosofía de la Ciudad · Unidad Urban AI',
             url: 'https://ponencia-yuk-hui-critertec-a963d21e.vercel.app/',
           },

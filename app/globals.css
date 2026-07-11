@@ -3,7 +3,7 @@
 
 /* ============================================================
    Sistema de marca canónico (teal + dorado). Fuente de verdad:
-   docs/05-activos/brand-tokens.md. Clavis usa modo CLARO.
+   docs/05-activos/brand-tokens.md. Paideia usa modo CLARO.
    ============================================================ */
 :root {
   /* Brand tokens: pinakotheke-paideia (canonico) */
@@ -63,7 +63,7 @@ body {
   font-family: 'Inter', Georgia, sans-serif;
 }
 
-/* Cormorant Garamond for humanistic headings (clavis-specific) */
+/* Cormorant Garamond for humanistic headings (paideia-specific) */
 h1, h2, h3 {
   font-family: 'Cormorant Garamond', Georgia, serif;
 }

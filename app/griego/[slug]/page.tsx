@@ -50,7 +50,7 @@ export default async function GriegoArticle({ params }: { params: Promise<{ slug
         <MarkdownRenderer content={item.content} />
         <div className="mt-12 pt-6 border-t" style={{ borderColor: 'var(--border)' }}>
           <Link href="/griego" className="text-sm hover:underline" style={{ color: 'var(--link)' }}>
-            &larr; Volver al modulo
+            &larr; Volver al módulo
           </Link>
         </div>
       </article>

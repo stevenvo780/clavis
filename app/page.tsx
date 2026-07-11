@@ -31,6 +31,7 @@ function WorkCard({ work, i }: { work: Work; i: number }) {
       href={work.url}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label={`${work.titulo} (abre en nueva pestaña)`}
       className="brand-card group rounded-xl overflow-hidden flex flex-col no-underline hover:no-underline transition-transform hover:-translate-y-0.5"
     >
       {/* Cover visual: gradiente temático + glifo grande + badge de tipo */}
@@ -115,11 +116,11 @@ export default function Home() {
         <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
           También conservo un <strong style={{ color: 'var(--text)' }}>archivo académico</strong> abierto
           con notas de clase y materiales de curso:{' '}
-          <Link href="/griego" className="hover:underline" style={{ color: 'var(--accent-deep)' }}>Griego clásico</Link>
+          <Link href="/griego" className="underline hover:underline" style={{ color: 'var(--accent-deep)' }}>Griego clásico</Link>
           {' · '}
-          <Link href="/neurofilosofia" className="hover:underline" style={{ color: 'var(--accent-deep)' }}>Neurofilosofía</Link>
+          <Link href="/neurofilosofia" className="underline hover:underline" style={{ color: 'var(--accent-deep)' }}>Neurofilosofía</Link>
           {' · '}
-          <Link href="/filosofia-ciudad" className="hover:underline" style={{ color: 'var(--accent-deep)' }}>Filosofía de la ciudad</Link>.
+          <Link href="/filosofia-ciudad" className="underline hover:underline" style={{ color: 'var(--accent-deep)' }}>Filosofía de la ciudad</Link>.
         </p>
       </section>
     </div>

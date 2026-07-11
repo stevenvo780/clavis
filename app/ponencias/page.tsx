@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Ponencias — portal de humanidades digitales · Mouseîon',
-  description: 'Presentaciones academicas interactivas en filosofia, IA y ciudad: silicio o tejido (mente y materia), cartografia critica de Medellin, la retorica como tecnica, Platon Fedon, Yuk Hui sobre IA y Geoffrey Hinton. Ponencias de Steven Vallejo, parte de Paideía.',
+  title: 'Ponencias — portal de humanidades digitales',
+  description: 'Presentaciones académicas interactivas en filosofía, IA y ciudad: silicio o tejido (mente y materia), cartografía crítica de Medellín, la retórica como técnica, Platón Fedón, Yuk Hui sobre IA y Geoffrey Hinton. Ponencias de Steven Vallejo, parte de Paideía.',
   alternates: { canonical: 'https://paideia.stevenvallejo.com/ponencias' },
   openGraph: {
     title: 'Ponencias · Paideía — Mouseîon',
@@ -35,7 +35,7 @@ const ponencias = [
     url: 'https://retorica.stevenvallejo.com/',
   },
   {
-    title: 'Fragmentar el futuro — Sobre el limite de la inteligencia artificial',
+    title: 'Fragmentar el futuro — Sobre el límite de la inteligencia artificial',
     subtitle: 'Yuk Hui, pp. 163–191 · 19 slides · Filosofía de la Ciudad · Unidad Urban AI',
     url: 'https://ponencia-yuk-hui-critertec-a963d21e.vercel.app/',
   },
@@ -107,7 +107,7 @@ export default function PonenciasPage() {
                 {p.subtitle}
               </p>
               <span className="mt-auto inline-block text-sm font-medium" style={{ color: 'var(--primary)' }}>
-                Ver presentacion &rarr;
+                Ver presentación &rarr;
               </span>
             </a>
           ))}

@@ -21,8 +21,11 @@ const MODULE_LABEL: Record<string, string> = {
   'filosofia-ciudad': 'Filosofía de la Ciudad',
 }
 
+const RESULTS_PER_PAGE = 20
+
 export default function SearchClient({ allItems }: Props) {
   const [query, setQuery] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
 
   const results = useCallback(() => {
     if (!query.trim() || query.length < 2) return []
@@ -36,7 +39,16 @@ export default function SearchClient({ allItems }: Props) {
     )
   }, [query, allItems])
 
-  const hits = results()
+  const allHits = results()
+  const totalPages = Math.ceil(allHits.length / RESULTS_PER_PAGE)
+  const startIdx = (currentPage - 1) * RESULTS_PER_PAGE
+  const hits = allHits.slice(startIdx, startIdx + RESULTS_PER_PAGE)
+
+  // Reset to page 1 when query changes
+  const handleQueryChange = (value: string) => {
+    setQuery(value.slice(0, 200))
+    setCurrentPage(1)
+  }
 
   return (
     <div>
@@ -44,15 +56,22 @@ export default function SearchClient({ allItems }: Props) {
         <input
           type="search"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar en todo el portal... / Search the entire portal..."
+          onChange={(e) => handleQueryChange(e.target.value)}
+          placeholder="Buscar en el portal..."
+          aria-label="Buscar en el portal de humanidades digitales"
           className="brand-search w-full border-2 rounded-xl px-5 py-3 text-lg font-sans focus:outline-none"
           style={{ background: 'var(--surface)', borderColor: 'var(--border)', color: 'var(--text)' }}
           autoFocus
+          maxLength={200}
         />
         {query.length >= 2 && (
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm" style={{ color: 'var(--text-muted)' }}>
-            {hits.length} resultado{hits.length !== 1 ? 's' : ''}
+          <span
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-sm"
+            style={{ color: 'var(--text-muted)' }}
+            aria-live="polite"
+            aria-label={`${allHits.length} resultados encontrados`}
+          >
+            {allHits.length} resultado{allHits.length !== 1 ? 's' : ''}
           </span>
         )}
       </div>
@@ -87,10 +106,44 @@ export default function SearchClient({ allItems }: Props) {
         ))}
       </ul>
 
+      {query.length >= 2 && allHits.length > RESULTS_PER_PAGE && (
+        <div className="flex justify-center gap-2 mt-8">
+          <button
+            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-1 border rounded text-sm"
+            style={{
+              background: currentPage === 1 ? 'var(--surface)' : 'var(--primary)',
+              color: 'var(--text)',
+              opacity: currentPage === 1 ? 0.5 : 1,
+              cursor: currentPage === 1 ? 'not-allowed' : 'pointer'
+            }}
+          >
+            Anterior
+          </button>
+          <span style={{ color: 'var(--text-muted)' }} className="px-3 py-1 text-sm">
+            Página {currentPage} de {totalPages}
+          </span>
+          <button
+            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 border rounded text-sm"
+            style={{
+              background: currentPage === totalPages ? 'var(--surface)' : 'var(--primary)',
+              color: 'var(--text)',
+              opacity: currentPage === totalPages ? 0.5 : 1,
+              cursor: currentPage === totalPages ? 'not-allowed' : 'pointer'
+            }}
+          >
+            Siguiente
+          </button>
+        </div>
+      )}
+
       {!query && (
         <div className="text-center mt-12" style={{ color: 'var(--text-muted)' }}>
           <p className="text-4xl mb-4 font-serif" style={{ color: 'var(--primary)', opacity: 0.5 }}>K</p>
-          <p className="text-sm">Busca en {allItems.length} documentos de los tres modulos</p>
+          <p className="text-sm">Busca en {allItems.length} documentos de los tres módulos</p>
           <p className="text-xs italic mt-1">Search across {allItems.length} documents from all three modules</p>
         </div>
       )}

@@ -1,4 +1,4 @@
-# Clavis — Architecture
+# Paideia — Architecture
 
 ## Overview
 
@@ -7,10 +7,10 @@ Deployed as fully static export on Vercel. All content is Markdown from four sou
 
 ## Source repos (cloned in _sources/)
 
-| Repo | Role in Clavis |
+| Repo | Role in Paideia |
 |---|---|
 | helenikos | Design reference only (Next.js 15 + Tailwind app with auth/DB — not reused directly; its visual language and component structure informed the layout) |
-| GriegoFinal | Primary content for the Griego Clasico module: 3 clases, glosario, glosario tecnico, traducciones (completa/literal/solucion final), analisis morfologico, taller |
+| GriegoFinal | Primary content for the Griego Clasico module: 2 clases (Clase 2 y 3), glosario, glosario tecnico, traducciones (completa/literal/solucion final), analisis morfologico, taller |
 | neurofilosofia | Primary content for the Neurofilosofia module: 210 MD files across 10 folders (Inicio, Clases, Lecturas, Autores, Temas, Visualizaciones, Referencia, Bibliografia, Evaluacion, Ensayos, LogicaFormal) |
 | FilosofiaCiudad | Primary content for the Filosofia de la Ciudad module: 97 MD files across 5 folders (Gestion_Codex, Clases, Lecturas_Base, Trabajos/Ponencias, Recursos_Tecnicos) |
 
@@ -34,7 +34,7 @@ app/buscar/page.tsx                (search index passed to client component)
 ## Directory layout
 
 ```
-/tmp/revive/clavis/
+/tmp/revive/paideia/
 ├── app/
 │   ├── layout.tsx                 # Global nav + footer
 │   ├── page.tsx                   # Landing (bilingual es/en)

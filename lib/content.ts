@@ -31,38 +31,66 @@ function slugify(str: string): string {
 
 function extractTitle(content: string, filename: string): string {
   const match = content.match(/^#\s+(.+)$/m)
-  if (match) return match[1].trim()
-  // fallback: humanize filename
-  return filename
+  let title = match ? match[1].trim() : filename
     .replace(/\.md$/, '')
     .replace(/[-_]+/g, ' ')
     .replace(/^\d+\s*/, '')
     .trim()
+  // Strip markdown inline formatting: **bold**, *italic*, `code`, etc.
+  title = title
+    .replace(/\*\*(.+?)\*\*/g, '$1')  // **text** → text
+    .replace(/\*(.+?)\*/g, '$1')      // *text* → text
+    .replace(/`(.+?)`/g, '$1')        // `text` → text
+    .replace(/~~(.+?)~~/g, '$1')      // ~~text~~ → text
+    .replace(/\[(.+?)\]\(.+?\)/g, '$1') // [text](url) → text
+  return title
 }
 
 function extractExcerpt(content: string): string {
-  const lines = content.split('\n').filter(l => l.trim() && !l.startsWith('#') && !l.startsWith('|') && !l.startsWith('```'))
-  return lines.slice(0, 3).join(' ').slice(0, 200).trim()
+  if (!content || typeof content !== 'string') return ''
+  const lines = content.split('\n').filter(l =>
+    l.trim() &&
+    !l.startsWith('#') &&
+    !l.startsWith('|') &&
+    !l.startsWith('```') &&
+    !l.startsWith('---') &&
+    !l.startsWith('*')
+  )
+  let excerpt = lines.slice(0, 3).join(' ').slice(0, 200).trim()
+  // Strip markdown inline formatting
+  excerpt = excerpt
+    .replace(/\*\*(.+?)\*\*/g, '$1')  // **text** → text
+    .replace(/\*(.+?)\*/g, '$1')      // *text* → text
+    .replace(/`(.+?)`/g, '$1')        // `text` → text
+    .replace(/~~(.+?)~~/g, '$1')      // ~~text~~ → text
+    .replace(/\[(.+?)\]\(.+?\)/g, '$1') // [text](url) → text
+    .replace(/^>\s*/gm, '')           // > blockquote → text
+  return excerpt
 }
 
 function readMdFiles(dir: string, module: Module, section: string): ContentItem[] {
   if (!fs.existsSync(dir)) return []
   const files = fs.readdirSync(dir).filter(f => f.endsWith('.md') && !f.startsWith('00_indice'))
   return files.map(file => {
-    const filePath = path.join(dir, file)
-    const raw = fs.readFileSync(filePath, 'utf-8')
-    const { content } = matter(raw)
-    const title = extractTitle(content, file)
-    return {
-      slug: slugify(file.replace(/\.md$/, '')),
-      title,
-      section,
-      module,
-      excerpt: extractExcerpt(content),
-      content,
-      filePath,
+    try {
+      const filePath = path.join(dir, file)
+      const raw = fs.readFileSync(filePath, 'utf-8')
+      const { content } = matter(raw)
+      const title = extractTitle(content, file)
+      return {
+        slug: slugify(file.replace(/\.md$/, '')),
+        title,
+        section,
+        module,
+        excerpt: extractExcerpt(content),
+        content,
+        filePath,
+      }
+    } catch (error) {
+      console.warn(`Failed to read markdown file: ${file}`, error)
+      return null
     }
-  })
+  }).filter((item): item is ContentItem => item !== null)
 }
 
 export function getAllContent(): ContentItem[] {
@@ -71,7 +99,7 @@ export function getAllContent(): ContentItem[] {
     ...readMdFiles(path.join(CONTENT_ROOT, 'griego/glosario'), 'griego', 'Glosario'),
     ...readMdFiles(path.join(CONTENT_ROOT, 'griego/traducciones'), 'griego', 'Traducciones'),
     ...readMdFiles(path.join(CONTENT_ROOT, 'griego/ejercicios'), 'griego', 'Ejercicios'),
-    ...readMdFiles(path.join(CONTENT_ROOT, 'griego/gramaticas'), 'griego', 'Gramaticas'),
+    ...readMdFiles(path.join(CONTENT_ROOT, 'griego/gramaticas'), 'griego', 'Gramáticas'),
     ...readMdFiles(path.join(CONTENT_ROOT, 'griego'), 'griego', 'Recursos'),
     ...readMdFiles(path.join(CONTENT_ROOT, 'neurofilosofia/clases'), 'neurofilosofia', 'Clases'),
     ...readMdFiles(path.join(CONTENT_ROOT, 'neurofilosofia/clases-detalle'), 'neurofilosofia', 'Notas de clase'),
@@ -105,6 +133,7 @@ export function getContentBySlug(module: Module, slug: string): ContentItem | un
 }
 
 export function searchContent(query: string): ContentItem[] {
+  if (!query || typeof query !== 'string') return []
   const q = query.toLowerCase()
   return getAllContent().filter(item =>
     item.title.toLowerCase().includes(q) ||

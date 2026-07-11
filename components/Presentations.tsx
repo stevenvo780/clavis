@@ -34,7 +34,7 @@ export default function Presentations({ decks, embedFirst = true }: Props) {
                   {deck.title}
                 </h3>
                 <span className="brand-badge text-xs font-mono px-2 py-0.5 rounded-full whitespace-nowrap">
-                  {unavailable ? 'proximamente' : 'deck'}
+                  {unavailable ? 'próximamente' : 'deck'}
                 </span>
               </div>
               {deck.subtitle && (
@@ -44,7 +44,7 @@ export default function Presentations({ decks, embedFirst = true }: Props) {
               )}
               {!unavailable && (
                 <span className="mt-3 inline-block text-sm font-medium" style={{ color: 'var(--primary)' }}>
-                  Abrir presentacion &rarr;
+                  Abrir presentación &rarr;
                 </span>
               )}
             </>

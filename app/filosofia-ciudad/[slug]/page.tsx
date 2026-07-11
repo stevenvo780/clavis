@@ -50,7 +50,7 @@ export default async function CiudadArticle({ params }: { params: Promise<{ slug
         <MarkdownRenderer content={item.content} />
         <div className="mt-12 pt-6 border-t" style={{ borderColor: 'var(--border)' }}>
           <Link href="/filosofia-ciudad" className="text-sm hover:underline" style={{ color: 'var(--link)' }}>
-            &larr; Volver al modulo
+            &larr; Volver al módulo
           </Link>
         </div>
       </article>

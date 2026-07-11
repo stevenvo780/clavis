@@ -108,7 +108,7 @@ function NavBar() {
           </a>
         </div>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium" style={{ color: 'var(--text-muted)' }}>
-          <Link href="/trabajos" className="brand-navlink transition-colors font-semibold">Trabajos</Link>
+          <Link href="/" className="brand-navlink transition-colors font-semibold">Galería</Link>
           <Link href="/buscar" className="brand-navlink transition-colors">Buscar</Link>
         </nav>
         <MobileNav />
@@ -126,7 +126,7 @@ function Footer() {
       <p>
         Paideía — portal de humanidades &middot;{' '}
         <span style={{ color: 'var(--text-muted)' }}>por</span>{' '}
-        <a href="https://www.stevenvallejo.com" className="hover:underline" style={{ color: 'var(--link)' }}>
+        <a href="https://www.stevenvallejo.com" className="hover:underline" style={{ color: 'var(--link)' }} aria-label="Steven Vallejo (abre en nueva pestaña)">
           Steven Vallejo
         </a>
       </p>
@@ -143,16 +143,16 @@ function Footer() {
           Parte de Mouseîon
         </p>
         <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs" aria-label="Ecosistema">
-          <a href="https://www.stevenvallejo.com/es#filosofia" className="hover:underline transition-colors" style={{ color: 'var(--link)' }}>
+          <a href="https://www.stevenvallejo.com/es#filosofia" className="hover:underline transition-colors py-3" style={{ color: 'var(--link)' }}>
             Filosofía
           </a>
-          <a href="https://www.stevenvallejo.com/es#ciencias" className="hover:underline transition-colors" style={{ color: 'var(--link)' }}>
+          <a href="https://www.stevenvallejo.com/es#ciencias" className="hover:underline transition-colors py-3" style={{ color: 'var(--link)' }}>
             Ciencias
           </a>
-          <a href="https://www.stevenvallejo.com/es#informatica" className="hover:underline transition-colors" style={{ color: 'var(--link)' }}>
+          <a href="https://www.stevenvallejo.com/es#informatica" className="hover:underline transition-colors py-3" style={{ color: 'var(--link)' }}>
             Informática
           </a>
-          <a href="https://www.stevenvallejo.com/es#ingenieria" className="hover:underline transition-colors" style={{ color: 'var(--link)' }}>
+          <a href="https://www.stevenvallejo.com/es#ingenieria" className="hover:underline transition-colors py-3" style={{ color: 'var(--link)' }}>
             Ingeniería
           </a>
         </nav>

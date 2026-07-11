@@ -3,7 +3,7 @@ import ModuleIndex from '@/components/ModuleIndex'
 import Presentations from '@/components/Presentations'
 
 export const metadata = {
-  title: 'Neurofilosofía — portal de humanidades digitales · Mouseîon',
+  title: 'Neurofilosofía — portal de humanidades digitales',
   description: 'Base de conocimiento del curso Filosofía de las Neurociencias: clases, fichas de 25 autores (Chalmers, Friston, Tononi, Damasio), temas transversales, lógica formal y ensayos. Parte de Paideía.',
   alternates: { canonical: 'https://paideia.stevenvallejo.com/neurofilosofia' },
   openGraph: {
@@ -37,7 +37,7 @@ export default function NeurofilosofiaPage() {
         embedFirst={false}
         decks={[
           {
-            title: 'Presentaciones del modulo',
+            title: 'Presentaciones del módulo',
             subtitle: 'Aún no hay un deck publicado para Neurofilosofía. El guión completo de la presentación de Hinton está disponible en la sección Lógica Formal.',
             comingSoon: true,
           },

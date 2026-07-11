@@ -38,6 +38,7 @@ export default function ModuleSidebar({ module, items, activeSlug }: Props) {
                     className={`brand-sidelink block px-3 py-1.5 rounded text-sm transition-colors truncate ${
                       activeSlug === item.slug ? 'is-active' : ''
                     }`}
+                    aria-current={activeSlug === item.slug ? 'page' : undefined}
                     title={item.title}
                   >
                     {item.title}

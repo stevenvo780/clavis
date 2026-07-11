@@ -13,18 +13,20 @@ export default function MobileNav() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-haspopup="true"
-        aria-label="Abrir menú de navegación"
+        aria-controls="mobile-nav-menu"
+        aria-label={open ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'}
         className="cursor-pointer p-2 rounded border select-none"
         style={{ borderColor: 'var(--border)', color: 'var(--text)', background: 'transparent' }}
       >
-        {open ? 'Cerrar' : 'Menú'}
+        {open ? 'Cerrar menú' : 'Abrir menú'}
       </button>
       {open && (
         <div
+          id="mobile-nav-menu"
           className="absolute right-0 top-10 w-52 border rounded-lg shadow-lg flex flex-col p-2 gap-1 z-50"
           style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
         >
-          <Link href="/trabajos" className="brand-menuitem px-3 py-2 rounded text-sm font-semibold" onClick={() => setOpen(false)}>Trabajos</Link>
+          <Link href="/" className="brand-menuitem px-3 py-2 rounded text-sm font-semibold" onClick={() => setOpen(false)}>Galería</Link>
           <div className="border-t" style={{ borderColor: 'var(--border)' }} />
           <Link href="/buscar" className="brand-menuitem px-3 py-2 rounded text-sm" onClick={() => setOpen(false)}>Buscar</Link>
         </div>

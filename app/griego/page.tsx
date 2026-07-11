@@ -5,7 +5,7 @@ import Presentations from '@/components/Presentations'
 const DECKS = 'https://clavis-decks.vercel.app'
 
 export const metadata = {
-  title: 'Griego Clásico — portal de humanidades digitales · Mouseîon',
+  title: 'Griego Clásico — portal de humanidades digitales',
   description: 'Lecciones de conjugación verbal, tablas de declinación, glosario, ejercicios de traducción y traducciones comentadas del curso universitario de griego antiguo. Parte de Paideía.',
   alternates: { canonical: 'https://paideia.stevenvallejo.com/griego' },
   openGraph: {
@@ -39,7 +39,7 @@ export default function GriegoPage() {
         decks={[
           {
             title: 'Platon — Fedon (84c–102a)',
-            subtitle: 'Refutacion de Simmias y Cebes y la Teoria de las Formas. Deck con terminos en griego politonico y el argumento final en notacion logica.',
+            subtitle: 'Refutación de Simmias y Cebes y la Teoría de las Formas. Deck con términos en griego politónico y el argumento final en notación lógica.',
             url: `${DECKS}/platon/`,
           },
         ]}
