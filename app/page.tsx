@@ -88,7 +88,7 @@ export default function Home() {
           filosofía de la religión y de la técnica.
         </p>
         <div className="mt-6 flex justify-center">
-          <Link href="/buscar" className="btn-ghost inline-flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-colors">
+          <Link href="/buscar" className="btn-ghost inline-flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-colors cursor-pointer">
             Buscar en todo el portal
           </Link>
         </div>
