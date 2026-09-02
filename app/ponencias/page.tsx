@@ -49,6 +49,11 @@ const ponencias = [
     subtitle: 'Platón · Griego Clásico',
     url: 'https://clavis-decks.vercel.app/platon/',
   },
+  {
+    title: 'La arquitectura de lo ausente — Bertrand Russell',
+    subtitle: 'Conocimiento directo y conocimiento por referencia · Los problemas de la filosofía, cap. 5 · 14 diapositivas · Filosofía del Lenguaje',
+    url: 'https://russell.stevenvallejo.com/',
+  },
 ]
 
 export default function PonenciasPage() {

@@ -90,4 +90,12 @@ export const works: Work[] = [
     topics: ['filosofía computacional', 'paradigmas', 'arquitectura de software', 'modelado basado en agentes', 'epistemología'],
     url: 'https://medium.com/@stevenvallejo780/filosof%C3%ADa-y-programaci%C3%B3n-una-exploraci%C3%B3n-profunda-de-paradigmas-y-arquitecturas-199df6786331',
   },
+  {
+    id: 'russell-conocimiento-directo',
+    titulo: 'La arquitectura de lo ausente — conocimiento directo y conocimiento por referencia (Russell)',
+    tipo: 'ponencia',
+    abstract: 'Exposición interactiva del capítulo 5 de Los problemas de la filosofía: toda proposición que comprendemos se compone de elementos conocidos directamente, y las descripciones extienden ese anclaje hacia mesas físicas, personajes históricos y objetos nunca experimentados. Conocimiento directo = anclaje; conocimiento por referencia = alcance.',
+    topics: ['Russell', 'filosofía del lenguaje', 'epistemología', 'conocimiento por referencia', 'descripciones', 'filosofía analítica'],
+    url: 'https://russell.stevenvallejo.com/',
+  },
 ]
