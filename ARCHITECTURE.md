@@ -75,9 +75,39 @@ app/buscar/page.tsx                (search index passed to client component)
 └── _sources/                      # Raw clones (not deployed)
 ```
 
+## Experiencia inmersiva (portada y cromo)
+
+La portada es una galería inmersiva construida sobre los cinco sólidos platónicos del
+*Timeo*: cada obra de `app/trabajos/works.ts` tiene un `elemento` (fuego, aire, agua,
+tierra, cosmos) y la escena 3D se transforma en el sólido correspondiente al hacer scroll.
+
+```
+lib/solids.ts            geometría pura de los 5 sólidos (vértices, aristas, caras, wireframes SVG)
+lib/elements.ts          los 5 elementos del Timeo: griego, sólido, tema, colores
+lib/experience.ts        estado mutable compartido DOM ↔ escena (pesos, layout, puntero, velocidad)
+components/three/        escena WebGL (React Three Fiber + drei), cargada solo en cliente
+  CrystalCanvas.tsx      cristal morfable (MeshTransmissionMaterial), esfera armilar, estrellas, fondo shader
+  morphGeometry.ts       icoesfera con 5 morph targets + sólidos exactos para el reposo
+  MiniCrystal*.tsx       cristal pequeño de las cabeceras internas (se pausa fuera de pantalla)
+components/home/         secciones de la portada; useSceneSection.ts coordina la escena por sección
+components/site/         cromo global: Lenis + GSAP ScrollTrigger, revelados, cursor, preloader, cabecera
+app/styles/*.css         chrome.css (global), home.css (portada), pages.css (páginas internas)
+```
+
+- **Revelados**: cualquier elemento con `data-reveal="up|fade|clip|split|card"` se anima al
+  entrar en pantalla (`RevealManager`). Los estados iniciales solo aplican bajo `html.js`, así
+  que sin JavaScript todo queda visible.
+- **Rendimiento**: three.js se carga con import dinámico (no está en el bundle inicial); la
+  escena baja de calidad con `PerformanceMonitor` y deja de renderizar (`frameloop="never"`)
+  en las secciones que no la muestran.
+- **Accesibilidad**: con `prefers-reduced-motion` no hay preloader, scroll suave ni animaciones
+  de entrada, y la escena se pinta estática (`frameloop="demand"`). Sin WebGL2 se muestra un
+  wireframe SVG del sólido.
+
 ## Tech choices
 
 - **Next.js 15** App Router, TypeScript, Tailwind CSS v4
+- **three.js + @react-three/fiber + drei** for the WebGL scenes; **GSAP ScrollTrigger + Lenis** for scroll choreography
 - **marked** for MD to HTML (no MDX build overhead; content is render-only)
 - **gray-matter** for frontmatter parsing
 - **No auth, no DB, no API routes** — 100% static

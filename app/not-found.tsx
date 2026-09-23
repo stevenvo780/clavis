@@ -1,14 +1,38 @@
 import Link from 'next/link'
+import MiniCrystalSlot from '@/components/three/MiniCrystalSlot'
+import Scramble from '@/components/visual/Scramble'
 
 export default function NotFound() {
   return (
-    <div className="max-w-2xl mx-auto px-4 py-24 text-center">
-      <p className="text-6xl font-serif mb-4" style={{ color: 'var(--primary)', opacity: 0.4 }}>404</p>
-      <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--text)' }}>Pagina no encontrada</h1>
-      <p className="mb-8 italic" style={{ color: 'var(--text-muted)' }}>Page not found</p>
-      <Link href="/" className="hover:underline" style={{ color: 'var(--link)' }}>
-        Volver al inicio &rarr;
-      </Link>
+    <div className="page container-wide">
+      <div className="notfound">
+        <div className="notfound-visual">
+          <MiniCrystalSlot solid="hexaedro" color="#c0522a" label="404 · aporía" />
+        </div>
+        <div className="notfound-text">
+          <p className="section-label">
+            <span className="section-num">404</span> Página no encontrada · Page not found
+          </p>
+          <h1 className="notfound-title" lang="grc">
+            <Scramble text="ἀπορία" trigger="mount" duration={1.4} />
+          </h1>
+          <p className="notfound-desc">
+            <em>Aporía</em>: sin camino. Esta ruta no lleva a ningún documento — quizá se movió o nunca existió.
+          </p>
+          <div className="notfound-actions">
+            <Link href="/" className="btn-pill">
+              <span className="btn-pill-fill" aria-hidden="true" />
+              <span className="btn-pill-text">Volver al inicio</span>
+              <span className="btn-pill-arrow" aria-hidden="true">
+                →
+              </span>
+            </Link>
+            <Link href="/buscar" className="btn-line">
+              Buscar en el portal
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

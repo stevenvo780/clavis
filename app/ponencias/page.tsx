@@ -1,3 +1,8 @@
+import type { CSSProperties } from 'react'
+import { ELEMENT_BY_KEY, type ElementKey } from '@/lib/elements'
+import PageHero from '@/components/visual/PageHero'
+import SolidGlyph from '@/components/visual/SolidGlyph'
+
 export const metadata = {
   title: 'Ponencias — portal de humanidades digitales',
   description: 'Presentaciones académicas interactivas en filosofía, IA y ciudad: silicio o tejido (mente y materia), cartografía crítica de Medellín, la retórica como técnica, Platón Fedón, Yuk Hui sobre IA y Geoffrey Hinton. Ponencias de Steven Vallejo, parte de Paideía.',
@@ -18,106 +23,107 @@ export const metadata = {
   },
 }
 
-const ponencias = [
+const ponencias: { title: string; subtitle: string; url: string; elemento: ElementKey }[] = [
   {
     title: '¿Silicio o Tejido? — Límites materiales y ontológicos de la mente',
     subtitle: '¿Puede la mente emularse en silicio o requiere el carbono? · Neurofilosofía · Autopoiesis y conciencia',
     url: 'https://neurocarbon.stevenvallejo.com/',
+    elemento: 'fuego',
   },
   {
     title: 'La ciudad bien asignada — cartografía crítica de una Medellín posible',
     subtitle: 'Repensar y cartografiar la ciudad · Filosofía de la Ciudad · Urbanismo',
     url: 'https://autopoesis.stevenvallejo.com/',
+    elemento: 'agua',
   },
   {
     title: 'La retórica como τέχνη y no ἐμπειρία',
     subtitle: 'El arte técnico de la retórica frente a la mera experiencia · Griego Clásico · Retórica',
     url: 'https://retorica.stevenvallejo.com/',
+    elemento: 'aire',
   },
   {
     title: 'Fragmentar el futuro — Sobre el límite de la inteligencia artificial',
     subtitle: 'Yuk Hui, pp. 163–191 · 19 slides · Filosofía de la Ciudad · Unidad Urban AI',
     url: 'https://ponencia-yuk-hui-critertec-a963d21e.vercel.app/',
+    elemento: 'cosmos',
   },
   {
     title: 'Redes Neuronales — del perceptron al deep learning',
     subtitle: 'Geoffrey Hinton · ~16 slides · Neurofilosofía',
     url: 'https://hinton.stevenvallejo.com/',
+    elemento: 'fuego',
   },
   {
     title: 'Fedon — La inmortalidad del alma',
     subtitle: 'Platón · Griego Clásico',
     url: 'https://clavis-decks.vercel.app/platon/',
+    elemento: 'tierra',
   },
   {
     title: 'La arquitectura de lo ausente — Bertrand Russell',
     subtitle: 'Conocimiento directo y conocimiento por referencia · Los problemas de la filosofía, cap. 5 · 14 diapositivas · Filosofía del Lenguaje',
     url: 'https://russell.stevenvallejo.com/',
+    elemento: 'aire',
   },
 ]
 
 export default function PonenciasPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Module header */}
-      <div
-        className="rounded-2xl border p-8 mb-10"
-        style={{ background: 'var(--surface-2)', borderColor: 'var(--border)' }}
-      >
-        <h1 className="text-3xl font-bold font-serif" style={{ color: 'var(--text)' }}>
-          Ponencias
-        </h1>
-        <p className="text-sm italic mt-0.5" style={{ color: 'var(--text-muted)' }}>
-          Presentations
-        </p>
-        <p className="mt-3 max-w-2xl" style={{ color: 'var(--text)' }}>
-          Presentaciones académicas en filosofía e inteligencia artificial. Decks interactivos
-          elaborados a partir de los cursos de Griego Clásico, Neurofilosofía y Filosofía de la Ciudad.
-        </p>
-        <p className="mt-1 text-sm italic max-w-2xl" style={{ color: 'var(--text-muted)' }}>
-          Academic presentations in philosophy and artificial intelligence. Interactive decks
-          built from Classical Greek, Neurophilosophy and Philosophy of the City courses.
-        </p>
-        <p className="mt-4 text-xs font-mono" style={{ color: 'var(--accent-deep)' }}>
-          {ponencias.length} ponencias disponibles
-        </p>
-      </div>
+    <div className="page">
+      <div className="container-wide">
+        <PageHero
+          eyebrow="Presentations"
+          eyebrowNum="λόγοι"
+          title="Ponencias"
+          titleEn="Presentations"
+          description="Presentaciones académicas en filosofía e inteligencia artificial. Decks interactivos elaborados a partir de los cursos de Griego Clásico, Neurofilosofía y Filosofía de la Ciudad."
+          descriptionEn="Academic presentations in philosophy and artificial intelligence. Interactive decks built from Classical Greek, Neurophilosophy and Philosophy of the City courses."
+          solid="dodecaedro"
+          color="#8d7cc0"
+          visualLabel="dodecaedro · 12 caras"
+          stats={[{ value: ponencias.length, label: 'ponencias disponibles' }]}
+        />
 
-      {/* Ponencias grid */}
-      <section>
-        <h2
-          className="text-sm font-mono font-bold uppercase tracking-widest mb-4 pb-2 border-b"
-          style={{ color: 'var(--primary)', borderColor: 'var(--border)' }}
-        >
-          Presentaciones ({ponencias.length})
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ponencias.map((p) => (
-            <a
-              key={p.url}
-              href={p.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="brand-card block rounded-xl p-6 flex flex-col gap-3"
-            >
-              <div className="flex items-start justify-between gap-2">
-                <h3 className="font-semibold text-sm leading-snug" style={{ color: 'var(--text)' }}>
-                  {p.title}
-                </h3>
-                <span className="brand-badge text-xs font-mono px-2 py-0.5 rounded-full whitespace-nowrap">
-                  deck
+        <section className="deck-list" aria-label={`Presentaciones (${ponencias.length})`}>
+          {ponencias.map((p, i) => {
+            const el = ELEMENT_BY_KEY[p.elemento]
+            const [main, ...rest] = p.title.split(' — ')
+            return (
+              <a
+                key={p.url}
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="deck-row"
+                data-reveal="up"
+                data-cursor="Abrir"
+                style={{ '--c': el.colores[0], '--c2': el.colores[1], '--d': `${(i % 4) * 60}ms` } as CSSProperties}
+              >
+                <span className="deck-row-fill" aria-hidden="true" />
+                <span className="deck-row-num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="deck-row-glyph" aria-hidden="true">
+                  <SolidGlyph solid={el.solido} size={56} />
                 </span>
-              </div>
-              <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-                {p.subtitle}
-              </p>
-              <span className="mt-auto inline-block text-sm font-medium" style={{ color: 'var(--primary)' }}>
-                Ver presentación &rarr;
-              </span>
-            </a>
-          ))}
-        </div>
-      </section>
+                <span className="deck-row-text">
+                  <span className="deck-row-title">
+                    {main}
+                    {rest.length > 0 && <em> — {rest.join(' — ')}</em>}
+                  </span>
+                  <span className="deck-row-sub">{p.subtitle}</span>
+                </span>
+                <span className="deck-row-el">
+                  <span lang="grc">{el.griego}</span> {el.nombre}
+                </span>
+                <span className="deck-row-arrow" aria-hidden="true">
+                  ↗
+                </span>
+                <span className="sr-only"> (abre en nueva pestaña)</span>
+              </a>
+            )
+          })}
+        </section>
+      </div>
     </div>
   )
 }
