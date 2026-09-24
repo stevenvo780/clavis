@@ -3,7 +3,7 @@
 
 /* ============================================================
    Sistema de marca canónico (teal + dorado). Fuente de verdad:
-   docs/05-activos/brand-tokens.md. Paideia usa modo CLARO.
+   docs/05-activos/brand-tokens.md. Paideía usa modo oscuro.
    ============================================================ */
 :root {
   /* Brand tokens: pinakotheke-paideia (canonico) */
@@ -167,10 +167,10 @@ summary:focus-visible,
 
 /* Sidebar links. */
 .brand-sidelink { color: var(--text); }
-.brand-sidelink:hover { background: var(--surface-2); color: var(--primary-strong); }
+.brand-sidelink:hover { background: var(--surface-2); color: var(--primary); }
 .brand-sidelink.is-active {
   background: var(--surface-2);
-  color: var(--primary-strong);
+  color: var(--primary);
   font-weight: 600;
 }
 
