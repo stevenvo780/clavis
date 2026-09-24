@@ -688,10 +688,16 @@ html.no-motion .work-card-solid .solid-glyph-front {
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+.work-card-index,
+.work-card-el {
+  padding: 0.3rem 0.45rem;
+  border-radius: 0.2rem;
+  background: rgba(8, 14, 16, 0.82);
+  color: #fff;
+}
 .work-card-index {
   top: 1rem;
   left: 1.1rem;
-  color: rgba(11, 20, 23, 0.8);
   font-weight: 700;
 }
 .work-card-type {
@@ -705,9 +711,8 @@ html.no-motion .work-card-solid .solid-glyph-front {
   backdrop-filter: blur(6px);
 }
 .work-card-el {
-  top: 2.4rem;
+  top: 2.65rem;
   left: 1.1rem;
-  color: rgba(11, 20, 23, 0.65);
 }
 .work-card-body {
   position: relative;
