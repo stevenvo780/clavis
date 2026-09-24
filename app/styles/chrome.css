@@ -193,6 +193,31 @@
   .menu-toggle {
     display: inline-flex;
   }
+
+  /* Sin JavaScript o hidratación, el menú desplegable no funciona. */
+  :is(html:not(.js), html.no-motion:not(.hydrated)) .site-nav {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 55;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.9rem 0.75rem calc(0.9rem + env(safe-area-inset-bottom));
+    overflow-x: auto;
+    border-top: 1px solid var(--line-strong);
+    background: #0b1417;
+  }
+  :is(html:not(.js), html.no-motion:not(.hydrated)) .site-nav-link {
+    flex: none;
+    font-size: 0.75rem;
+  }
+  :is(html:not(.js), html.no-motion:not(.hydrated)) .menu-toggle {
+    display: none;
+  }
+  :is(html:not(.js), html.no-motion:not(.hydrated)) body {
+    padding-bottom: calc(3rem + env(safe-area-inset-bottom));
+  }
 }
 
 /* Menú a pantalla completa (móvil) */
