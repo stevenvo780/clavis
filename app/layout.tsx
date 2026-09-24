@@ -1,7 +1,15 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import Link from 'next/link'
-import MobileNav from '@/components/MobileNav'
+import './styles/chrome.css'
+import './styles/home.css'
+import './styles/pages.css'
+import SiteHeader from '@/components/site/SiteHeader'
+import SiteFooter from '@/components/site/SiteFooter'
+import SmoothScroll from '@/components/site/SmoothScroll'
+import RevealManager from '@/components/site/RevealManager'
+import Cursor from '@/components/site/Cursor'
+import ScrollProgress from '@/components/site/ScrollProgress'
+import TiltManager from '@/components/site/TiltManager'
 
 const SITE_URL = 'https://paideia.stevenvallejo.com'
 
@@ -72,95 +80,6 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-function NavBar() {
-  return (
-    <header
-      className="border-b sticky top-0 z-50"
-      style={{ borderColor: 'var(--border)', background: 'var(--surface)' }}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        {/* Wordmark: logo cuadrado Steven (lemniscata) + nombre griego + tag Mouseîon → enlaza al portal */}
-        <div className="flex items-center gap-4">
-          <a
-            href="https://www.stevenvallejo.com"
-            className="flex items-center gap-2 no-underline"
-            style={{ color: 'var(--text)' }}
-            aria-label="Mouseîon — Portal de Steven Vallejo"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icon-192.png" alt="" width={44} height={44} style={{ objectFit: 'contain', borderRadius: '6px' }} aria-hidden="true" />
-            <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.95rem', letterSpacing: '-0.01em' }}>
-              Paideía
-            </span>
-            <span
-              style={{
-                fontFamily: 'Inter, sans-serif',
-                fontWeight: 400,
-                fontSize: '0.7rem',
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                color: 'var(--text-muted)',
-                paddingLeft: '0.25rem',
-              }}
-            >
-              Mouseîon
-            </span>
-          </a>
-        </div>
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium" style={{ color: 'var(--text-muted)' }}>
-          <Link href="/" className="brand-navlink transition-colors font-semibold">Galería</Link>
-          <Link href="/buscar" className="brand-navlink transition-colors">Buscar</Link>
-        </nav>
-        <MobileNav />
-      </div>
-    </header>
-  )
-}
-
-function Footer() {
-  return (
-    <footer
-      className="border-t mt-24 py-10 text-center text-sm"
-      style={{ borderColor: 'var(--border)', color: 'var(--text-muted)' }}
-    >
-      <p>
-        Paideía — portal de humanidades &middot;{' '}
-        <span style={{ color: 'var(--text-muted)' }}>por</span>{' '}
-        <a href="https://www.stevenvallejo.com" className="hover:underline" style={{ color: 'var(--link)' }} aria-label="Steven Vallejo (abre en nueva pestaña)">
-          Steven Vallejo
-        </a>
-      </p>
-      <p className="mt-1 text-xs">
-        Classical Greek &bull; Neurophilosophy &bull; Philosophy of the City
-      </p>
-
-      {/* Ecosistema Mouseîon */}
-      <div
-        className="mt-8 pt-6 border-t"
-        style={{ borderColor: 'var(--border)' }}
-      >
-        <p className="text-xs font-medium mb-3" style={{ color: 'var(--text-muted)', fontFamily: 'Inter, sans-serif', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-          Parte de Mouseîon
-        </p>
-        <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs" aria-label="Ecosistema">
-          <a href="https://www.stevenvallejo.com/es#filosofia" className="hover:underline transition-colors py-3" style={{ color: 'var(--link)' }}>
-            Filosofía
-          </a>
-          <a href="https://www.stevenvallejo.com/es#ciencias" className="hover:underline transition-colors py-3" style={{ color: 'var(--link)' }}>
-            Ciencias
-          </a>
-          <a href="https://www.stevenvallejo.com/es#informatica" className="hover:underline transition-colors py-3" style={{ color: 'var(--link)' }}>
-            Informática
-          </a>
-          <a href="https://www.stevenvallejo.com/es#ingenieria" className="hover:underline transition-colors py-3" style={{ color: 'var(--link)' }}>
-            Ingeniería
-          </a>
-        </nav>
-      </div>
-    </footer>
-  )
-}
-
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -210,19 +129,35 @@ const jsonLd = {
   ],
 }
 
+/**
+ * Corre antes del primer pintado: marca que hay JS (los estados iniciales de las
+ * animaciones viven bajo `html.js`) y decide si la portada muestra el preloader.
+ * Si el bundle nunca hidrata, a los 8 s se liberan todos los revelados.
+ */
+const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');var seen=false;try{seen=!!sessionStorage.getItem('paideia:intro')}catch(e){}var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(location.pathname!=='/'||seen||rm){d.classList.add('intro-done')}else{d.classList.add('intro-pending')}setTimeout(function(){if(!d.classList.contains('hydrated')){d.classList.remove('intro-pending');d.classList.add('intro-done','no-motion')}},8000)})();`
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="antialiased min-h-screen flex flex-col">
-        <NavBar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <SmoothScroll />
+        <RevealManager />
+        <ScrollProgress />
+        <SiteHeader />
+        <main id="contenido" className="flex-1" tabIndex={-1}>
+          {children}
+        </main>
+        <SiteFooter />
+        <div className="grain" aria-hidden="true" />
+        <TiltManager />
+        <Cursor />
       </body>
     </html>
   )

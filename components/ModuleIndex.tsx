@@ -1,5 +1,9 @@
 import Link from 'next/link'
+import type { CSSProperties } from 'react'
 import { ContentItem, Module } from '@/lib/content'
+import { MODULE_VISUAL, anchorId } from '@/lib/modules'
+import { SOLID_FACTS } from '@/lib/solids'
+import PageHero from '@/components/visual/PageHero'
 
 interface Props {
   module: Module
@@ -8,72 +12,82 @@ interface Props {
   titleEn: string
   description: string
   descriptionEn: string
-  /** Kept for API compatibility; color now comes from the brand palette. */
+  /** Kept for API compatibility; color now comes from the module's visual identity. */
   accentColor?: string
   /** Optional extra section rendered above the document grid (e.g. Presentaciones). */
   children?: React.ReactNode
 }
 
-export default function ModuleIndex({
-  module,
-  items,
-  title,
-  titleEn,
-  description,
-  descriptionEn,
-  children,
-}: Props) {
+export default function ModuleIndex({ module, items, title, titleEn, description, descriptionEn, children }: Props) {
+  const visual = MODULE_VISUAL[module]
   const grouped: Record<string, ContentItem[]> = {}
   for (const item of items) {
     if (!grouped[item.section]) grouped[item.section] = []
     grouped[item.section].push(item)
   }
+  const sections = Object.entries(grouped)
+  const facts = SOLID_FACTS[visual.solid]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Module header */}
-      <div
-        className="rounded-2xl border p-8 mb-10"
-        style={{ background: 'var(--surface-2)', borderColor: 'var(--border)' }}
-      >
-        <h1 className="text-3xl font-bold font-serif" style={{ color: 'var(--text)' }}>{title}</h1>
-        <p className="text-sm italic mt-0.5" style={{ color: 'var(--text-muted)' }}>{titleEn}</p>
-        <p className="mt-3 max-w-2xl" style={{ color: 'var(--text)' }}>{description}</p>
-        <p className="mt-1 text-sm italic max-w-2xl" style={{ color: 'var(--text-muted)' }}>{descriptionEn}</p>
-        <p className="mt-4 text-xs font-mono" style={{ color: 'var(--accent-deep)' }}>{items.length} documentos disponibles</p>
+    <div className="page" style={{ '--c': visual.color } as CSSProperties}>
+      <div className="container-wide">
+        <PageHero
+          eyebrow="Archivo académico"
+          eyebrowNum={visual.letra}
+          title={title}
+          titleEn={titleEn}
+          description={description}
+          descriptionEn={descriptionEn}
+          solid={visual.solid}
+          color={visual.color}
+          visualLabel={`${visual.solid} · ${facts.caras} caras`}
+          stats={[
+            { value: items.length, label: 'documentos' },
+            { value: sections.length, label: 'secciones' },
+          ]}
+        />
+
+        <nav className="chips" aria-label="Secciones del módulo" data-reveal="up">
+          {sections.map(([section, sectionItems]) => (
+            <a key={section} href={`#${anchorId(section)}`} className="chip">
+              {section}
+              <span>{sectionItems.length}</span>
+            </a>
+          ))}
+        </nav>
+
+        {children}
+
+        {sections.map(([section, sectionItems]) => (
+          <section key={section} id={anchorId(section)} className="doc-section" aria-labelledby={`${anchorId(section)}-t`}>
+            <h2 id={`${anchorId(section)}-t`} className="doc-section-title" data-reveal="up">
+              <span>{section}</span>
+              <span className="doc-section-count">{String(sectionItems.length).padStart(2, '0')}</span>
+            </h2>
+            <div className="doc-grid">
+              {sectionItems.map((item, i) => (
+                <Link
+                  key={item.slug}
+                  href={`/${module}/${item.slug}`}
+                  className="doc-card"
+                  data-reveal="up"
+                  data-tilt
+                  data-tilt-amount="0.3"
+                  style={{ '--d': `${(i % 3) * 70}ms` } as CSSProperties}
+                >
+                  <span className="doc-card-num">{String(i + 1).padStart(2, '0')}</span>
+                  <h3 className="doc-card-title">{item.title}</h3>
+                  {item.excerpt && <p className="doc-card-excerpt">{item.excerpt}</p>}
+                  <span className="doc-card-arrow" aria-hidden="true">
+                    →
+                  </span>
+                  <span className="work-card-shine" aria-hidden="true" />
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
-
-      {children}
-
-      {/* Sections */}
-      {Object.entries(grouped).map(([section, sectionItems]) => (
-        <div key={section} className="mb-10">
-          <h2
-            className="text-sm font-mono font-bold uppercase tracking-widest mb-4 pb-2 border-b"
-            style={{ color: 'var(--primary)', borderColor: 'var(--border)' }}
-          >
-            {section} ({sectionItems.length})
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {sectionItems.map((item) => (
-              <Link
-                key={item.slug}
-                href={`/${module}/${item.slug}`}
-                className="brand-card block rounded-xl p-4"
-              >
-                <h3 className="font-semibold text-sm leading-snug line-clamp-2" style={{ color: 'var(--text)' }}>
-                  {item.title}
-                </h3>
-                {item.excerpt && (
-                  <p className="mt-2 text-xs leading-relaxed line-clamp-3" style={{ color: 'var(--text-muted)' }}>
-                    {item.excerpt}
-                  </p>
-                )}
-              </Link>
-            ))}
-          </div>
-        </div>
-      ))}
     </div>
   )
 }

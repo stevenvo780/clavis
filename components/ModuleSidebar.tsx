@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
 import { ContentItem, Module } from '@/lib/content'
 
 interface Props {
@@ -12,6 +13,15 @@ interface Props {
 }
 
 export default function ModuleSidebar({ module, items, activeSlug }: Props) {
+  const scroller = useRef<HTMLDivElement>(null)
+
+  // Lleva el documento activo a la vista dentro de la barra (sin mover la página).
+  useEffect(() => {
+    const box = scroller.current
+    const active = box?.querySelector<HTMLElement>('[aria-current="page"]')
+    if (box && active) box.scrollTop = active.offsetTop - box.clientHeight / 3
+  }, [activeSlug])
+
   // Group by section
   const grouped: Record<string, ContentItem[]> = {}
   for (const item of items) {
@@ -20,24 +30,17 @@ export default function ModuleSidebar({ module, items, activeSlug }: Props) {
   }
 
   return (
-    <nav className="w-64 shrink-0 hidden lg:block">
-      <div className="sticky top-20 overflow-y-auto max-h-[calc(100vh-6rem)] pr-2 pb-8">
+    <nav className="sidebar" aria-label="Documentos del módulo">
+      <div ref={scroller} className="sidebar-inner" data-lenis-prevent>
         {Object.entries(grouped).map(([section, sectionItems]) => (
-          <div key={section} className="mb-5">
-            <p
-              className="text-xs font-mono font-bold uppercase tracking-widest mb-2"
-              style={{ color: 'var(--primary)' }}
-            >
-              {section}
-            </p>
-            <ul className="space-y-0.5">
+          <div key={section} className="sidebar-group">
+            <p className="sidebar-heading">{section}</p>
+            <ul>
               {sectionItems.map((item) => (
                 <li key={item.slug}>
                   <Link
                     href={`/${module}/${item.slug}`}
-                    className={`brand-sidelink block px-3 py-1.5 rounded text-sm transition-colors truncate ${
-                      activeSlug === item.slug ? 'is-active' : ''
-                    }`}
+                    className={`sidebar-link${activeSlug === item.slug ? ' is-active' : ''}`}
                     aria-current={activeSlug === item.slug ? 'page' : undefined}
                     title={item.title}
                   >

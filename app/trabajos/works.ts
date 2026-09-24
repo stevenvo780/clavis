@@ -1,3 +1,5 @@
+import type { ElementKey } from '@/lib/elements'
+
 export type WorkType = 'ponencia' | 'ensayo' | 'tesis'
 
 export interface Work {
@@ -7,6 +9,8 @@ export interface Work {
   abstract: string
   topics: string[]
   url: string
+  /** Elemento del Timeo que agrupa la obra en la galería (ver lib/elements.ts). */
+  elemento: ElementKey
 }
 
 export const works: Work[] = [
@@ -17,6 +21,7 @@ export const works: Work[] = [
     abstract: '¿Puede la mente emularse en silicio digital o requiere el sustrato biológico del carbono? Examina incompatibilidades arquitectónicas y termodinámicas, y la autopoiesis como rasgo constitutivo de la conciencia.',
     topics: ['neurofilosofía', 'silicio vs carbono', 'autopoiesis', 'conciencia', 'mente y materia', 'IA'],
     url: 'https://neurocarbon.stevenvallejo.com/',
+    elemento: 'fuego',
   },
   {
     id: 'ciudad-asignada',
@@ -25,6 +30,7 @@ export const works: Work[] = [
     abstract: 'Repensar y cartografiar críticamente Medellín, imaginando nuevas posibilidades urbanas y formas de asignación del espacio metropolitano.',
     topics: ['filosofía de la ciudad', 'Medellín', 'cartografía crítica', 'urbanismo', 'espacio'],
     url: 'https://autopoesis.stevenvallejo.com/',
+    elemento: 'agua',
   },
   {
     id: 'retorica-techne',
@@ -33,6 +39,7 @@ export const works: Work[] = [
     abstract: 'La retórica como arte técnico (τέχνη) frente a la mera experiencia (ἐμπειρία), fundada en principios sistemáticos y metodológicos.',
     topics: ['retórica', 'téchne', 'Platón', 'Gorgias', 'filosofía', 'arte técnico'],
     url: 'https://retorica.stevenvallejo.com/',
+    elemento: 'aire',
   },
   {
     id: 'redes-neuronales-hinton',
@@ -41,6 +48,7 @@ export const works: Work[] = [
     abstract: 'Cómo las redes neuronales adquieren conocimiento por procesos experienciales, a partir del trabajo pionero de Geoffrey Hinton, y sus implicaciones filosóficas.',
     topics: ['redes neuronales', 'deep learning', 'conexionismo', 'IA', 'cognición', 'Hinton'],
     url: 'https://hinton.stevenvallejo.com/',
+    elemento: 'fuego',
   },
   {
     id: 'refutacion-fedon',
@@ -49,6 +57,7 @@ export const works: Work[] = [
     abstract: 'Reconstruye el pasaje del Fedón donde Sócrates responde a Simmias y Cebes formulando la Teoría de las Formas como teoría causal; contrasta el realismo platónico con el emergentismo contemporáneo.',
     topics: ['Platón', 'Fedón', 'Teoría de las Formas', 'méthexis', 'alma', 'emergentismo', 'IIT'],
     url: 'https://fedon.stevenvallejo.com/',
+    elemento: 'tierra',
   },
   {
     id: 'fenomenologia-urbana',
@@ -57,6 +66,7 @@ export const works: Work[] = [
     abstract: 'La experiencia vivida y la construcción de significado en los espacios urbanos de Medellín desde la fenomenología: corporalidad, memoria colectiva y transformación del lugar.',
     topics: ['fenomenología', 'Medellín', 'espacio urbano', 'corporalidad', 'memoria colectiva'],
     url: 'https://fenomenologiaurbana.stevenvallejo.com/',
+    elemento: 'agua',
   },
   {
     id: 'preontologia-tesis',
@@ -65,6 +75,7 @@ export const works: Work[] = [
     abstract: 'Tesis doctoral (con Jacob Agudelo, UdeA): las estructuras pre-ontológicas como regularidades operativas previas a la objetualidad, ancladas en un sustrato dinámico y validadas con la métrica EDI y compresión multiescala.',
     topics: ['filosofía de la ciencia', 'ontología', 'complejidad', 'preontología', 'EDI', 'tesis doctoral'],
     url: 'https://preontologia.stevenvallejo.com/',
+    elemento: 'tierra',
   },
   {
     id: 'ignosticismo',
@@ -73,6 +84,7 @@ export const works: Work[] = [
     abstract: 'Análisis de la posición ignóstica: la pregunta por la existencia de Dios carece de sentido mientras no exista una definición coherente y verificable de "Dios".',
     topics: ['ignosticismo', 'filosofía de la religión', 'teología', 'semántica', 'epistemología'],
     url: 'https://medium.com/@stevenvallejo780/ignosticismo-an%C3%A1lisis-filos%C3%B3fico-cr%C3%ADtico-0cb2a411569f',
+    elemento: 'cosmos',
   },
   {
     id: 'gnosticismo-critica',
@@ -81,6 +93,7 @@ export const works: Work[] = [
     abstract: 'Análisis filosófico del gnosticismo: identifica sus falencias lógicas y propone una alternativa ontológica basada en el holismo, la autopoiesis y la teoría de sistemas complejos.',
     topics: ['gnosticismo', 'autopoiesis', 'sistemas complejos', 'ontología holística', 'epistemología', 'entropía'],
     url: 'https://medium.com/@stevenvallejo780/cr%C3%ADtica-y-dial%C3%A9ctica-del-gnosticismo-6173e5768a0c',
+    elemento: 'cosmos',
   },
   {
     id: 'filosofia-programacion',
@@ -89,6 +102,7 @@ export const works: Work[] = [
     abstract: 'Los paradigmas de programación y las arquitecturas de software reflejan concepciones filosóficas sobre la realidad; integra epistemología, ontología y ética en el desarrollo de sistemas.',
     topics: ['filosofía computacional', 'paradigmas', 'arquitectura de software', 'modelado basado en agentes', 'epistemología'],
     url: 'https://medium.com/@stevenvallejo780/filosof%C3%ADa-y-programaci%C3%B3n-una-exploraci%C3%B3n-profunda-de-paradigmas-y-arquitecturas-199df6786331',
+    elemento: 'cosmos',
   },
   {
     id: 'russell-conocimiento-directo',
@@ -97,5 +111,6 @@ export const works: Work[] = [
     abstract: 'Exposición interactiva del capítulo 5 de Los problemas de la filosofía: toda proposición que comprendemos se compone de elementos conocidos directamente, y las descripciones extienden ese anclaje hacia mesas físicas, personajes históricos y objetos nunca experimentados. Conocimiento directo = anclaje; conocimiento por referencia = alcance.',
     topics: ['Russell', 'filosofía del lenguaje', 'epistemología', 'conocimiento por referencia', 'descripciones', 'filosofía analítica'],
     url: 'https://russell.stevenvallejo.com/',
+    elemento: 'aire',
   },
 ]

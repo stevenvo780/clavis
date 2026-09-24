@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react'
+
 interface Deck {
   title: string
   subtitle?: string
@@ -16,80 +18,65 @@ export default function Presentations({ decks, embedFirst = true }: Props) {
   const firstWithUrl = decks.find((d) => d.url && !d.comingSoon)
 
   return (
-    <section className="mb-10">
-      <h2
-        className="text-sm font-mono font-bold uppercase tracking-widest mb-4 pb-2 border-b"
-        style={{ color: 'var(--primary)', borderColor: 'var(--border)' }}
-      >
-        Presentaciones ({decks.length})
+    <section className="decks" aria-labelledby="decks-title">
+      <h2 id="decks-title" className="doc-section-title" data-reveal="up">
+        <span>Presentaciones</span>
+        <span className="doc-section-count">{String(decks.length).padStart(2, '0')}</span>
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {decks.map((deck) => {
+      <div className="deck-grid">
+        {decks.map((deck, i) => {
           const unavailable = deck.comingSoon || !deck.url
-          const card = (
+          const body = (
             <>
-              <div className="flex items-start justify-between gap-2">
-                <h3 className="font-semibold text-sm leading-snug" style={{ color: 'var(--text)' }}>
-                  {deck.title}
-                </h3>
-                <span className="brand-badge text-xs font-mono px-2 py-0.5 rounded-full whitespace-nowrap">
-                  {unavailable ? 'próximamente' : 'deck'}
-                </span>
-              </div>
-              {deck.subtitle && (
-                <p className="mt-2 text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-                  {deck.subtitle}
-                </p>
-              )}
+              <span className="deck-card-badge">{unavailable ? 'próximamente' : 'deck interactivo'}</span>
+              <h3 className="deck-card-title">{deck.title}</h3>
+              {deck.subtitle && <p className="deck-card-sub">{deck.subtitle}</p>}
               {!unavailable && (
-                <span className="mt-3 inline-block text-sm font-medium" style={{ color: 'var(--primary)' }}>
-                  Abrir presentación &rarr;
+                <span className="deck-card-cta" aria-hidden="true">
+                  Abrir presentación <span>↗</span>
                 </span>
               )}
             </>
           )
-
+          const style = { '--d': `${i * 80}ms` } as CSSProperties
           if (unavailable) {
             return (
-              <div
-                key={deck.title}
-                className="brand-surface rounded-xl p-4"
-                style={{ opacity: 0.85 }}
-                aria-disabled="true"
-              >
-                {card}
+              <div key={deck.title} className="deck-card is-soon" aria-disabled="true" data-reveal="up" style={style}>
+                {body}
               </div>
             )
           }
-
           return (
             <a
               key={deck.title}
               href={deck.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="brand-card block rounded-xl p-4"
+              className="deck-card"
+              data-reveal="up"
+              data-tilt
+              data-tilt-amount="0.4"
+              data-cursor="Abrir"
+              style={style}
             >
-              {card}
+              {body}
+              <span className="sr-only"> (abre en nueva pestaña)</span>
+              <span className="work-card-shine" aria-hidden="true" />
             </a>
           )
         })}
       </div>
 
       {embedFirst && firstWithUrl && (
-        <div
-          className="mt-5 rounded-xl border overflow-hidden"
-          style={{ borderColor: 'var(--border)', background: 'var(--surface)' }}
-        >
-          <iframe
-            src={firstWithUrl.url}
-            title={firstWithUrl.title}
-            loading="lazy"
-            className="w-full"
-            style={{ height: '520px', border: '0', display: 'block' }}
-            allowFullScreen
-          />
+        <div className="deck-embed" data-reveal="up">
+          <div className="deck-embed-bar" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+            <em>{firstWithUrl.url?.replace(/^https?:\/\//, '')}</em>
+          </div>
+          <iframe src={firstWithUrl.url} title={firstWithUrl.title} loading="lazy" allowFullScreen />
         </div>
       )}
     </section>
