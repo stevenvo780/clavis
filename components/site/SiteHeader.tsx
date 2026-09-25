@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState, type MouseEvent } from 'react'
-import { getLenis, scrollToTarget } from './SmoothScroll'
 import SolidGlyph from '@/components/visual/SolidGlyph'
 
 const NAV = [
@@ -48,15 +47,21 @@ export default function SiteHeader() {
   useEffect(() => setOpen(false), [pathname])
 
   useEffect(() => {
-    const lenis = getLenis()
+    let cancelled = false
     if (!open) {
-      lenis?.start()
       document.documentElement.classList.remove('menu-open')
-      return
+      void import('./SmoothScroll').then((m) => {
+        if (!cancelled) m.getLenis()?.start()
+      })
+      return () => {
+        cancelled = true
+      }
     }
-    lenis?.stop()
     document.documentElement.classList.add('menu-open')
     firstLinkRef.current?.focus()
+    void import('./SmoothScroll').then((m) => {
+      if (!cancelled) m.getLenis()?.stop()
+    })
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setOpen(false)
@@ -64,14 +69,21 @@ export default function SiteHeader() {
       }
     }
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    return () => {
+      cancelled = true
+      window.removeEventListener('keydown', onKey)
+      document.documentElement.classList.remove('menu-open')
+      void import('./SmoothScroll').then((m) => m.getLenis()?.start())
+    }
   }, [open])
 
   const onNav = (href: string) => (e: MouseEvent<HTMLAnchorElement>) => {
     if (pathname === '/' && href.startsWith('/#')) {
       e.preventDefault()
       setOpen(false)
-      scrollToTarget(href.slice(1), -24)
+      void import('./SmoothScroll').then((m) => m.scrollToTarget(href.slice(1), -24)).catch(() => {
+        document.querySelector(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+      })
       history.replaceState(null, '', href)
     }
   }

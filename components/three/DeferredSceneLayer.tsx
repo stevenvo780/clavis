@@ -12,9 +12,12 @@ type IdleWindow = Window & {
   cancelIdleCallback?: (id: number) => void
 }
 
+const DEFER_MS = 4000
+
 /**
- * PAI-001: keep the static glyph fallback for first paint, mark the scene ready
- * so the preloader does not wait on WebGL, then mount the full R3F scene on idle.
+ * PAI-001 / W3-PAI-01: keep the static glyph fallback for first paint, mark the
+ * scene ready so the preloader does not wait on WebGL, then mount the full R3F
+ * scene after LCP + idle (hard floor ≥4000ms).
  */
 export default function DeferredSceneLayer() {
   const [mountScene, setMountScene] = useState(false)
@@ -30,21 +33,49 @@ export default function DeferredSceneLayer() {
     let idleId = 0
     let timeoutId = 0
     let cancelled = false
+    let po: PerformanceObserver | null = null
+    let lcpSeen = false
 
     const go = () => {
       if (!cancelled) setMountScene(true)
     }
 
-    if (typeof w.requestIdleCallback === 'function') {
-      idleId = w.requestIdleCallback(go, { timeout: 2000 })
-    } else {
-      timeoutId = window.setTimeout(go, 400)
+    const scheduleIdle = () => {
+      if (cancelled) return
+      if (typeof w.requestIdleCallback === 'function') {
+        idleId = w.requestIdleCallback(go, { timeout: DEFER_MS })
+      } else {
+        timeoutId = window.setTimeout(go, DEFER_MS)
+      }
     }
-    // Ensure WebGL still arrives even if idle never fires.
-    const backup = window.setTimeout(go, 2500)
+
+    const onLcpOrFallback = () => {
+      if (lcpSeen || cancelled) return
+      lcpSeen = true
+      po?.disconnect()
+      po = null
+      scheduleIdle()
+    }
+
+    try {
+      if (typeof PerformanceObserver !== 'undefined') {
+        po = new PerformanceObserver((list) => {
+          if (list.getEntries().length) onLcpOrFallback()
+        })
+        po.observe({ type: 'largest-contentful-paint', buffered: true })
+      } else {
+        scheduleIdle()
+      }
+    } catch {
+      scheduleIdle()
+    }
+
+    // Hard backup: WebGL still arrives even if LCP never fires.
+    const backup = window.setTimeout(onLcpOrFallback, DEFER_MS)
 
     return () => {
       cancelled = true
+      po?.disconnect()
       if (idleId && w.cancelIdleCallback) w.cancelIdleCallback(idleId)
       if (timeoutId) window.clearTimeout(timeoutId)
       window.clearTimeout(backup)

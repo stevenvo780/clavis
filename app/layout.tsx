@@ -10,14 +10,16 @@ import DeferredChrome from '@/components/site/DeferredChrome'
 
 const inter = Inter({
   subsets: ['latin'],
-  display: 'swap',
+  display: 'optional',
+  preload: false,
   variable: '--font-sans',
   weight: ['400', '500', '600', '700', '800'],
 })
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
-  display: 'swap',
+  display: 'optional',
+  preload: false,
   variable: '--font-mono',
   weight: ['400', '500', '700'],
 })
@@ -25,6 +27,7 @@ const jetbrainsMono = JetBrains_Mono({
 const cormorantGaramond = Cormorant_Garamond({
   subsets: ['latin'],
   display: 'swap',
+  preload: true,
   variable: '--font-display',
   weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
@@ -32,7 +35,8 @@ const cormorantGaramond = Cormorant_Garamond({
 
 const ebGaramond = EB_Garamond({
   subsets: ['latin'],
-  display: 'swap',
+  display: 'optional',
+  preload: false,
   variable: '--font-greek',
   weight: ['400', '500'],
   style: ['normal', 'italic'],
