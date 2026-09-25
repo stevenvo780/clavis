@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { experience } from '@/lib/experience'
 
 const WORD = 'ΠΑΙΔΕΙΑ'
 const GREEK = 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ'
-const MIN_MS = 1700
-const MAX_MS = 4800
+/** Short floor so intro does not own LCP / elementRenderDelay (JS boot). Scene is deferred. */
+const MIN_MS = 700
+const MAX_MS = 1800
 
 /** Marca la intro como terminada: libera los revelados del hero y avisa a quien escuche. */
 export function finishIntro() {
@@ -21,9 +21,9 @@ export function finishIntro() {
 }
 
 /**
- * Pantalla de carga de la portada (una vez por sesión). Cuenta hasta 100 mientras
- * esperan las fuentes y el primer frame de la escena 3D, y luego se abre como un telón.
- * Solo se ve si el script inline del layout puso `intro-pending` en <html>.
+ * Pantalla de carga de la portada (una vez por sesión).
+ * Does NOT wait on WebGL/sceneReady — R3F is deferred past LCP (W3-PAI-01).
+ * Only gates briefly on fonts (with hard MAX) so #hero-title can become LCP sooner.
  */
 export default function Preloader() {
   const [phase, setPhase] = useState<'idle' | 'loading' | 'leaving' | 'gone'>('idle')
@@ -44,7 +44,17 @@ export default function Preloader() {
     let raf = 0
     let shown = 0
     let leaving = false
-    document.fonts?.ready.then(() => (fontsReady = true)).catch(() => (fontsReady = true))
+    // Don't block on slow secondary faces; Cormorant for H1 is preloaded separately.
+    const fontTimer = window.setTimeout(() => {
+      fontsReady = true
+    }, 400)
+    document.fonts?.ready
+      .then(() => {
+        fontsReady = true
+      })
+      .catch(() => {
+        fontsReady = true
+      })
 
     const letters = [...WORD]
     let last = start
@@ -52,13 +62,10 @@ export default function Preloader() {
       const elapsed = now - start
       const dt = Math.min(0.1, (now - last) / 1000)
       last = now
-      const sceneReady = experience.ready
-      // La meta sube con el tiempo, pero no pasa de 90 hasta que todo está listo.
-      const allReady = fontsReady && sceneReady
+      const allReady = fontsReady || elapsed > MAX_MS
       const timeCap = Math.min(1, elapsed / MIN_MS)
-      const goal = allReady || elapsed > MAX_MS ? 100 * timeCap : Math.min(90, 100 * timeCap)
-      // Suavizado por tiempo (no por frame) para que dure lo mismo a 30 o 120 fps.
-      shown += (goal - shown) * (1 - Math.exp(-dt * 7))
+      const goal = allReady ? 100 * timeCap : Math.min(88, 100 * timeCap)
+      shown += (goal - shown) * (1 - Math.exp(-dt * 10))
       const n = Math.min(100, Math.round(shown + 0.4))
       if (count.current) count.current.textContent = String(n).padStart(3, '0')
       if (bar.current) bar.current.style.transform = `scaleX(${n / 100})`
@@ -74,14 +81,17 @@ export default function Preloader() {
         setTimeout(() => {
           setPhase('leaving')
           finishIntro()
-          setTimeout(() => setPhase('gone'), 1300)
-        }, 220)
+          setTimeout(() => setPhase('gone'), 900)
+        }, 120)
         return
       }
       raf = requestAnimationFrame(step)
     }
     raf = requestAnimationFrame(step)
-    return () => cancelAnimationFrame(raf)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.clearTimeout(fontTimer)
+    }
   }, [])
 
   if (phase === 'gone') return null

@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Cormorant_Garamond, EB_Garamond } from 'next/font/google'
 import './globals.css'
 import './styles/chrome.css'
-import './styles/home.css'
 import SiteHeader from '@/components/site/SiteHeader'
 import SiteFooter from '@/components/site/SiteFooter'
 import DeferredChrome from '@/components/site/DeferredChrome'
@@ -27,8 +26,10 @@ const cormorantGaramond = Cormorant_Garamond({
   subsets: ['latin'],
   display: 'swap',
   preload: true,
+  adjustFontFallback: true,
   variable: '--font-display',
   weight: ['500'],
+  style: ['normal'],
 })
 
 const ebGaramond = EB_Garamond({
@@ -175,7 +176,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <style
           dangerouslySetInnerHTML={{
             __html:
-              '.hero-title{font-family:var(--font-display),Georgia,"Times New Roman",serif;font-weight:500;font-size:clamp(5.2rem,19.5vw,21rem);line-height:.8;letter-spacing:-.05em;color:#e8e0d4;margin:clamp(1rem,6vh,4rem) 0 0 -.05em;text-shadow:0 10px 60px rgba(5,10,12,.35);opacity:1;visibility:visible}.hero-title .split-accent{color:#e0a85e;font-style:italic}@media(max-width:899px){.hero-title{margin-top:0}}',
+              '.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding:calc(var(--header-h,4.5rem) + 1.25rem) var(--gutter,1.25rem) 1.75rem;max-width:1600px;margin-inline:auto}.hero-title{font-family:var(--font-display),Georgia,"Times New Roman",serif;font-weight:500;font-style:normal;font-size:clamp(5.2rem,19.5vw,21rem);line-height:.8;letter-spacing:-.05em;color:#e8e0d4;margin:clamp(1rem,6vh,4rem) 0 0 -.05em;text-shadow:0 10px 60px rgba(5,10,12,.35);opacity:1;visibility:visible}.hero-title .split-accent{color:#e0a85e;font-style:italic}.hero-sub{margin-top:clamp(1.5rem,4vh,3rem);max-width:34rem}.hero-kicker{font-family:var(--font-display),Georgia,serif;font-style:italic;font-size:clamp(1.5rem,2.4vw,2.2rem);line-height:1.1;color:#e0a85e}.hero-lead{margin-top:.9rem;font-size:clamp(.98rem,1.15vw,1.1rem);line-height:1.65;color:#c4b8a8;opacity:1}@media(max-width:767px){.hero-title{margin-top:0}}',
           }}
         />
         <script

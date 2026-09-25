@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import SiteHeaderMenu from './SiteHeaderMenu'
+import SiteHeaderMenuLoader from './SiteHeaderMenuLoader'
 
 const NAV = [
   { href: '/#obras', label: 'Obras', greek: 'ἔργα' },
@@ -9,7 +9,7 @@ const NAV = [
   { href: '/buscar', label: 'Buscar', greek: 'ζήτησις' },
 ]
 
-/** Server shell: brand + desktop nav paint with zero client JS. Menu/scroll = thin island. */
+/** Server shell: brand + desktop nav paint with zero client JS. Menu = deferred island. */
 export default function SiteHeader() {
   return (
     <>
@@ -42,7 +42,7 @@ export default function SiteHeader() {
             ))}
           </nav>
 
-          <SiteHeaderMenu />
+          <SiteHeaderMenuLoader />
         </div>
       </header>
     </>
