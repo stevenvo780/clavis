@@ -1,9 +1,9 @@
 'use client'
 
 /**
- * Post-LCP hero island (ssr:false from Hero). Keeps SplitChars / Scramble / Magnetic /
- * GSAP parallax / scene section OFF the sync home hydration path so #hero-title can
- * paint without waiting for this chunk (Revisor: elementRenderDelay ≈ JS boot).
+ * Post-LCP hero island. Loaded only via HeroEnhanceLoader after afterLcpThenIdle
+ * (≥8s). Keeps SplitChars / Scramble / GSAP parallax OFF the sync hydration path
+ * so #hero-title SSR text can win LCP without .split-char stealing it.
  */
 
 import { useEffect, useLayoutEffect, useState, type ComponentType } from 'react'
@@ -14,6 +14,7 @@ import { SCENE, applyScene } from './useSceneSection'
 
 type SplitCharsProps = {
   text: string
+  className?: string
   accent?: (char: string, index: number) => boolean
 }
 
@@ -33,9 +34,18 @@ function TitlePortal({
   SplitChars: ComponentType<SplitCharsProps>
 }) {
   useLayoutEffect(() => {
+    // Reserve box before swap so wrapping continuous text into .split-char spans
+    // does not CLS-punch the hero (Alfa run2 CLS ~0.20).
+    const h = target.offsetHeight
+    const w = target.offsetWidth
+    if (h > 0) target.style.minHeight = `${h}px`
+    if (w > 0) target.style.minWidth = `${w}px`
     target.querySelectorAll('[data-hero-ssr]').forEach((n) => n.remove())
   }, [target])
-  return createPortal(<SplitChars text="Paideía" accent={(c) => c === 'í'} />, target)
+  return createPortal(
+    <SplitChars text="Paideía" accent={(c) => c === 'í'} className="hero-title-split" />,
+    target,
+  )
 }
 
 function ScramblePortal({
@@ -63,15 +73,35 @@ export default function HeroEnhance() {
   useEffect(() => {
     setTitleEl(document.getElementById('hero-title'))
     setScrambleSlot(document.getElementById('hero-scramble'))
-    return afterLcpThenIdle(() => {
+    // Loader already enforced afterLcpThenIdle ≥8s; import FX on next idle tick only.
+    // Do NOT re-arm a short afterLcpThenIdle here — buffered LCP would fire instantly.
+    let cancelled = false
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
+      cancelIdleCallback?: (id: number) => void
+    }
+    let idleId = 0
+    const load = () => {
+      if (cancelled) return
       void Promise.all([
         import('@/components/visual/SplitChars'),
         import('@/components/visual/Scramble'),
       ]).then(([split, scramble]) => {
+        if (cancelled) return
         setSplitChars(() => split.default)
         setScramble(() => scramble.default)
       })
-    }, 3500)
+    }
+    if (typeof w.requestIdleCallback === 'function') {
+      idleId = w.requestIdleCallback(load, { timeout: 1500 })
+    } else {
+      idleId = window.setTimeout(load, 100) as unknown as number
+    }
+    return () => {
+      cancelled = true
+      if (w.cancelIdleCallback && idleId) w.cancelIdleCallback(idleId)
+      else window.clearTimeout(idleId)
+    }
   }, [])
 
   useEffect(() => {
@@ -112,7 +142,7 @@ export default function HeroEnhance() {
           })
         }, root)
       })
-    }, 3500)
+    }, 8000)
 
     return () => {
       cancelled = true

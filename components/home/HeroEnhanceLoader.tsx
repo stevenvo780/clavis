@@ -4,8 +4,8 @@ import { useEffect, useState, type ComponentType } from 'react'
 import { afterLcpThenIdle } from '@/lib/afterLcp'
 
 /**
- * Fetches HeroEnhance only AFTER LCP + idle so SplitChars/GSAP/scene never race
- * the #hero-title paint path (idle-only @2s was too early when LCP ~4–5s).
+ * Fetches HeroEnhance only AFTER LCP + idle (≥8s floor) so SplitChars/GSAP/scene
+ * never race the #hero-title paint path. Buffered LCP alone must not unlock.
  * Hero (RSC) keeps plain SSR text in HTML until this mounts.
  */
 export default function HeroEnhanceLoader() {
@@ -17,7 +17,7 @@ export default function HeroEnhanceLoader() {
       void import('./HeroEnhance').then((m) => {
         if (!cancelled) setComp(() => m.default)
       })
-    }, 4000)
+    }, 8000)
     return () => {
       cancelled = true
       cancel()

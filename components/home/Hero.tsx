@@ -6,7 +6,8 @@ import HeroEnhanceLoader from './HeroEnhanceLoader'
 
 /**
  * Server Component hero: #hero-title is plain SSR text (LCP). Client FX load via
- * HeroEnhanceLoader after idle — off the sync home hydration path.
+ * HeroEnhanceLoader after afterLcpThenIdle (≥8s) — SplitChars must not hydrate
+ * into the H1 until post-LCP or .split-char steals the LCP element.
  */
 export default function Hero({ obras, documentos }: { obras: number; documentos: number }) {
   return (

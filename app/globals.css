@@ -454,6 +454,20 @@ html.js .hero .hero-lead {
   translate: none !important;
 }
 
+/* Post-LCP SplitChars swap: keep metrics stable (no CLS from inline-block wraps). */
+.hero-title .hero-title-split,
+.hero-title .split-word {
+  display: inline;
+  overflow: visible;
+  padding: 0;
+  margin: 0;
+  vertical-align: baseline;
+}
+.hero-title .split-char {
+  display: inline;
+}
+
+
 /* Movimiento reducido o bundle que nunca hidrató: todo visible, sin transiciones de entrada. */
 @media (prefers-reduced-motion: reduce) {
   html.js [data-reveal],
