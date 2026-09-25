@@ -5,7 +5,7 @@ import Presentations from '@/components/Presentations'
 export const metadata = {
   title: 'Neurofilosofía — portal de humanidades digitales',
   description: 'Base de conocimiento del curso Filosofía de las Neurociencias: clases, fichas de 25 autores (Chalmers, Friston, Tononi, Damasio), temas transversales, lógica formal y ensayos. Parte de Paideía.',
-  alternates: { canonical: 'https://paideia.stevenvallejo.com/neurofilosofia' },
+  alternates: { canonical: 'https://paideia.stevenvallejo.com/neurofilosofia/' },
   openGraph: {
     title: 'Neurofilosofía · Paideía — Mouseîon',
     description: 'Knowledge base for Philosophy of Neuroscience: 149+ documents, 25 author profiles, cross-cutting themes, formal logic and essays.',

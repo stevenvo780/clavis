@@ -6,7 +6,7 @@ import SolidGlyph from '@/components/visual/SolidGlyph'
 export const metadata = {
   title: 'Ponencias — portal de humanidades digitales',
   description: 'Presentaciones académicas interactivas en filosofía, IA y ciudad: silicio o tejido (mente y materia), cartografía crítica de Medellín, la retórica como técnica, Platón Fedón, Yuk Hui sobre IA y Geoffrey Hinton. Ponencias de Steven Vallejo, parte de Paideía.',
-  alternates: { canonical: 'https://paideia.stevenvallejo.com/ponencias' },
+  alternates: { canonical: 'https://paideia.stevenvallejo.com/ponencias/' },
   openGraph: {
     title: 'Ponencias · Paideía — Mouseîon',
     description: 'Academic presentations in philosophy and AI: Plato Phaedo, Yuk Hui on AI limits, Geoffrey Hinton and neural networks.',

@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const item = getContentBySlug('filosofia-ciudad', slug)
   if (!item) return { title: 'Paideía · Mouseîon' }
-  const canonicalUrl = `https://paideia.stevenvallejo.com/filosofia-ciudad/${slug}`
+  const canonicalUrl = `https://paideia.stevenvallejo.com/filosofia-ciudad/${slug}/`
   return {
     title: `${item.title} — Filosofía de la Ciudad · Mouseîon`,
     description: item.excerpt ? item.excerpt.slice(0, 155) : 'Documento del curso Filosofía de la Ciudad: ontología, poder y política. Parte de Paideía.',

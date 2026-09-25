@@ -5,7 +5,7 @@ import Presentations from '@/components/Presentations'
 export const metadata = {
   title: 'Filosofía de la Ciudad — portal de humanidades digitales',
   description: 'Archivo académico del curso Filosofía de la ciudad: ontología, poder y política. Clases, lecturas de Heidegger, Sassen, Yuk Hui, Calvino y Berman, ponencias y trabajos finales. Parte de Paideía.',
-  alternates: { canonical: 'https://paideia.stevenvallejo.com/filosofia-ciudad' },
+  alternates: { canonical: 'https://paideia.stevenvallejo.com/filosofia-ciudad/' },
   openGraph: {
     title: 'Filosofía de la Ciudad · Paideía — Mouseîon',
     description: 'Academic archive: Philosophy of the City — ontology, power, politics. Heidegger, Sassen, Yuk Hui, Calvino, Berman. 62+ documents.',

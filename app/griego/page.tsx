@@ -7,7 +7,7 @@ const DECKS = 'https://clavis-decks.vercel.app'
 export const metadata = {
   title: 'Griego Clásico — portal de humanidades digitales',
   description: 'Lecciones de conjugación verbal, tablas de declinación, glosario, ejercicios de traducción y traducciones comentadas del curso universitario de griego antiguo. Parte de Paideía.',
-  alternates: { canonical: 'https://paideia.stevenvallejo.com/griego' },
+  alternates: { canonical: 'https://paideia.stevenvallejo.com/griego/' },
   openGraph: {
     title: 'Griego Clásico · Paideía — Mouseîon',
     description: 'Classical Greek university course materials: verb conjugation, declension tables, glossary, translation exercises and annotated texts.',

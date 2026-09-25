@@ -1,8 +1,7 @@
 'use client'
 
 import { useEffect, useRef, type CSSProperties } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { afterLcpThenIdle, loadGsap } from '@/lib/afterLcp'
 import Counter from '@/components/visual/Counter'
 import { SCENE, useSceneSection } from './useSceneSection'
 
@@ -20,21 +19,31 @@ export default function Manifesto({ stats }: { stats: Stat[] }) {
   useSceneSection(root, SCENE.manifesto)
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.mf-word',
-        { opacity: 0.14 },
-        {
-          opacity: 1,
-          stagger: 0.08,
-          ease: 'none',
-          scrollTrigger: { trigger: '.mf-text', start: 'top 78%', end: 'bottom 42%', scrub: 0.4 },
-        },
-      )
-    }, root)
-    return () => ctx.revert()
+    let ctx: { revert: () => void } | null = null
+    let cancelled = false
+    const cancelWait = afterLcpThenIdle(() => {
+      void loadGsap().then(({ gsap }) => {
+        if (cancelled || !root.current) return
+        ctx = gsap.context(() => {
+          gsap.fromTo(
+            '.mf-word',
+            { opacity: 0.14 },
+            {
+              opacity: 1,
+              stagger: 0.08,
+              ease: 'none',
+              scrollTrigger: { trigger: '.mf-text', start: 'top 78%', end: 'bottom 42%', scrub: 0.4 },
+            },
+          )
+        }, root)
+      })
+    })
+    return () => {
+      cancelled = true
+      cancelWait()
+      ctx?.revert()
+    }
   }, [])
 
   let inHighlight = false

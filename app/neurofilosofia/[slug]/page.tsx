@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const item = getContentBySlug('neurofilosofia', slug)
   if (!item) return { title: 'Paideía · Mouseîon' }
-  const canonicalUrl = `https://paideia.stevenvallejo.com/neurofilosofia/${slug}`
+  const canonicalUrl = `https://paideia.stevenvallejo.com/neurofilosofia/${slug}/`
   return {
     title: `${item.title} — Neurofilosofía · Mouseîon`,
     description: item.excerpt ? item.excerpt.slice(0, 155) : 'Documento del curso Filosofía de las Neurociencias. Parte de Paideía.',

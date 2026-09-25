@@ -1,8 +1,7 @@
 'use client'
 
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { afterLcpThenIdle, loadGsap } from '@/lib/afterLcp'
 import { SCENE, useSceneSection } from './useSceneSection'
 
 const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
@@ -46,27 +45,37 @@ export default function PonenciasRail({ count, children }: { count: number; chil
   }, [pinned])
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
     if (!pinned || height === null) return
-    const t = track.current
-    const el = root.current
-    if (!t || !el) return
-    const ctx = gsap.context(() => {
-      gsap.to(t, {
-        x: () => -Math.max(0, t.scrollWidth - window.innerWidth),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 0.8,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => el.style.setProperty('--rail-p', self.progress.toFixed(4)),
-        },
+    let ctx: { revert: () => void } | null = null
+    let cancelled = false
+    const cancelWait = afterLcpThenIdle(() => {
+      void loadGsap().then(({ gsap, ScrollTrigger }) => {
+        if (cancelled) return
+        const t = track.current
+        const el = root.current
+        if (!t || !el) return
+        ctx = gsap.context(() => {
+          gsap.to(t, {
+            x: () => -Math.max(0, t.scrollWidth - window.innerWidth),
+            ease: 'none',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: 0.8,
+              invalidateOnRefresh: true,
+              onUpdate: (self) => el.style.setProperty('--rail-p', self.progress.toFixed(4)),
+            },
+          })
+        }, el)
+        ScrollTrigger.refresh()
       })
-    }, el)
-    ScrollTrigger.refresh()
-    return () => ctx.revert()
+    })
+    return () => {
+      cancelled = true
+      cancelWait()
+      ctx?.revert()
+    }
   }, [pinned, height])
 
   return (

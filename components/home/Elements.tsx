@@ -1,14 +1,12 @@
 'use client'
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { afterLcpThenIdle, loadGsap } from '@/lib/afterLcp'
 import type { ElementInfo } from '@/lib/elements'
 import { SOLID_FACTS } from '@/lib/solids'
 import { setElementBlend } from '@/lib/experience'
 import Scramble from '@/components/visual/Scramble'
 import SolidGlyph from '@/components/visual/SolidGlyph'
-import { scrollToTarget } from '@/components/site/SmoothScroll'
 import { SCENE, applyScene } from './useSceneSection'
 
 export interface ElementGroup {
@@ -32,46 +30,52 @@ export default function Elements({ groups }: { groups: ElementGroup[] }) {
   const n = groups.length
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-    const el = root.current
-    if (!el) return
-    let current = -1
+    let progress: { kill: () => void; isActive?: boolean; progress?: number } | null = null
+    let scene: { kill: () => void; isActive?: boolean } | null = null
+    let cancelled = false
+    const cancelWait = afterLcpThenIdle(() => {
+      void loadGsap().then(({ ScrollTrigger }) => {
+        if (cancelled) return
+        const el = root.current
+        if (!el) return
+        let current = -1
 
-    const applyProgress = (p: number) => {
-      const f = Math.min(n - 1, Math.max(0, p * n - 0.5))
-      const i = Math.floor(f)
-      setElementBlend(i, smoothstep(0.25, 0.75, f - i))
-      const idx = Math.min(n - 1, Math.floor(p * n))
-      if (idx !== current) {
-        current = idx
-        setIndex(idx)
-      }
-      el.style.setProperty('--p', p.toFixed(4))
-    }
+        const applyProgress = (p: number) => {
+          const f = Math.min(n - 1, Math.max(0, p * n - 0.5))
+          const i = Math.floor(f)
+          setElementBlend(i, smoothstep(0.25, 0.75, f - i))
+          const idx = Math.min(n - 1, Math.floor(p * n))
+          if (idx !== current) {
+            current = idx
+            setIndex(idx)
+          }
+          el.style.setProperty('--p', p.toFixed(4))
+        }
 
-    // Ambos triggers se leen entre sí y pueden disparar al crearse: declarar antes.
-    let progress: ScrollTrigger | null = null
-    let scene: ScrollTrigger | null = null
-    progress = ScrollTrigger.create({
-      trigger: el,
-      start: 'top top',
-      end: 'bottom bottom',
-      onUpdate: (self) => {
-        if (scene?.isActive) applyProgress(self.progress)
-        else el.style.setProperty('--p', self.progress.toFixed(4))
-      },
-    })
-    scene = ScrollTrigger.create({
-      trigger: el,
-      start: 'top center',
-      end: 'bottom center',
-      onToggle: (self) => {
-        if (!self.isActive) return
-        applyScene(SCENE.elementos)
-        applyProgress(progress?.progress ?? 0)
-      },
+        progress = ScrollTrigger.create({
+          trigger: el,
+          start: 'top top',
+          end: 'bottom bottom',
+          onUpdate: (self) => {
+            if (scene?.isActive) applyProgress(self.progress)
+            else el.style.setProperty('--p', self.progress.toFixed(4))
+          },
+        })
+        scene = ScrollTrigger.create({
+          trigger: el,
+          start: 'top center',
+          end: 'bottom center',
+          onToggle: (self) => {
+            if (!self.isActive) return
+            applyScene(SCENE.elementos)
+            applyProgress(progress?.progress ?? 0)
+          },
+        })
+      })
     })
     return () => {
+      cancelled = true
+      cancelWait()
       progress?.kill()
       scene?.kill()
     }
@@ -82,7 +86,10 @@ export default function Elements({ groups }: { groups: ElementGroup[] }) {
     if (!el) return
     const top = el.getBoundingClientRect().top + window.scrollY
     const travel = el.offsetHeight - window.innerHeight
-    scrollToTarget(top + ((i + 0.5) / n) * travel)
+    const y = top + ((i + 0.5) / n) * travel
+    void import('@/components/site/SmoothScroll').then((m) => m.scrollToTarget(y)).catch(() => {
+      window.scrollTo({ top: y, behavior: 'smooth' })
+    })
   }
 
   const g = groups[index]

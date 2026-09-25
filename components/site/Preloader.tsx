@@ -1,12 +1,15 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { experience } from '@/lib/experience'
 
 const WORD = 'ΠΑΙΔΕΙΑ'
 const GREEK = 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ'
-const MIN_MS = 1700
-const MAX_MS = 4800
+/**
+ * Intro chrome is non-blocking for LCP (transparent overlay + edge UI).
+ * Keep this short so reveal gating (intro-done) clears quickly without hiding H1.
+ */
+const MIN_MS = 400
+const MAX_MS = 800
 
 /** Marca la intro como terminada: libera los revelados del hero y avisa a quien escuche. */
 export function finishIntro() {
@@ -21,9 +24,10 @@ export function finishIntro() {
 }
 
 /**
- * Pantalla de carga de la portada (una vez por sesión). Cuenta hasta 100 mientras
- * esperan las fuentes y el primer frame de la escena 3D, y luego se abre como un telón.
- * Solo se ve si el script inline del layout puso `intro-pending` en <html>.
+ * Pantalla de carga de la portada (una vez por sesión).
+ * Does NOT wait on WebGL/sceneReady — R3F is deferred past LCP (W3-PAI-01).
+ * Overlay is transparent / edge-only so #hero-title stays continuously visible (LCP).
+ * Only gates intro-done for non-LCP reveals; hard MAX keeps the curtain brief.
  */
 export default function Preloader() {
   const [phase, setPhase] = useState<'idle' | 'loading' | 'leaving' | 'gone'>('idle')
@@ -44,7 +48,11 @@ export default function Preloader() {
     let raf = 0
     let shown = 0
     let leaving = false
-    document.fonts?.ready.then(() => (fontsReady = true)).catch(() => (fontsReady = true))
+    // Do NOT await document.fonts.ready (Inter/EB optional faces inflate delay).
+    // Cormorant is preloaded + display:optional — H1 paints with fallback if needed.
+    const fontTimer = window.setTimeout(() => {
+      fontsReady = true
+    }, 100)
 
     const letters = [...WORD]
     let last = start
@@ -52,13 +60,10 @@ export default function Preloader() {
       const elapsed = now - start
       const dt = Math.min(0.1, (now - last) / 1000)
       last = now
-      const sceneReady = experience.ready
-      // La meta sube con el tiempo, pero no pasa de 90 hasta que todo está listo.
-      const allReady = fontsReady && sceneReady
+      const allReady = fontsReady || elapsed > MAX_MS
       const timeCap = Math.min(1, elapsed / MIN_MS)
-      const goal = allReady || elapsed > MAX_MS ? 100 * timeCap : Math.min(90, 100 * timeCap)
-      // Suavizado por tiempo (no por frame) para que dure lo mismo a 30 o 120 fps.
-      shown += (goal - shown) * (1 - Math.exp(-dt * 7))
+      const goal = allReady ? 100 * timeCap : Math.min(88, 100 * timeCap)
+      shown += (goal - shown) * (1 - Math.exp(-dt * 10))
       const n = Math.min(100, Math.round(shown + 0.4))
       if (count.current) count.current.textContent = String(n).padStart(3, '0')
       if (bar.current) bar.current.style.transform = `scaleX(${n / 100})`
@@ -71,17 +76,19 @@ export default function Preloader() {
       if (n >= 100 && !leaving) {
         leaving = true
         if (word.current) word.current.textContent = WORD
-        setTimeout(() => {
-          setPhase('leaving')
-          finishIntro()
-          setTimeout(() => setPhase('gone'), 1300)
-        }, 220)
+        // finishIntro first so #hero-title can become LCP without waiting on leave CSS.
+        finishIntro()
+        setPhase('leaving')
+        setTimeout(() => setPhase('gone'), 700)
         return
       }
       raf = requestAnimationFrame(step)
     }
     raf = requestAnimationFrame(step)
-    return () => cancelAnimationFrame(raf)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.clearTimeout(fontTimer)
+    }
   }, [])
 
   if (phase === 'gone') return null

@@ -5,7 +5,7 @@ import SplitChars from '@/components/visual/SplitChars'
 export const metadata = {
   title: 'Buscar — portal de humanidades digitales',
   description: 'Búsqueda instantánea en todos los módulos de Paideía: Griego Clásico, Neurofilosofía y Filosofía de la Ciudad. Sin servidor, sin latencia.',
-  alternates: { canonical: 'https://paideia.stevenvallejo.com/buscar' },
+  alternates: { canonical: 'https://paideia.stevenvallejo.com/buscar/' },
   openGraph: {
     title: 'Buscar · Paideía — Mouseîon',
     description: 'Instant full-text search across all Paideía modules: Classical Greek, Neurophilosophy and Philosophy of the City.',

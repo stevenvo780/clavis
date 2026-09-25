@@ -1,19 +1,29 @@
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { works } from './trabajos/works'
 import { getContentByModule } from '@/lib/content'
 import { ELEMENTS } from '@/lib/elements'
-import SceneLayer from '@/components/three/SceneLayer'
 import Preloader from '@/components/site/Preloader'
 import Hero from '@/components/home/Hero'
-import Manifesto from '@/components/home/Manifesto'
-import Elements from '@/components/home/Elements'
-import PonenciasRail from '@/components/home/PonenciasRail'
-import Marquee from '@/components/home/Marquee'
-import EssayIndex from '@/components/home/EssayIndex'
 import Archive, { type ArchiveModule } from '@/components/home/Archive'
-import Outro from '@/components/home/Outro'
 import WorkCard from '@/components/visual/WorkCard'
 import SolidGlyph from '@/components/visual/SolidGlyph'
+import './styles/home.css'
+
+/**
+ * Preloader stays a STATIC import: finishIntro gates when #hero-title can win LCP
+ * (opaque overlay). dynamic() delayed its chunk behind other home splits and blew
+ * elementRenderDelay (~2.25s → ~4.1s). Below-fold / scene stay code-split.
+ */
+const DeferredSceneLayer = dynamic(() => import('@/components/three/DeferredSceneLayer'), {
+  ssr: true,
+})
+const Manifesto = dynamic(() => import('@/components/home/Manifesto'))
+const Elements = dynamic(() => import('@/components/home/Elements'))
+const PonenciasRail = dynamic(() => import('@/components/home/PonenciasRail'))
+const Marquee = dynamic(() => import('@/components/home/Marquee'))
+const EssayIndex = dynamic(() => import('@/components/home/EssayIndex'))
+const Outro = dynamic(() => import('@/components/home/Outro'))
 
 const SITE_URL = 'https://paideia.stevenvallejo.com'
 
@@ -80,7 +90,7 @@ export default function Home() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Preloader />
-      <SceneLayer />
+      <DeferredSceneLayer />
 
       <div className="home">
         <Hero obras={works.length} documentos={totalDocs} />
