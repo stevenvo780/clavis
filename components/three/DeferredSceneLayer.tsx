@@ -9,9 +9,9 @@ import SolidGlyph from '@/components/visual/SolidGlyph'
 const SceneLayer = dynamic(() => import('./SceneLayer'), { ssr: false })
 
 /**
- * PAI-001 / W3-PAI-01: keep the static glyph fallback for first paint, mark the
- * scene ready so the preloader does not wait on WebGL, then mount the full R3F
- * scene after LCP + idle (≥8s floor).
+ * PAI-001 / W3-PAI-01: SolidGlyph is the static first-paint poster (Stev: no empty hole
+ * while R3F defers). Mount full scene after LCP + idle (≥8s). Page places this AFTER
+ * #hero-title in DOM so hero text is discovered first.
  */
 export default function DeferredSceneLayer() {
   const [mountScene, setMountScene] = useState(false)

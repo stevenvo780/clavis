@@ -91,31 +91,18 @@
   text-decoration: none;
 }
 .brand-word-main {
-  /* weight 500 = preloaded Cormorant face (LCP). 600 had no @font-face → late/mismatched paint. */
+  /* weight 500 = preloaded Cormorant face (LCP). Always solid from t0 (Stev: no blank hold). */
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 1rem; /* small vs #hero-title so hero owns LCP area */
   font-weight: 500;
   letter-spacing: -0.01em;
-  /* Reserve metrics so Cormorant optional fallback→face cannot CLS the header. */
   min-height: 1.15em;
   display: inline-block;
-}
-/* Cold-load LCP: keep header wordmark out of the candidate set while intro is pending
-   so SSR #hero-title (much larger) can win. Fade in after finishIntro / boot release.
-   Link keeps aria-label for a11y. SplitChars post-LCP unchanged. */
-html.intro-pending .brand-word-main,
-html.intro-pending .brand-word-tag,
-html.brand-hold .brand-word-main,
-html.brand-hold .brand-word-tag {
-  opacity: 0;
-}
-html:not(.intro-pending):not(.brand-hold) .brand-word-main,
-html:not(.intro-pending):not(.brand-hold) .brand-word-tag,
-html:not(.js) .brand-word-main,
-html:not(.js) .brand-word-tag {
   opacity: 1;
-  transition: opacity 0.35s ease;
+  visibility: visible;
 }
+/* Brand wordmark: always solid from first paint (Stev HARD_BLOCK: no opacity/visibility blank).
+   Sized below #hero-title so the hero H1 wins lab LCP by paint area. */
 .brand-word-tag {
   font-family: var(--font-mono);
   font-size: 0.62rem;
@@ -654,7 +641,7 @@ html.intro-pending .preloader {
   justify-self: start;
   margin-top: 0.35rem;
   font-family: var(--font-greek);
-  font-size: clamp(1.35rem, 3.6vw, 2.6rem);
+  font-size: clamp(0.85rem, 2.2vw, 1.15rem);
   letter-spacing: 0.08em;
   line-height: 1;
   color: var(--text);

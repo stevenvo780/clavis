@@ -43,6 +43,8 @@ const ebGaramond = EB_Garamond({
 })
 
 const SITE_URL = 'https://paideia.stevenvallejo.com'
+/** Final URL serves with trailing slash — canonical must match exactly (SEO P1). */
+const CANONICAL = `${SITE_URL}/`
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -51,15 +53,17 @@ export const metadata: Metadata = {
     template: '%s · Mouseîon',
   },
   description:
-    'Paideía: portal de humanidades digitales con Griego Clásico, Neurofilosofía y Filosofía de la Ciudad. Más de 220 documentos académicos navegables. Parte del ecosistema Mouseîon de Steven Vallejo.',
+    'Paideía: Griego Clásico, Neurofilosofía y Filosofía de la Ciudad. +220 documentos académicos. Ecosistema Mouseîon.',
+  robots: { index: true, follow: true },
   applicationName: 'Mouseîon',
   authors: [{ name: 'Steven Vallejo', url: 'https://www.stevenvallejo.com' }],
   creator: 'Steven Vallejo',
   alternates: {
-    canonical: SITE_URL,
+    canonical: CANONICAL,
+    // Spanish-only: self + x-default. Do not claim en-US without a real variant (SEO P1).
     languages: {
-      'es-ES': SITE_URL,
-      'en-US': SITE_URL,
+      es: CANONICAL,
+      'x-default': CANONICAL,
     },
   },
   openGraph: {
@@ -67,7 +71,7 @@ export const metadata: Metadata = {
     description:
       'Paideía: humanities portal — Classical Greek, Neurophilosophy and Philosophy of the City. 220+ academic documents, no login required. Part of Mouseîon.',
     type: 'website',
-    url: SITE_URL,
+    url: CANONICAL,
     siteName: 'Mouseîon',
     locale: 'es_ES',
     alternateLocale: 'en_US',
@@ -117,7 +121,7 @@ const jsonLd = {
     {
       '@type': 'WebSite',
       '@id': `${SITE_URL}/#website`,
-      url: SITE_URL,
+      url: CANONICAL,
       name: 'Paideía',
       description: 'Portal de humanidades digitales: Griego Clásico, Neurofilosofía y Filosofía de la Ciudad.',
       inLanguage: ['es-ES', 'en-US'],
@@ -127,7 +131,7 @@ const jsonLd = {
       '@type': 'SoftwareApplication',
       '@id': `${SITE_URL}/#app`,
       name: 'Paideía',
-      url: SITE_URL,
+      url: CANONICAL,
       applicationCategory: 'EducationApplication',
       operatingSystem: 'Web',
       description:
@@ -164,8 +168,9 @@ const jsonLd = {
  * Corre antes del primer pintado: marca que hay JS (los estados iniciales de las
  * animaciones viven bajo `html.js`) y decide si la portada muestra el preloader.
  * Intro failsafe ≤600ms so overlay never owns LCP; 8s hydrated failsafe remains.
+ * No brand-hold: Stev HARD_BLOCK — brand/hero must be solid SSR at t0 (no opacity blank).
  */
-const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');var seen=false;try{seen=!!sessionStorage.getItem('paideia:intro')}catch(e){}var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;function release(n){if(!d.classList.contains('intro-pending'))return;d.classList.remove('intro-pending');d.classList.add('intro-done');if(n)d.classList.add('no-motion');try{sessionStorage.setItem('paideia:intro','1')}catch(e){}try{window.dispatchEvent(new Event('paideia:intro'))}catch(e){}}if(location.pathname!=='/'||seen||rm){d.classList.add('intro-done')}else{d.classList.add('intro-pending');d.classList.add('brand-hold');setTimeout(function(){release(false)},600)}setTimeout(function(){if(!d.classList.contains('hydrated')){release(true)}},8000);setTimeout(function(){d.classList.remove('brand-hold')},2500)})();`
+const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');var seen=false;try{seen=!!sessionStorage.getItem('paideia:intro')}catch(e){}var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;function release(n){if(!d.classList.contains('intro-pending'))return;d.classList.remove('intro-pending');d.classList.add('intro-done');if(n)d.classList.add('no-motion');try{sessionStorage.setItem('paideia:intro','1')}catch(e){}try{window.dispatchEvent(new Event('paideia:intro'))}catch(e){}}if(location.pathname!=='/'||seen||rm){d.classList.add('intro-done')}else{d.classList.add('intro-pending');setTimeout(function(){release(false)},600)}setTimeout(function(){if(!d.classList.contains('hydrated')){release(true)}},8000)})();`
 
 const fontVars = `${inter.variable} ${jetbrainsMono.variable} ${cormorantGaramond.variable} ${ebGaramond.variable}`
 
@@ -177,8 +182,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <style
           dangerouslySetInnerHTML={{
             __html:
-              /* LCP: #hero-title preferred; .brand-word-main must paint with same preloaded Cormorant 500 if it wins. */
-              '.home{position:relative;z-index:1;margin-top:calc(-1 * var(--header-h,72px))}.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding:calc(var(--header-h,4.5rem) + 1.25rem) var(--gutter,1.25rem) 1.75rem;max-width:1600px;margin-inline:auto;z-index:1}.hero-parallax{flex:1;display:flex;flex-direction:column;justify-content:center}.hero-title{font-family:var(--font-display),Georgia,"Times New Roman",serif;font-weight:500;font-style:normal;font-size:clamp(5.2rem,19.5vw,21rem);line-height:.8;letter-spacing:-.05em;color:#e8e0d4;margin:clamp(1rem,6vh,4rem) 0 0 -.05em;text-shadow:0 10px 60px rgba(5,10,12,.35);opacity:1!important;visibility:visible!important;position:relative;z-index:2}.hero-title .split-accent{color:#e0a85e;font-style:italic}.hero-sub{margin-top:clamp(1.5rem,4vh,3rem);max-width:34rem;opacity:1}.hero-kicker{font-family:var(--font-display),Georgia,serif;font-style:italic;font-size:clamp(1.5rem,2.4vw,2.2rem);line-height:1.1;color:#e0a85e}.hero-lead{margin-top:.9rem;font-size:clamp(.98rem,1.15vw,1.1rem);line-height:1.65;color:#c4b8a8;opacity:1}.site-header{position:fixed;inset:0 0 auto 0;z-index:50;height:var(--header-h,72px)}.brand-word-main{font-family:var(--font-display),Georgia,"Times New Roman",serif;font-weight:500;font-size:1.4rem;letter-spacing:-.01em;color:#e8e0d4;visibility:visible!important}html.intro-pending .brand-word-main,html.intro-pending .brand-word-tag,html.brand-hold .brand-word-main,html.brand-hold .brand-word-tag{opacity:0}html:not(.intro-pending):not(.brand-hold) .brand-word-main,html:not(.intro-pending):not(.brand-hold) .brand-word-tag,html:not(.js) .brand-word-main,html:not(.js) .brand-word-tag{opacity:1}.preloader{background:transparent!important;pointer-events:none!important}.preloader-word{align-self:start!important;justify-self:start!important;font-size:clamp(1.35rem,3.6vw,2.6rem)!important;max-width:90vw}.preloader-count{font-size:clamp(1.25rem,3vw,2rem)!important}@media(max-width:767px){.hero-title{margin-top:0}.hero-parallax{justify-content:flex-end;padding-top:42vh}.hero-top{display:none}}',
+              /* LCP: #hero-title owns area; brand solid+small from t0 (no blank hold). */
+              '.home{position:relative;z-index:1;margin-top:calc(-1 * var(--header-h,72px))}.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding:calc(var(--header-h,4.5rem) + 1.25rem) var(--gutter,1.25rem) 1.75rem;max-width:1600px;margin-inline:auto;z-index:1}.hero-parallax{flex:1;display:flex;flex-direction:column;justify-content:center}.hero-title{font-family:var(--font-display),Georgia,"Times New Roman",serif;font-weight:500;font-style:normal;font-size:clamp(5.2rem,19.5vw,21rem);line-height:.8;letter-spacing:-.05em;color:#e8e0d4;margin:clamp(1rem,6vh,4rem) 0 0 -.05em;text-shadow:0 10px 60px rgba(5,10,12,.35);opacity:1!important;visibility:visible!important;position:relative;z-index:2}.hero-title .split-accent{color:#e0a85e;font-style:italic}.hero-sub{margin-top:clamp(1.5rem,4vh,3rem);max-width:34rem;opacity:1}.hero-kicker{font-family:var(--font-display),Georgia,serif;font-style:italic;font-size:clamp(1.5rem,2.4vw,2.2rem);line-height:1.1;color:#e0a85e}.hero-lead{margin-top:.9rem;font-size:clamp(.98rem,1.15vw,1.1rem);line-height:1.65;color:#c4b8a8;opacity:1}.site-header{position:fixed;inset:0 0 auto 0;z-index:50;height:var(--header-h,72px)}.brand-word-main{font-family:var(--font-display),Georgia,"Times New Roman",serif;font-weight:500;font-size:1rem;letter-spacing:-.01em;color:#e8e0d4;opacity:1!important;visibility:visible!important}.brand-word-tag{opacity:1!important;visibility:visible!important}.preloader{background:transparent!important;pointer-events:none!important}.preloader-word{align-self:start!important;justify-self:start!important;font-size:clamp(.85rem,2.2vw,1.15rem)!important;max-width:40vw;opacity:.55}.preloader-count{font-size:clamp(.85rem,2vw,1.1rem)!important;opacity:.55}@media(max-width:767px){.hero-title{margin-top:0}.hero-parallax{justify-content:flex-end;padding-top:42vh}.hero-top{display:none}}',
           }}
         />
         <script
