@@ -91,9 +91,10 @@
   text-decoration: none;
 }
 .brand-word-main {
+  /* weight 500 = preloaded Cormorant face (LCP). 600 had no @font-face → late/mismatched paint. */
   font-family: var(--font-display);
   font-size: 1.4rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.01em;
 }
 .brand-word-tag {
@@ -616,8 +617,9 @@ html.intro-pending .preloader {
   padding: calc(var(--gutter) + 0.5rem) var(--gutter);
   /* Soft top/bottom scrim — mid band stays clear so H1 remains the LCP text. */
   background:
-    linear-gradient(to bottom, rgba(6, 11, 13, 0.72) 0%, rgba(6, 11, 13, 0) 28%),
-    linear-gradient(to top, rgba(6, 11, 13, 0.55) 0%, rgba(6, 11, 13, 0) 22%);
+    /* Lighter top scrim — header .brand-word-main sits under the old 0.72 band (LCP). */
+    linear-gradient(to bottom, rgba(6, 11, 13, 0.35) 0%, rgba(6, 11, 13, 0) 18%),
+    linear-gradient(to top, rgba(6, 11, 13, 0.4) 0%, rgba(6, 11, 13, 0) 18%);
 }
 .preloader-kicker {
   font-family: var(--font-mono);
