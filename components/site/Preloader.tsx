@@ -44,17 +44,11 @@ export default function Preloader() {
     let raf = 0
     let shown = 0
     let leaving = false
-    // Don't block on slow secondary faces; Cormorant for H1 is preloaded separately.
+    // Hard 200ms floor for Cormorant preload — do NOT await document.fonts.ready
+    // (Inter/EB optional faces kept the gate open and inflated elementRenderDelay).
     const fontTimer = window.setTimeout(() => {
       fontsReady = true
-    }, 400)
-    document.fonts?.ready
-      .then(() => {
-        fontsReady = true
-      })
-      .catch(() => {
-        fontsReady = true
-      })
+    }, 200)
 
     const letters = [...WORD]
     let last = start
@@ -78,11 +72,10 @@ export default function Preloader() {
       if (n >= 100 && !leaving) {
         leaving = true
         if (word.current) word.current.textContent = WORD
-        setTimeout(() => {
-          setPhase('leaving')
-          finishIntro()
-          setTimeout(() => setPhase('gone'), 900)
-        }, 120)
+        // finishIntro first so #hero-title can become LCP without waiting on leave CSS.
+        finishIntro()
+        setPhase('leaving')
+        setTimeout(() => setPhase('gone'), 700)
         return
       }
       raf = requestAnimationFrame(step)

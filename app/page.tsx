@@ -3,14 +3,18 @@ import Link from 'next/link'
 import { works } from './trabajos/works'
 import { getContentByModule } from '@/lib/content'
 import { ELEMENTS } from '@/lib/elements'
+import Preloader from '@/components/site/Preloader'
 import Hero from '@/components/home/Hero'
 import Archive, { type ArchiveModule } from '@/components/home/Archive'
 import WorkCard from '@/components/visual/WorkCard'
 import SolidGlyph from '@/components/visual/SolidGlyph'
 import './styles/home.css'
 
-/** Below-fold / FX client islands — code-split off the smallest Hero RSC path. */
-const Preloader = dynamic(() => import('@/components/site/Preloader'), { ssr: true })
+/**
+ * Preloader stays a STATIC import: finishIntro gates when #hero-title can win LCP
+ * (opaque overlay). dynamic() delayed its chunk behind other home splits and blew
+ * elementRenderDelay (~2.25s → ~4.1s). Below-fold / scene stay code-split.
+ */
 const DeferredSceneLayer = dynamic(() => import('@/components/three/DeferredSceneLayer'), {
   ssr: true,
 })
