@@ -24,8 +24,11 @@ const jetbrainsMono = JetBrains_Mono({
 
 const cormorantGaramond = Cormorant_Garamond({
   subsets: ['latin'],
-  display: 'swap',
+  // optional > swap for text LCP: paint fallback immediately if face misses the
+  // first ~100ms; preload + adjustFontFallback keep Cormorant when it wins the race.
+  display: 'optional',
   preload: true,
+  adjustFontFallback: true,
   variable: '--font-display',
   weight: ['500'],
 })
@@ -160,9 +163,9 @@ const jsonLd = {
 /**
  * Corre antes del primer pintado: marca que hay JS (los estados iniciales de las
  * animaciones viven bajo `html.js`) y decide si la portada muestra el preloader.
- * Si el bundle nunca hidrata, a los 8 s se liberan todos los revelados.
+ * Intro failsafe ≤600ms so overlay never owns LCP; 8s hydrated failsafe remains.
  */
-const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');var seen=false;try{seen=!!sessionStorage.getItem('paideia:intro')}catch(e){}var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;function release(n){if(!d.classList.contains('intro-pending'))return;d.classList.remove('intro-pending');d.classList.add('intro-done');if(n)d.classList.add('no-motion');try{sessionStorage.setItem('paideia:intro','1')}catch(e){}try{window.dispatchEvent(new Event('paideia:intro'))}catch(e){}}if(location.pathname!=='/'||seen||rm){d.classList.add('intro-done')}else{d.classList.add('intro-pending');setTimeout(function(){release(false)},2200)}setTimeout(function(){if(!d.classList.contains('hydrated')){release(true)}},8000)})();`
+const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');var seen=false;try{seen=!!sessionStorage.getItem('paideia:intro')}catch(e){}var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;function release(n){if(!d.classList.contains('intro-pending'))return;d.classList.remove('intro-pending');d.classList.add('intro-done');if(n)d.classList.add('no-motion');try{sessionStorage.setItem('paideia:intro','1')}catch(e){}try{window.dispatchEvent(new Event('paideia:intro'))}catch(e){}}if(location.pathname!=='/'||seen||rm){d.classList.add('intro-done')}else{d.classList.add('intro-pending');setTimeout(function(){release(false)},600)}setTimeout(function(){if(!d.classList.contains('hydrated')){release(true)}},8000)})();`
 
 const fontVars = `${inter.variable} ${jetbrainsMono.variable} ${cormorantGaramond.variable} ${ebGaramond.variable}`
 
@@ -174,7 +177,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <style
           dangerouslySetInnerHTML={{
             __html:
-              '.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding:calc(var(--header-h,4.5rem) + 1.25rem) var(--gutter,1.25rem) 1.75rem;max-width:1600px;margin-inline:auto}.hero-title{font-family:var(--font-display),Georgia,"Times New Roman",serif;font-weight:500;font-style:normal;font-size:clamp(5.2rem,19.5vw,21rem);line-height:.8;letter-spacing:-.05em;color:#e8e0d4;margin:clamp(1rem,6vh,4rem) 0 0 -.05em;text-shadow:0 10px 60px rgba(5,10,12,.35);opacity:1!important;visibility:visible}.hero-title .split-accent{color:#e0a85e;font-style:italic}.hero-sub{margin-top:clamp(1.5rem,4vh,3rem);max-width:34rem}.hero-kicker{font-family:var(--font-display),Georgia,serif;font-style:italic;font-size:clamp(1.5rem,2.4vw,2.2rem);line-height:1.1;color:#e0a85e}.hero-lead{margin-top:.9rem;font-size:clamp(.98rem,1.15vw,1.1rem);line-height:1.65;color:#c4b8a8;opacity:1}@media(max-width:767px){.hero-title{margin-top:0}}',
+              '.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding:calc(var(--header-h,4.5rem) + 1.25rem) var(--gutter,1.25rem) 1.75rem;max-width:1600px;margin-inline:auto;z-index:1}.hero-title{font-family:var(--font-display),Georgia,"Times New Roman",serif;font-weight:500;font-style:normal;font-size:clamp(5.2rem,19.5vw,21rem);line-height:.8;letter-spacing:-.05em;color:#e8e0d4;margin:clamp(1rem,6vh,4rem) 0 0 -.05em;text-shadow:0 10px 60px rgba(5,10,12,.35);opacity:1!important;visibility:visible!important;position:relative;z-index:2}.hero-title .split-accent{color:#e0a85e;font-style:italic}.hero-sub{margin-top:clamp(1.5rem,4vh,3rem);max-width:34rem;opacity:1}.hero-kicker{font-family:var(--font-display),Georgia,serif;font-style:italic;font-size:clamp(1.5rem,2.4vw,2.2rem);line-height:1.1;color:#e0a85e}.hero-lead{margin-top:.9rem;font-size:clamp(.98rem,1.15vw,1.1rem);line-height:1.65;color:#c4b8a8;opacity:1}.preloader{background:transparent!important;pointer-events:none!important}.preloader-word{align-self:start!important;justify-self:start!important;font-size:clamp(1.35rem,3.6vw,2.6rem)!important;max-width:90vw}.preloader-count{font-size:clamp(1.25rem,3vw,2rem)!important}@media(max-width:767px){.hero-title{margin-top:0}}',
           }}
         />
         <script

@@ -575,15 +575,20 @@ html.cursor-visible .cursor-ring {
   .grain { animation: none; }
 }
 
-/* ---------- Preloader ---------- */
+/* ---------- Preloader ----------
+   LCP rule: never paint an opaque full-viewport cover over #hero-title.
+   Intro is edge chrome (kicker / compact word / bar) with pointer-events none.
+   Large centered ΠΑΙΔΕΙΑ + count previously competed for / delayed LCP.
+   -------------------------------- */
 .preloader {
   position: fixed;
   inset: 0;
   z-index: 120;
   display: flex;
   align-items: stretch;
-  background: #060b0d;
+  background: transparent;
   color: var(--text);
+  pointer-events: none;
   clip-path: inset(0 0 0 0);
 }
 html:not(.intro-pending) .preloader:not([data-phase='leaving']) {
@@ -594,7 +599,7 @@ html.intro-pending {
 }
 .preloader[data-phase='leaving'] {
   clip-path: inset(0 0 100% 0);
-  transition: clip-path 1.15s var(--ease-in-out);
+  transition: clip-path 0.7s var(--ease-in-out);
 }
 /* Red de seguridad si el JS nunca llega: se retira solo. */
 html.intro-pending .preloader {
@@ -607,8 +612,12 @@ html.intro-pending .preloader {
   position: relative;
   width: 100%;
   display: grid;
-  grid-template-rows: auto 1fr auto auto;
+  grid-template-rows: auto auto 1fr auto;
   padding: calc(var(--gutter) + 0.5rem) var(--gutter);
+  /* Soft top/bottom scrim — mid band stays clear so H1 remains the LCP text. */
+  background:
+    linear-gradient(to bottom, rgba(6, 11, 13, 0.72) 0%, rgba(6, 11, 13, 0) 28%),
+    linear-gradient(to top, rgba(6, 11, 13, 0.55) 0%, rgba(6, 11, 13, 0) 22%);
 }
 .preloader-kicker {
   font-family: var(--font-mono);
@@ -618,10 +627,11 @@ html.intro-pending .preloader {
   color: var(--text-muted);
 }
 .preloader-word {
-  align-self: center;
-  justify-self: center;
+  align-self: start;
+  justify-self: start;
+  margin-top: 0.35rem;
   font-family: var(--font-greek);
-  font-size: clamp(3.5rem, 15vw, 13rem);
+  font-size: clamp(1.35rem, 3.6vw, 2.6rem);
   letter-spacing: 0.08em;
   line-height: 1;
   color: var(--text);
@@ -629,7 +639,7 @@ html.intro-pending .preloader {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  transition: letter-spacing 1.2s var(--ease-out);
+  transition: letter-spacing 0.7s var(--ease-out);
 }
 .preloader[data-phase='leaving'] .preloader-word {
   letter-spacing: 0.02em;
@@ -647,7 +657,7 @@ html.intro-pending .preloader {
 }
 .preloader-count {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 9vw, 7rem);
+  font-size: clamp(1.25rem, 3vw, 2rem);
   line-height: 0.8;
   letter-spacing: -0.02em;
   color: var(--text);

@@ -4,9 +4,12 @@ import { useEffect, useRef, useState } from 'react'
 
 const WORD = 'ΠΑΙΔΕΙΑ'
 const GREEK = 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ'
-/** Short floor so intro does not own LCP / elementRenderDelay (JS boot). Scene is deferred. */
-const MIN_MS = 700
-const MAX_MS = 1800
+/**
+ * Intro chrome is non-blocking for LCP (transparent overlay + edge UI).
+ * Keep this short so reveal gating (intro-done) clears quickly without hiding H1.
+ */
+const MIN_MS = 400
+const MAX_MS = 800
 
 /** Marca la intro como terminada: libera los revelados del hero y avisa a quien escuche. */
 export function finishIntro() {
@@ -23,7 +26,8 @@ export function finishIntro() {
 /**
  * Pantalla de carga de la portada (una vez por sesión).
  * Does NOT wait on WebGL/sceneReady — R3F is deferred past LCP (W3-PAI-01).
- * Only gates briefly on fonts (with hard MAX) so #hero-title can become LCP sooner.
+ * Overlay is transparent / edge-only so #hero-title stays continuously visible (LCP).
+ * Only gates intro-done for non-LCP reveals; hard MAX keeps the curtain brief.
  */
 export default function Preloader() {
   const [phase, setPhase] = useState<'idle' | 'loading' | 'leaving' | 'gone'>('idle')
@@ -44,11 +48,11 @@ export default function Preloader() {
     let raf = 0
     let shown = 0
     let leaving = false
-    // Hard 200ms floor for Cormorant preload — do NOT await document.fonts.ready
-    // (Inter/EB optional faces kept the gate open and inflated elementRenderDelay).
+    // Do NOT await document.fonts.ready (Inter/EB optional faces inflate delay).
+    // Cormorant is preloaded + display:optional — H1 paints with fallback if needed.
     const fontTimer = window.setTimeout(() => {
       fontsReady = true
-    }, 200)
+    }, 100)
 
     const letters = [...WORD]
     let last = start
