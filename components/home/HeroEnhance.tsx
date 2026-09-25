@@ -34,12 +34,11 @@ function TitlePortal({
   SplitChars: ComponentType<SplitCharsProps>
 }) {
   useLayoutEffect(() => {
-    // Reserve box before swap so wrapping continuous text into .split-char spans
-    // does not CLS-punch the hero (Alfa run2 CLS ~0.20).
-    const h = target.offsetHeight
-    const w = target.offsetWidth
-    if (h > 0) target.style.minHeight = `${h}px`
-    if (w > 0) target.style.minWidth = `${w}px`
+    // Freeze the SSR box before portal swap (Alfa desktop CLS was grain-led,
+    // but split inject still must not resize the LCP H1).
+    const r = target.getBoundingClientRect()
+    if (r.height > 0) target.style.minHeight = `${Math.ceil(r.height)}px`
+    if (r.width > 0) target.style.minWidth = `${Math.ceil(r.width)}px`
     target.querySelectorAll('[data-hero-ssr]').forEach((n) => n.remove())
   }, [target])
   return createPortal(

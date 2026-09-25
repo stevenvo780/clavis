@@ -96,6 +96,23 @@
   font-size: 1.4rem;
   font-weight: 500;
   letter-spacing: -0.01em;
+  /* Reserve metrics so Cormorant optional fallback→face cannot CLS the header. */
+  min-height: 1.15em;
+  display: inline-block;
+}
+/* Cold-load LCP: keep header wordmark out of the candidate set while intro is pending
+   so SSR #hero-title (much larger) can win. Fade in after finishIntro / boot release.
+   Link keeps aria-label for a11y. SplitChars post-LCP unchanged. */
+html.intro-pending .brand-word-main,
+html.intro-pending .brand-word-tag {
+  opacity: 0;
+}
+html.intro-done .brand-word-main,
+html.intro-done .brand-word-tag,
+html:not(.js) .brand-word-main,
+html:not(.js) .brand-word-tag {
+  opacity: 1;
+  transition: opacity 0.35s ease;
 }
 .brand-word-tag {
   font-family: var(--font-mono);
@@ -554,26 +571,39 @@ html.cursor-visible .cursor-ring {
   opacity: 1;
 }
 
-/* ---------- Grano de película ---------- */
+/* ---------- Grano de película ----------
+   Alfa desktop CLS ~0.197 attributed to .grain translating a viewport*-sized
+   layer (inset:-100%). Clip the animated layer inside overflow:hidden so the
+   document never sees layout movement; look unchanged.
+   -------------------------------- */
 .grain {
   position: fixed;
-  inset: -100%;
+  inset: 0;
   z-index: 85;
   pointer-events: none;
+  overflow: hidden;
   opacity: 0.055;
+}
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   animation: grain 0.9s steps(5) infinite;
+  will-change: transform;
 }
 @keyframes grain {
-  0% { translate: 0 0; }
-  20% { translate: -4% 3%; }
-  40% { translate: 3% -5%; }
-  60% { translate: -6% -2%; }
-  80% { translate: 5% 4%; }
-  100% { translate: 0 0; }
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-2%, 1.5%); }
+  40% { transform: translate(1.5%, -2.5%); }
+  60% { transform: translate(-3%, -1%); }
+  80% { transform: translate(2.5%, 2%); }
+  100% { transform: translate(0, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .grain { animation: none; }
+  .grain::before { animation: none; }
 }
 
 /* ---------- Preloader ----------
