@@ -13,7 +13,9 @@ export default function Hero({ obras, documentos }: { obras: number; documentos:
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-parallax">
-        <div className="hero-top" data-reveal="fade">
+        {/* data-in baked: RevealManager mounts after afterLcpThenIdle (≥8s); without it
+            html.js [data-reveal=fade]:not([data-in]) keeps eyebrow opacity 0 post-intro. */}
+        <div className="hero-top" data-reveal="fade" data-in="">
           <span className="eyebrow">
             <span className="eyebrow-dot" /> Mouseîon · Galería de filosofía
           </span>
@@ -51,7 +53,7 @@ export default function Hero({ obras, documentos }: { obras: number; documentos:
         </div>
       </div>
 
-      <div className="hero-foot" data-reveal="fade" style={{ '--d': '900ms' } as CSSProperties}>
+      <div className="hero-foot" data-reveal="fade" data-in="" style={{ '--d': '900ms' } as CSSProperties}>
         <div className="hero-scroll" aria-hidden="true">
           <span className="hero-scroll-line" />
           <span>Desliza</span>
