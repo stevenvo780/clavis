@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useRef, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { ELEMENTS } from '@/lib/elements'
 import { setSolidity } from '@/lib/experience'
 import SplitChars from '@/components/visual/SplitChars'
@@ -76,6 +76,10 @@ export default function Hero({ obras, documentos }: { obras: number; documentos:
   const root = useRef<HTMLElement>(null)
   useSceneSection(root, SCENE.hero)
 
+  // LCP: plain SSR text in #hero-title first; SplitChars only after LCP+idle.
+  const [splitReady, setSplitReady] = useState(false)
+  useEffect(() => afterLcpThenIdle(() => setSplitReady(true), 3500), [])
+
   useEffect(() => {
     // La forma "emerge" de la gota cuando termina la intro — no necesita GSAP.
     const solidify = () => setSolidity(1)
@@ -128,7 +132,13 @@ export default function Hero({ obras, documentos }: { obras: number; documentos:
         </div>
 
         <h1 id="hero-title" className="hero-title">
-          <SplitChars text="Paideía" accent={(c) => c === 'í'} />
+          {splitReady ? (
+            <SplitChars text="Paideía" accent={(c) => c === 'í'} />
+          ) : (
+            <>
+              Paide<span className="split-accent">í</span>a
+            </>
+          )}
         </h1>
 
         <div className="hero-sub">

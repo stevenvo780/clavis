@@ -3,7 +3,6 @@ import { Inter, JetBrains_Mono, Cormorant_Garamond, EB_Garamond } from 'next/fon
 import './globals.css'
 import './styles/chrome.css'
 import './styles/home.css'
-import './styles/pages.css'
 import SiteHeader from '@/components/site/SiteHeader'
 import SiteFooter from '@/components/site/SiteFooter'
 import DeferredChrome from '@/components/site/DeferredChrome'
@@ -29,8 +28,7 @@ const cormorantGaramond = Cormorant_Garamond({
   display: 'swap',
   preload: true,
   variable: '--font-display',
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
+  weight: ['500'],
 })
 
 const ebGaramond = EB_Garamond({
@@ -174,6 +172,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es" className={fontVars} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
+        <style
+          dangerouslySetInnerHTML={{
+            __html:
+              '.hero-title{font-family:var(--font-display),Georgia,"Times New Roman",serif;font-weight:500;font-size:clamp(5.2rem,19.5vw,21rem);line-height:.8;letter-spacing:-.05em;color:#e8e0d4;margin:clamp(1rem,6vh,4rem) 0 0 -.05em;text-shadow:0 10px 60px rgba(5,10,12,.35);opacity:1;visibility:visible}.hero-title .split-accent{color:#e0a85e;font-style:italic}@media(max-width:899px){.hero-title{margin-top:0}}',
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
