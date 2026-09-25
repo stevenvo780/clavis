@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { works } from './trabajos/works'
 import { getContentByModule } from '@/lib/content'
 import { ELEMENTS } from '@/lib/elements'
-import SceneLayer from '@/components/three/SceneLayer'
+import DeferredSceneLayer from '@/components/three/DeferredSceneLayer'
 import Preloader from '@/components/site/Preloader'
 import Hero from '@/components/home/Hero'
 import Manifesto from '@/components/home/Manifesto'
@@ -80,7 +80,7 @@ export default function Home() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Preloader />
-      <SceneLayer />
+      <DeferredSceneLayer />
 
       <div className="home">
         <Hero obras={works.length} documentos={totalDocs} />

@@ -1213,7 +1213,7 @@ html.no-motion .work-card-solid .solid-glyph-front {
   text-shadow: 0 2px 30px rgba(5, 10, 12, 0.9);
 }
 .outro-trans span {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans), Georgia, sans-serif;
   font-style: normal;
   font-size: 0.82rem;
   color: var(--text-muted);

@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
 @import "tailwindcss";
 
 /* ============================================================
@@ -43,9 +42,7 @@
   --gutter: clamp(1rem, 4vw, 3.5rem);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
-  --font-display: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
-  --font-greek: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  /* --font-sans / --font-display / --font-greek / --font-mono from next/font on <html> */
   --reveal-transition: opacity 1s var(--ease-out) var(--d, 0ms), translate 1.1s var(--ease-out) var(--d, 0ms);
 }
 
@@ -77,7 +74,7 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', Georgia, sans-serif;
+  font-family: var(--font-sans), Georgia, sans-serif;
   /* clip (no hidden): hidden convertiría el body en contenedor de scroll y rompería sticky */
   overflow-x: clip;
 }
@@ -94,16 +91,16 @@ main {
 
 /* Cormorant Garamond for humanistic headings (paideia-specific) */
 h1, h2, h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-display), Georgia, serif;
 }
 
 .font-greek,
 [lang='grc'] {
-  font-family: var(--font-greek);
+  font-family: var(--font-greek), Georgia, serif;
 }
 
 code, pre, kbd, samp, .font-mono {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono), ui-monospace, monospace;
 }
 
 a {
@@ -188,7 +185,7 @@ summary:focus-visible,
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4 {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--font-display), Georgia, serif;
   font-weight: 700;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
@@ -238,7 +235,7 @@ summary:focus-visible,
   padding: 0.1em 0.3em;
   border-radius: 0.25rem;
   font-size: 0.875em;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono), ui-monospace, monospace;
 }
 .prose pre code {
   background: transparent;
@@ -444,6 +441,17 @@ html.js:not(.intro-done) [data-reveal='split'] .split-char {
 
 .page-enter {
   animation: page-in 0.9s var(--ease-out);
+}
+
+
+/* PAI-002: hero LCP (title + lead) must paint without waiting for RevealManager / intro.
+   Other hero reveals (top/foot) still animate. SplitChars/Scramble remain for enhancement. */
+html.js .hero .hero-title,
+html.js .hero .hero-title .split-char,
+html.js .hero .hero-sub,
+html.js .hero .hero-lead {
+  opacity: 1 !important;
+  translate: none !important;
 }
 
 /* Movimiento reducido o bundle que nunca hidrató: todo visible, sin transiciones de entrada. */

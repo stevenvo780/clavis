@@ -1,15 +1,42 @@
 import type { Metadata, Viewport } from 'next'
+import { Inter, JetBrains_Mono, Cormorant_Garamond, EB_Garamond } from 'next/font/google'
 import './globals.css'
 import './styles/chrome.css'
 import './styles/home.css'
 import './styles/pages.css'
 import SiteHeader from '@/components/site/SiteHeader'
 import SiteFooter from '@/components/site/SiteFooter'
-import SmoothScroll from '@/components/site/SmoothScroll'
-import RevealManager from '@/components/site/RevealManager'
-import Cursor from '@/components/site/Cursor'
-import ScrollProgress from '@/components/site/ScrollProgress'
-import TiltManager from '@/components/site/TiltManager'
+import DeferredChrome from '@/components/site/DeferredChrome'
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
+  weight: ['400', '500', '600', '700', '800'],
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
+  weight: ['400', '500', '700'],
+})
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-display',
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+})
+
+const ebGaramond = EB_Garamond({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-greek',
+  weight: ['400', '500'],
+  style: ['normal', 'italic'],
+})
 
 const SITE_URL = 'https://paideia.stevenvallejo.com'
 
@@ -136,9 +163,11 @@ const jsonLd = {
  */
 const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');var seen=false;try{seen=!!sessionStorage.getItem('paideia:intro')}catch(e){}var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(location.pathname!=='/'||seen||rm){d.classList.add('intro-done')}else{d.classList.add('intro-pending')}setTimeout(function(){if(!d.classList.contains('hydrated')){d.classList.remove('intro-pending');d.classList.add('intro-done','no-motion')}},8000)})();`
 
+const fontVars = `${inter.variable} ${jetbrainsMono.variable} ${cormorantGaramond.variable} ${ebGaramond.variable}`
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="es" className={fontVars} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
         <script
@@ -147,17 +176,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="antialiased min-h-screen flex flex-col">
-        <SmoothScroll />
-        <RevealManager />
-        <ScrollProgress />
+        <DeferredChrome />
         <SiteHeader />
         <main id="contenido" className="flex-1" tabIndex={-1}>
           {children}
         </main>
         <SiteFooter />
         <div className="grain" aria-hidden="true" />
-        <TiltManager />
-        <Cursor />
       </body>
     </html>
   )

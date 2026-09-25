@@ -56,11 +56,11 @@ export default function Hero({ obras, documentos }: { obras: number; documentos:
           </span>
         </div>
 
-        <h1 id="hero-title" className="hero-title" data-reveal="split">
+        <h1 id="hero-title" className="hero-title">
           <SplitChars text="Paideía" accent={(c) => c === 'í'} />
         </h1>
 
-        <div className="hero-sub" data-reveal="up" style={{ '--d': '550ms' } as CSSProperties}>
+        <div className="hero-sub">
           <p className="hero-kicker">galería de filosofía</p>
           <p className="hero-lead">
             Tesis, ensayos y ponencias sobre mente y materia, ontología, ciudad, retórica, lógica,
