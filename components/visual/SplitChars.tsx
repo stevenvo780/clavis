@@ -10,16 +10,17 @@ interface Props {
 }
 
 /**
- * Parte un texto en letras enmascaradas por palabra. Se revelan con CSS cuando un
- * ancestro con `data-reveal` recibe `data-in` (ver RevealManager y globals.css).
+ * Parte un texto en letras enmascaradas por palabra.
+ * Single accessible copy via aria-label; glyph spans aria-hidden.
+ * (sr-only + visible chars previously made H1 textContent "PaideíaPaideía".)
+ * Reveal CSS unchanged — SplitChars still deferred ≥8s on home (ship LCP path).
  */
 export default function SplitChars({ text, className = '', offset = 0, accent }: Props) {
   let i = offset
   const words = text.split(' ')
   return (
-    <>
-      <span className="sr-only">{text}</span>
-      <span aria-hidden="true" className={`split ${className}`}>
+    <span className={`split ${className}`.trim()} aria-label={text}>
+      <span aria-hidden="true">
         {words.map((word, wi) => (
           <span key={wi} className="split-word">
             {[...word].map((ch, ci) => {
@@ -38,6 +39,6 @@ export default function SplitChars({ text, className = '', offset = 0, accent }:
           </span>
         ))}
       </span>
-    </>
+    </span>
   )
 }

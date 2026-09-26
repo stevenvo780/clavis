@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { useRef, type CSSProperties } from 'react'
 import Scramble from '@/components/visual/Scramble'
 import Magnetic from '@/components/site/Magnetic'
-import { scrollToTarget } from '@/components/site/SmoothScroll'
 import { SCENE, useSceneSection } from './useSceneSection'
 
 /** Cierre: vuelve el cristal (dodecaedro, el cosmos) con la inscripción de la Academia. */
@@ -33,7 +32,9 @@ export default function Outro() {
               data-cursor="Volver"
               onClick={(e) => {
                 e.preventDefault()
-                scrollToTarget('#elementos')
+                void import('@/components/site/SmoothScroll').then((m) => m.scrollToTarget('#elementos')).catch(() => {
+                  document.querySelector('#elementos')?.scrollIntoView({ behavior: 'smooth' })
+                })
               }}
             >
               <span className="btn-pill-fill" aria-hidden="true" />

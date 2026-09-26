@@ -1,9 +1,8 @@
 'use client'
 
 import { useEffect, type RefObject } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { setElementBlend, setLayout, setSceneActive, type SceneLayout } from '@/lib/experience'
+import { afterLcpThenIdle, loadGsap } from '@/lib/afterLcp'
 
 export interface SceneConfig {
   active: boolean
@@ -31,23 +30,34 @@ export function applyScene(config: SceneConfig) {
 /**
  * Aplica `config` mientras la sección cubre el centro del viewport. Como las secciones
  * son contiguas, en cada momento manda exactamente una.
+ * GSAP/ScrollTrigger load after LCP so this hook does not pull them into the boot chunk.
  */
 export function useSceneSection(ref: RefObject<HTMLElement | null>, config: SceneConfig, onActive?: () => void) {
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-    const el = ref.current
-    if (!el) return
-    const st = ScrollTrigger.create({
-      trigger: el,
-      start: 'top center',
-      end: 'bottom center',
-      onToggle: (self) => {
-        if (!self.isActive) return
-        applyScene(config)
-        onActive?.()
-      },
+    let st: { kill: () => void } | null = null
+    let cancelled = false
+    const cancelWait = afterLcpThenIdle(() => {
+      void loadGsap().then(({ ScrollTrigger }) => {
+        if (cancelled) return
+        const el = ref.current
+        if (!el) return
+        st = ScrollTrigger.create({
+          trigger: el,
+          start: 'top center',
+          end: 'bottom center',
+          onToggle: (self) => {
+            if (!self.isActive) return
+            applyScene(config)
+            onActive?.()
+          },
+        })
+      })
     })
-    return () => st.kill()
+    return () => {
+      cancelled = true
+      cancelWait()
+      st?.kill()
+    }
     // config y onActive son estables por sección
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref])

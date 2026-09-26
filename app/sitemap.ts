@@ -10,37 +10,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: SITE_URL,
+      url: `${SITE_URL}/`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
-      url: `${SITE_URL}/griego`,
+      url: `${SITE_URL}/griego/`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/neurofilosofia`,
+      url: `${SITE_URL}/neurofilosofia/`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/filosofia-ciudad`,
+      url: `${SITE_URL}/filosofia-ciudad/`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/ponencias`,
+      url: `${SITE_URL}/ponencias/`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${SITE_URL}/buscar`,
+      url: `${SITE_URL}/buscar/`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
@@ -48,7 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   const contentRoutes: MetadataRoute.Sitemap = allItems.map((item) => ({
-    url: `${SITE_URL}/${item.module}/${item.slug}`,
+    url: `${SITE_URL}/${item.module}/${item.slug}/`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.6,

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { gsap } from 'gsap'
+import { afterLcpThenIdle, loadGsap } from '@/lib/afterLcp'
 import type { Work } from '@/app/trabajos/works'
 import { ELEMENT_BY_KEY } from '@/lib/elements'
 import SolidGlyph from '@/components/visual/SolidGlyph'
@@ -30,20 +30,32 @@ export default function EssayIndex({ works }: { works: Work[] }) {
   useSceneSection(root, SCENE.off)
 
   useEffect(() => {
-    const p = preview.current
     const list = root.current
-    if (!p || !list) return
+    const previewEl = preview.current
+    if (!previewEl || !list) return
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
     if (!fine) return
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const xTo = gsap.quickTo(p, 'x', { duration: reduced ? 0 : 0.55, ease: 'power3' })
-    const yTo = gsap.quickTo(p, 'y', { duration: reduced ? 0 : 0.55, ease: 'power3' })
-    const onMove = (e: PointerEvent) => {
-      xTo(e.clientX + 28)
-      yTo(e.clientY - 120)
+    let cancelled = false
+    let onMove: ((e: PointerEvent) => void) | undefined
+    const cancelWait = afterLcpThenIdle(() => {
+      void loadGsap().then(({ gsap }) => {
+        if (cancelled || !preview.current) return
+        const p = preview.current
+        const xTo = gsap.quickTo(p, 'x', { duration: reduced ? 0 : 0.55, ease: 'power3' })
+        const yTo = gsap.quickTo(p, 'y', { duration: reduced ? 0 : 0.55, ease: 'power3' })
+        onMove = (e: PointerEvent) => {
+          xTo(e.clientX + 28)
+          yTo(e.clientY - 120)
+        }
+        list.addEventListener('pointermove', onMove)
+      })
+    })
+    return () => {
+      cancelled = true
+      cancelWait()
+      if (onMove) list.removeEventListener('pointermove', onMove)
     }
-    list.addEventListener('pointermove', onMove)
-    return () => list.removeEventListener('pointermove', onMove)
   }, [])
 
   const current = active !== null ? works[active] : null

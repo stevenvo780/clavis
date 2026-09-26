@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const item = getContentBySlug('griego', slug)
   if (!item) return { title: 'Paideía · Mouseîon' }
-  const canonicalUrl = `https://paideia.stevenvallejo.com/griego/${slug}`
+  const canonicalUrl = `https://paideia.stevenvallejo.com/griego/${slug}/`
   return {
     title: `${item.title} — Griego Clásico · Mouseîon`,
     description: item.excerpt ? item.excerpt.slice(0, 155) : 'Documento del curso universitario de Griego Clásico. Parte de Paideía.',
