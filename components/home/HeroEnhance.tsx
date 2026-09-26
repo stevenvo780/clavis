@@ -8,7 +8,6 @@
 
 import { useEffect, useLayoutEffect, useState, type ComponentType } from 'react'
 import { createPortal } from 'react-dom'
-import { setSolidity } from '@/lib/experience'
 import { afterLcpThenIdle, loadGsap } from '@/lib/afterLcp'
 import { SCENE, applyScene } from './useSceneSection'
 
@@ -104,10 +103,6 @@ export default function HeroEnhance() {
   }, [])
 
   useEffect(() => {
-    const solidify = () => setSolidity(1)
-    if (document.documentElement.classList.contains('intro-done')) solidify()
-    else window.addEventListener('paideia:intro', solidify, { once: true })
-
     let ctx: { revert: () => void } | null = null
     let st: { kill: () => void } | null = null
     let cancelled = false
@@ -146,7 +141,6 @@ export default function HeroEnhance() {
     return () => {
       cancelled = true
       cancelWait()
-      window.removeEventListener('paideia:intro', solidify)
       st?.kill()
       ctx?.revert()
     }
