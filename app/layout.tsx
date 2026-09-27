@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Cormorant_Garamond, EB_Garamond } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import './styles/chrome.css'
 import SiteHeader from '@/components/site/SiteHeader'
@@ -199,6 +200,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         <SiteFooter />
         <div className="grain" aria-hidden="true" />
+        <Analytics />
       </body>
     </html>
   )
