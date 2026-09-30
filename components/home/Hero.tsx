@@ -35,7 +35,7 @@ export default function Hero({ obras, documentos }: { obras: number; documentos:
         <div className="hero-sub">
           <p className="hero-kicker">galería de filosofía</p>
           <p className="hero-lead">
-            Tesis, ensayos y ponencias sobre mente y materia, ontología, ciudad, retórica, lógica,
+            Tesis, ensayos, ponencias y cuadernos sobre mente y materia, ontología, ciudad, retórica, lógica,
             sistemas complejos, religión y técnica.
           </p>
           <div className="hero-actions">

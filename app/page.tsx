@@ -37,6 +37,7 @@ const jsonLd = {
 
 export default function Home() {
   const ponencias = works.filter((w) => w.tipo === 'ponencia')
+  const cuadernos = works.filter((w) => w.tipo === 'cuaderno')
   const escritos = works.filter((w) => w.tipo === 'ensayo' || w.tipo === 'tesis')
 
   const counts = {
@@ -104,14 +105,17 @@ export default function Home() {
         />
         <Elements groups={groups} />
 
-        <PonenciasRail count={ponencias.length}>
+        <PonenciasRail count={ponencias.length} notebookCount={cuadernos.length}>
+          {cuadernos.map((w, i) => (
+            <WorkCard key={w.id} work={w} index={i} prefix="C" />
+          ))}
           {ponencias.map((w, i) => (
             <WorkCard key={w.id} work={w} index={i} />
           ))}
           <Link href="/ponencias" className="rail-end" data-cursor="Ver todas">
             <SolidGlyph solid="dodecaedro" size={140} />
-            <span className="rail-end-title">Todas las ponencias</span>
-            <span className="rail-end-sub">Incluye decks de curso — Yuk Hui, Fedón</span>
+            <span className="rail-end-title">Ponencias y cuadernos</span>
+            <span className="rail-end-sub">Congreso, Yuk Hui, Fedón y más</span>
             <span className="rail-end-arrow" aria-hidden="true">
               →
             </span>

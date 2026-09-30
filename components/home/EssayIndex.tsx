@@ -8,7 +8,7 @@ import SolidGlyph from '@/components/visual/SolidGlyph'
 import { splitTitle } from '@/components/visual/WorkCard'
 import { SCENE, useSceneSection } from './useSceneSection'
 
-const TIPO: Record<Work['tipo'], string> = { ponencia: 'Ponencia', ensayo: 'Ensayo', tesis: 'Tesis' }
+const TIPO: Record<Work['tipo'], string> = { ponencia: 'Ponencia', ensayo: 'Ensayo', tesis: 'Tesis', cuaderno: 'Cuaderno' }
 
 function source(url: string) {
   try {

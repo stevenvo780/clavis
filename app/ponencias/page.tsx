@@ -2,14 +2,15 @@ import type { CSSProperties } from 'react'
 import { ELEMENT_BY_KEY, type ElementKey } from '@/lib/elements'
 import PageHero from '@/components/visual/PageHero'
 import SolidGlyph from '@/components/visual/SolidGlyph'
+import { works } from '@/app/trabajos/works'
 
 export const metadata = {
-  title: 'Ponencias — portal de humanidades digitales',
-  description: 'Presentaciones académicas interactivas en filosofía, IA y ciudad: silicio o tejido (mente y materia), cartografía crítica de Medellín, la retórica como técnica, Platón Fedón, Yuk Hui sobre IA y Geoffrey Hinton. Ponencias de Steven Vallejo, parte de Paideía.',
+  title: 'Ponencias y cuadernos — portal de humanidades digitales',
+  description: 'Ponencias académicas interactivas y un cuaderno de congreso con seis conversaciones sobre IA, conocimiento y juicio. Diagramas de argumentos, mapas conceptuales y notas personales, junto a los decks de filosofía, neurofilosofía y ciudad de Paideía.',
   alternates: { canonical: 'https://paideia.stevenvallejo.com/ponencias/' },
   openGraph: {
-    title: 'Ponencias · Paideía — Mouseîon',
-    description: 'Academic presentations in philosophy and AI: Plato Phaedo, Yuk Hui on AI limits, Geoffrey Hinton and neural networks.',
+    title: 'Ponencias y cuadernos · Paideía — Mouseîon',
+    description: 'Interactive philosophy presentations and a conference notebook with six conversations on AI, knowledge and judgment.',
     url: 'https://paideia.stevenvallejo.com/ponencias',
     siteName: 'Mouseîon',
     locale: 'es_ES',
@@ -17,8 +18,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image' as const,
-    title: 'Ponencias · Paideía — Mouseîon',
-    description: 'Presentaciones academicas: Platon, Yuk Hui (IA) y Hinton (redes neuronales). Parte de Paideía.',
+    title: 'Ponencias y cuadernos · Paideía — Mouseîon',
+    description: 'Filosofía en conversación: cuaderno de congreso y presentaciones interactivas sobre filosofía, IA y ciudad.',
     images: ['https://paideia.stevenvallejo.com/og-image.png'],
   },
 }
@@ -69,6 +70,17 @@ const ponencias: { title: string; subtitle: string; url: string; elemento: Eleme
 ]
 
 export default function PonenciasPage() {
+  const cuadernos = works.filter((work) => work.tipo === 'cuaderno')
+  const recorridos = [
+    ...cuadernos.map((work) => ({
+      title: work.titulo,
+      subtitle: `Cuaderno de congreso · ${work.topics.slice(0, 3).join(' · ')} · Mapas y notas personales`,
+      url: work.url,
+      elemento: work.elemento,
+    })),
+    ...ponencias,
+  ]
+
   return (
     <div className="page">
       <div className="container-wide">
@@ -77,16 +89,19 @@ export default function PonenciasPage() {
           eyebrowNum="λόγοι"
           title="Ponencias"
           titleEn="Presentations"
-          description="Presentaciones académicas en filosofía e inteligencia artificial. Decks interactivos elaborados a partir de los cursos de Griego Clásico, Neurofilosofía y Filosofía de la Ciudad."
-          descriptionEn="Academic presentations in philosophy and artificial intelligence. Interactive decks built from Classical Greek, Neurophilosophy and Philosophy of the City courses."
+          description="Ponencias de curso y un cuaderno de congreso para recorrer seis conversaciones sobre IA, conocimiento y juicio. Decks interactivos, diagramas de argumentos, mapas conceptuales y notas personales."
+          descriptionEn="Academic course presentations and a conference notebook covering six conversations on AI, knowledge and judgment. Interactive decks, argument diagrams, concept maps and personal notes."
           solid="dodecaedro"
           color="#8d7cc0"
           visualLabel="dodecaedro · 12 caras"
-          stats={[{ value: ponencias.length, label: 'ponencias disponibles' }]}
+          stats={[
+            { value: ponencias.length, label: 'ponencias disponibles' },
+            { value: cuadernos.length, label: 'cuaderno de congreso' },
+          ]}
         />
 
-        <section className="deck-list" aria-label={`Presentaciones (${ponencias.length})`}>
-          {ponencias.map((p, i) => {
+        <section className="deck-list" aria-label={`Ponencias y cuadernos (${recorridos.length})`}>
+          {recorridos.map((p, i) => {
             const el = ELEMENT_BY_KEY[p.elemento]
             const [main, ...rest] = p.title.split(' — ')
             return (

@@ -3,7 +3,7 @@ import type { Work } from '@/app/trabajos/works'
 import { ELEMENT_BY_KEY } from '@/lib/elements'
 import SolidGlyph from './SolidGlyph'
 
-const TIPO: Record<Work['tipo'], string> = { ponencia: 'Ponencia', ensayo: 'Ensayo', tesis: 'Tesis' }
+const TIPO: Record<Work['tipo'], string> = { ponencia: 'Ponencia', ensayo: 'Ensayo', tesis: 'Tesis', cuaderno: 'Cuaderno de congreso' }
 
 /** Separa "Título — subtítulo" (convención de works.ts). */
 export function splitTitle(titulo: string) {
