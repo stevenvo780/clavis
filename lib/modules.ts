@@ -20,3 +20,15 @@ export function anchorId(text: string) {
       .replace(/^-|-$/g, '')
   )
 }
+
+/** IDs de encabezados compatibles con las referencias del archivo Markdown. */
+export function markdownHeadingId(text: string) {
+  return text
+    .replace(/\$\\phi\$/g, 'φ')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(new RegExp('[^\\p{L}\\p{N}\\s-]', 'gu'), '')
+    .trim()
+    .replace(/\s+/g, '-')
+}
