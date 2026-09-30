@@ -1,6 +1,6 @@
 import type { ElementKey } from '@/lib/elements'
 
-export type WorkType = 'ponencia' | 'ensayo' | 'tesis'
+export type WorkType = 'ponencia' | 'ensayo' | 'tesis' | 'cuaderno'
 
 export interface Work {
   id: string
@@ -14,6 +14,15 @@ export interface Work {
 }
 
 export const works: Work[] = [
+  {
+    id: 'congreso-filosofia',
+    titulo: 'Filosofía en conversación — Cuaderno del congreso',
+    tipo: 'cuaderno',
+    abstract: 'Cuaderno interactivo para recorrer seis ponencias sobre inteligencia artificial, conocimiento y juicio. Sigue los argumentos con diagramas, conecta conceptos en mapas y guarda o exporta tus propias notas.',
+    topics: ['IA y filosofía', 'epistemología', 'ética y juicio', 'mapas conceptuales', 'notas personales', 'congreso'],
+    url: 'https://congreso-filosofia.stevenvallejo.com/',
+    elemento: 'aire',
+  },
   {
     id: 'silicio-tejido',
     titulo: '¿Silicio o Tejido? — Límites materiales y ontológicos de la mente',

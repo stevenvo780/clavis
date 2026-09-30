@@ -10,7 +10,7 @@ const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayout
  * En escritorio, el scroll vertical desplaza la fila de tarjetas en horizontal (sección
  * fija con `position: sticky`). En pantallas táctiles/estrechas queda como carrusel nativo.
  */
-export default function PonenciasRail({ count, children }: { count: number; children: ReactNode }) {
+export default function PonenciasRail({ count, notebookCount = 0, children }: { count: number; notebookCount?: number; children: ReactNode }) {
   const root = useRef<HTMLElement>(null)
   const track = useRef<HTMLDivElement>(null)
   const [pinned, setPinned] = useState(false)
@@ -90,14 +90,14 @@ export default function PonenciasRail({ count, children }: { count: number; chil
       <div className="rail-sticky">
         <div className="rail-head container-wide">
           <p className="section-label" data-reveal="up">
-            <span className="section-num">§ 03</span> Ponencias
+            <span className="section-num">§ 03</span> {notebookCount > 0 ? 'Ponencias y cuadernos' : 'Ponencias'}
           </p>
           <div className="rail-head-row">
             <h2 id="rail-title" className="section-title" data-reveal="clip">
-              Decks <em>interactivos</em>
+              Decks <em>{notebookCount > 0 ? 'y cuadernos' : 'interactivos'}</em>
             </h2>
             <p className="rail-hint" data-reveal="fade">
-              <span className="rail-count">{String(count).padStart(2, '0')}</span> presentaciones —{' '}
+              <span className="rail-count">{String(count + notebookCount).padStart(2, '0')}</span> {notebookCount > 0 ? 'recorridos' : 'presentaciones'} —{' '}
               {pinned ? 'sigue bajando' : 'desliza'} <span aria-hidden="true">→</span>
             </p>
           </div>

@@ -7,7 +7,7 @@ import { SCENE, useSceneSection } from './useSceneSection'
 
 // Texto de la portada original; los fragmentos entre *asteriscos* van resaltados.
 const TEXT =
-  'Mi trabajo en filosofía: tesis, ensayos y ponencias propios sobre una pluralidad de temas — *mente y materia,* *ontología,* *filosofía de la ciudad,* *retórica,* *lógica,* *sistemas complejos,* *filosofía de la religión* y *de la técnica.*'
+  'Mi trabajo en filosofía: tesis, ensayos y ponencias, junto a cuadernos de lectura sobre una pluralidad de temas — *mente y materia,* *ontología,* *filosofía de la ciudad,* *retórica,* *lógica,* *sistemas complejos,* *filosofía de la religión* y *de la técnica.*'
 
 interface Stat {
   value: number

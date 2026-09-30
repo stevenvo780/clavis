@@ -14,7 +14,7 @@ export interface ElementGroup {
   works: { id: string; titulo: string; tipo: string; url: string }[]
 }
 
-const TIPO: Record<string, string> = { ponencia: 'Ponencia', ensayo: 'Ensayo', tesis: 'Tesis' }
+const TIPO: Record<string, string> = { ponencia: 'Ponencia', ensayo: 'Ensayo', tesis: 'Tesis', cuaderno: 'Cuaderno' }
 const smoothstep = (a: number, b: number, x: number) => {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)))
   return t * t * (3 - 2 * t)
