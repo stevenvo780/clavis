@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNod
 import Link from 'next/link'
 import { MODULE_VISUAL, type ModuleKey } from '@/lib/modules'
 import SolidGlyph from '@/components/visual/SolidGlyph'
+import type { SolidKey } from '@/lib/solids'
 
 interface SearchItem {
   slug: string
@@ -11,6 +12,7 @@ interface SearchItem {
   section: string
   module: string
   excerpt: string
+  href?: string
 }
 
 interface Props {
@@ -19,7 +21,9 @@ interface Props {
 
 const RESULTS_PER_PAGE = 20
 const SUGGESTIONS = ['Platón', 'conciencia', 'Heidegger', 'verbo', 'memoria', 'ciudad', 'Chalmers', 'λόγος']
-const MODULES = Object.keys(MODULE_VISUAL) as ModuleKey[]
+type FilterKey = ModuleKey | 'obras'
+const SEARCH_VISUAL = { ...MODULE_VISUAL, obras: { label: 'Obras y cuadernos', solid: 'dodecaedro' as SolidKey, color: '#e0a85e' } }
+const MODULES = Object.keys(SEARCH_VISUAL) as FilterKey[]
 
 /** Pliega acentos y espíritus letra por letra, así los índices coinciden con el original. */
 function fold(text: string) {
@@ -50,7 +54,7 @@ function highlight(text: string, q: string): ReactNode {
 
 export default function SearchClient({ allItems }: Props) {
   const [query, setQuery] = useState('')
-  const [filter, setFilter] = useState<ModuleKey | 'todos'>('todos')
+  const [filter, setFilter] = useState<FilterKey | 'todos'>('todos')
   const [currentPage, setCurrentPage] = useState(1)
   const input = useRef<HTMLInputElement>(null)
 
@@ -58,7 +62,7 @@ export default function SearchClient({ allItems }: Props) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement
-      if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(t.tagName)) {
+      if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(t.tagName) && !t.isContentEditable) {
         e.preventDefault()
         input.current?.focus()
       }
@@ -128,7 +132,7 @@ export default function SearchClient({ allItems }: Props) {
         {q.length >= 2 && (
           <span>
             {allHits.length} resultado{allHits.length !== 1 ? 's' : ''}
-            {filter !== 'todos' && ` en ${MODULE_VISUAL[filter].label}`}
+            {filter !== 'todos' && ` en ${SEARCH_VISUAL[filter].label}`}
           </span>
         )}
       </div>
@@ -148,9 +152,9 @@ export default function SearchClient({ allItems }: Props) {
                 setFilter(m)
                 setCurrentPage(1)
               }}
-              style={{ '--c': MODULE_VISUAL[m].color } as CSSProperties}
+              style={{ '--c': SEARCH_VISUAL[m].color } as CSSProperties}
             >
-              {MODULE_VISUAL[m].label} <span>{counts[m]}</span>
+              {SEARCH_VISUAL[m].label} <span>{counts[m]}</span>
             </button>
           ))}
         </div>
@@ -162,10 +166,10 @@ export default function SearchClient({ allItems }: Props) {
 
       <ul className="search-results" key={`${q}:${filter}:${currentPage}`}>
         {hits.map((item, i) => {
-          const visual = MODULE_VISUAL[item.module as ModuleKey]
+          const visual = SEARCH_VISUAL[item.module as FilterKey]
           return (
             <li key={`${item.module}:${item.slug}`} style={{ '--i': Math.min(i, 12), '--c': visual?.color } as CSSProperties}>
-              <Link href={`/${item.module}/${item.slug}`} className="search-hit">
+              <Link href={item.href ?? `/${item.module}/${item.slug}`} className="search-hit" target={item.href ? '_blank' : undefined} rel={item.href ? 'noopener noreferrer' : undefined}>
                 <span className="search-hit-meta">
                   {visual && <SolidGlyph solid={visual.solid} size={18} />}
                   {visual?.label ?? item.module}
@@ -175,8 +179,9 @@ export default function SearchClient({ allItems }: Props) {
                 <span className="search-hit-title">{highlight(item.title, q)}</span>
                 {item.excerpt && <span className="search-hit-excerpt">{highlight(item.excerpt, q)}</span>}
                 <span className="search-hit-arrow" aria-hidden="true">
-                  →
+                  {item.href ? '↗' : '→'}
                 </span>
+                {item.href && <span className="sr-only"> (abre en nueva pestaña)</span>}
               </Link>
             </li>
           )
@@ -210,8 +215,8 @@ export default function SearchClient({ allItems }: Props) {
       {!query && (
         <div className="search-idle">
           <SolidGlyph solid="hexaedro" size={120} className="search-idle-glyph" />
-          <p>Busca en {allItems.length} documentos de los tres módulos</p>
-          <p className="search-idle-en">Search across {allItems.length} documents from all three modules</p>
+          <p>Busca en {allItems.filter((item) => !item.href).length} documentos y {allItems.filter((item) => item.href).length} obras</p>
+          <p className="search-idle-en">Search the academic archive, presentations and notebooks</p>
           <div className="chips search-suggestions" aria-label="Sugerencias">
             {SUGGESTIONS.map((s) => (
               <button key={s} type="button" className="chip" onClick={() => handleQueryChange(s)}>

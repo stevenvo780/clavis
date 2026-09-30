@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import type { CSSProperties } from 'react'
 import { ELEMENTS } from '@/lib/elements'
 import SolidGlyph from '@/components/visual/SolidGlyph'
@@ -13,8 +12,7 @@ export default function Hero({ obras, documentos }: { obras: number; documentos:
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-parallax">
-        {/* data-in baked: RevealManager mounts after afterLcpThenIdle (≥8s); without it
-            html.js [data-reveal=fade]:not([data-in]) keeps eyebrow opacity 0 post-intro. */}
+        {/* El primer viewport permanece legible antes de iniciar el revelado. */}
         <div className="hero-top" data-reveal="fade" data-in="">
           <span className="eyebrow">
             <span className="eyebrow-dot" /> Mouseîon · Galería de filosofía
@@ -46,9 +44,9 @@ export default function Hero({ obras, documentos }: { obras: number; documentos:
                 ↓
               </span>
             </a>
-            <Link href="/buscar" className="btn-line">
-              Buscar en el portal
-            </Link>
+            <a href="https://congreso-filosofia.stevenvallejo.com/" className="btn-line" target="_blank" rel="noopener noreferrer">
+              Congreso de filosofía <span aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
       </div>

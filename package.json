@@ -7,7 +7,8 @@
     "build": "NODE_ENV=production next build",
     "start": "next start",
     "lint": "eslint",
-    "test:contrast": "node scripts/contrast-check.mjs"
+    "test:contrast": "node scripts/contrast-check.mjs",
+    "test:site": "node scripts/qa-site.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
