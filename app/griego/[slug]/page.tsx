@@ -9,10 +9,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const item = getContentBySlug('griego', slug)
-  if (!item) return { title: 'Paideía · Mouseîon' }
+  if (!item) return { title: 'Paideía' }
   const canonicalUrl = `https://paideia.stevenvallejo.com/griego/${slug}/`
   return {
-    title: `${item.title} — Griego Clásico · Mouseîon`,
+    title: `${item.title} — Griego Clásico`,
     description: item.excerpt ? item.excerpt.slice(0, 155) : 'Documento del curso universitario de Griego Clásico. Parte de Paideía.',
     alternates: { canonical: canonicalUrl },
     openGraph: {

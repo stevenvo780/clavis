@@ -9,10 +9,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const item = getContentBySlug('neurofilosofia', slug)
-  if (!item) return { title: 'Paideía · Mouseîon' }
+  if (!item) return { title: 'Paideía' }
   const canonicalUrl = `https://paideia.stevenvallejo.com/neurofilosofia/${slug}/`
   return {
-    title: `${item.title} — Neurofilosofía · Mouseîon`,
+    title: `${item.title} — Neurofilosofía`,
     description: item.excerpt ? item.excerpt.slice(0, 155) : 'Documento del curso Filosofía de las Neurociencias. Parte de Paideía.',
     alternates: { canonical: canonicalUrl },
     openGraph: {
