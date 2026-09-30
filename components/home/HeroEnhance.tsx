@@ -8,7 +8,7 @@
 
 import { useEffect, useLayoutEffect, useState, type ComponentType } from 'react'
 import { createPortal } from 'react-dom'
-import { afterLcpThenIdle, loadGsap } from '@/lib/afterLcp'
+import { loadGsap } from '@/lib/afterLcp'
 import { SCENE, applyScene } from './useSceneSection'
 
 type SplitCharsProps = {
@@ -33,12 +33,11 @@ function TitlePortal({
   SplitChars: ComponentType<SplitCharsProps>
 }) {
   useLayoutEffect(() => {
-    // Freeze the SSR box before portal swap (Alfa desktop CLS was grain-led,
-    // but split inject still must not resize the LCP H1).
-    const r = target.getBoundingClientRect()
-    if (r.height > 0) target.style.minHeight = `${Math.ceil(r.height)}px`
-    if (r.width > 0) target.style.minWidth = `${Math.ceil(r.width)}px`
-    target.querySelectorAll('[data-hero-ssr]').forEach((n) => n.remove())
+    // React conserva la propiedad de los nodos SSR al navegar. Ocultarlos mantiene
+    // un único título visible sin romper el desmontaje; CSS reserva su altura.
+    const nodes = [...target.querySelectorAll<HTMLElement>('[data-hero-ssr]')]
+    nodes.forEach((node) => { node.hidden = true })
+    return () => nodes.forEach((node) => { node.hidden = false })
   }, [target])
   return createPortal(
     <SplitChars text="Paideía" accent={(c) => c === 'í'} className="hero-title-split" />,
@@ -54,11 +53,15 @@ function ScramblePortal({
   Scramble: ComponentType<ScrambleProps>
 }) {
   useLayoutEffect(() => {
-    target.textContent = ''
+    // El texto SSR conserva su nodo. El portal es su hermano: vaciar el contenedor
+    // en este efecto eliminaba también el portal recién montado por React.
+    target.hidden = true
+    return () => { target.hidden = false }
   }, [target])
+  if (!target.parentElement) return null
   return createPortal(
     <Scramble text="παιδεία" trigger="intro" delay={0.5} duration={1.4} className="font-greek" />,
-    target,
+    target.parentElement,
   )
 }
 
@@ -106,21 +109,29 @@ export default function HeroEnhance() {
     let ctx: { revert: () => void } | null = null
     let st: { kill: () => void } | null = null
     let cancelled = false
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let syncMotion: (() => void) | null = null
 
-    const cancelWait = afterLcpThenIdle(() => {
-      void loadGsap().then(({ gsap, ScrollTrigger }) => {
-        if (cancelled) return
-        const root = document.querySelector<HTMLElement>('.hero')
-        if (!root) return
-        applyScene(SCENE.hero)
-        st = ScrollTrigger.create({
-          trigger: root,
-          start: 'top center',
-          end: 'bottom center',
-          onToggle: (self) => {
-            if (self.isActive) applyScene(SCENE.hero)
-          },
-        })
+    // El loader ya esperó al LCP + idle: una segunda espera dejaba el hero sin
+    // coreografía al volver por SPA y podía activarlo tarde sobre otra sección.
+    void loadGsap().then(({ gsap, ScrollTrigger }) => {
+      if (cancelled) return
+      const root = document.querySelector<HTMLElement>('.hero')
+      if (!root) return
+      const bounds = root.getBoundingClientRect()
+      if (bounds.top <= window.innerHeight / 2 && bounds.bottom > window.innerHeight / 2) applyScene(SCENE.hero)
+      st = ScrollTrigger.create({
+        trigger: root,
+        start: 'top center',
+        end: 'bottom center',
+        onToggle: (self) => {
+          if (self.isActive) applyScene(SCENE.hero)
+        },
+      })
+      syncMotion = () => {
+        ctx?.revert()
+        ctx = null
+        if (motion.matches) return
         ctx = gsap.context(() => {
           gsap.to('.hero-parallax', {
             yPercent: -18,
@@ -135,12 +146,14 @@ export default function HeroEnhance() {
             scrollTrigger: { trigger: root, start: 'top top', end: '30% top', scrub: true },
           })
         }, root)
-      })
-    }, 8000)
+      }
+      syncMotion()
+      motion.addEventListener('change', syncMotion)
+    })
 
     return () => {
       cancelled = true
-      cancelWait()
+      if (syncMotion) motion.removeEventListener('change', syncMotion)
       st?.kill()
       ctx?.revert()
     }

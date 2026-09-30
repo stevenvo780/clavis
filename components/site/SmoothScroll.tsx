@@ -16,8 +16,9 @@ export function getLenis() {
 
 /** Desplaza suavemente a un selector o posición; cae a scroll nativo sin Lenis. */
 export function scrollToTarget(target: string | number | HTMLElement, offset = 0) {
-  if (lenis) {
-    lenis.scrollTo(target, { offset, duration: 1.6 })
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (lenis && !reducedMotion) {
+    lenis.scrollTo(target, { offset, duration: 1.6, force: true })
     return
   }
   const el = typeof target === 'string' ? document.querySelector(target) : target
@@ -50,15 +51,19 @@ export default function SmoothScroll() {
     gsap.ticker.add(tick)
     gsap.ticker.lagSmoothing(0)
 
-    // Sin scroll mientras el preloader cubre la portada.
-    const resume = () => instance.start()
-    if (document.documentElement.classList.contains('intro-pending')) {
-      instance.stop()
-      window.addEventListener('paideia:intro', resume, { once: true })
+    // El menú puede haberse abierto antes de que monte el carril de efectos.
+    const syncLock = () => {
+      const html = document.documentElement
+      if (html.classList.contains('intro-pending') || html.classList.contains('menu-open')) instance.stop()
+      else instance.start()
     }
+    syncLock()
+    window.addEventListener('paideia:intro', syncLock)
+    window.addEventListener('paideia:menu', syncLock)
 
     return () => {
-      window.removeEventListener('paideia:intro', resume)
+      window.removeEventListener('paideia:intro', syncLock)
+      window.removeEventListener('paideia:menu', syncLock)
       gsap.ticker.remove(tick)
       instance.destroy()
       lenis = null

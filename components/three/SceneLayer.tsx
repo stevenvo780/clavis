@@ -22,17 +22,23 @@ function hasWebGL2() {
 export default function SceneLayer() {
   const [supported, setSupported] = useState(false)
   const [active, setActive] = useState(experience.active)
-  const [ready, setReady] = useState(experience.ready)
+  // La señal global también libera la intro: el canvas tiene su propio primer frame.
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    experience.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
     const ok = hasWebGL2()
-    setSupported(ok)
+    const syncMotion = () => {
+      experience.reducedMotion = motion.matches
+      setReady(false)
+      setSupported(ok && !motion.matches)
+    }
+    syncMotion()
+    motion.addEventListener('change', syncMotion)
     // Sin WebGL2 el respaldo estático ya es la escena: no hagas esperar al preloader.
     if (!ok) markSceneReady()
     const sync = () => {
       setActive(experience.active)
-      setReady(experience.ready)
     }
     sync()
     const off = subscribeExperience(sync)
@@ -44,6 +50,7 @@ export default function SceneLayer() {
     window.addEventListener('pointermove', onPointer, { passive: true })
     return () => {
       off()
+      motion.removeEventListener('change', syncMotion)
       window.removeEventListener('pointermove', onPointer)
     }
   }, [])
@@ -53,7 +60,7 @@ export default function SceneLayer() {
       <div className="scene-fallback">
         <SolidGlyph solid="dodecaedro" size={220} className="scene-fallback-glyph" />
       </div>
-      {supported && <CrystalCanvas active={active} />}
+      {supported && <CrystalCanvas active={active} onReady={() => setReady(true)} />}
     </div>
   )
 }

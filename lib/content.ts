@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import { anchorId } from './modules'
 
 export type Module = 'griego' | 'neurofilosofia' | 'filosofia-ciudad'
 
@@ -108,7 +109,7 @@ export function getAllContent(): ContentItem[] {
     ...readMdFiles(path.join(CONTENT_ROOT, 'neurofilosofia/lecturas'), 'neurofilosofia', 'Lecturas'),
     ...readMdFiles(path.join(CONTENT_ROOT, 'neurofilosofia/referencia'), 'neurofilosofia', 'Referencia'),
     ...readMdFiles(path.join(CONTENT_ROOT, 'neurofilosofia/ensayos'), 'neurofilosofia', 'Ensayos'),
-    ...readMdFiles(path.join(CONTENT_ROOT, 'neurofilosofia/logica'), 'neurofilosofia', 'Logica Formal'),
+    ...readMdFiles(path.join(CONTENT_ROOT, 'neurofilosofia/logica'), 'neurofilosofia', 'Lógica Formal'),
     ...readMdFiles(path.join(CONTENT_ROOT, 'filosofia-ciudad/clases'), 'filosofia-ciudad', 'Clases'),
     ...readMdFiles(path.join(CONTENT_ROOT, 'filosofia-ciudad/notas-clase'), 'filosofia-ciudad', 'Notas de clase'),
     ...readMdFiles(path.join(CONTENT_ROOT, 'filosofia-ciudad/lecturas'), 'filosofia-ciudad', 'Lecturas'),
@@ -130,6 +131,59 @@ export function getContentByModule(module: Module): ContentItem[] {
 
 export function getContentBySlug(module: Module, slug: string): ContentItem | undefined {
   return getContentByModule(module).find(item => item.slug === slug)
+}
+
+/** Traduce rutas del respaldo del curso a documentos y recursos publicados. */
+export function resolveArticleLink(item: ContentItem, href: string, items: ContentItem[]): string | null {
+  if (/^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(href)) return href
+
+  const separator = href.search(/[?#]/)
+  const pathname = separator < 0 ? href : href.slice(0, separator)
+  const suffix = separator < 0 ? '' : href.slice(separator)
+  let decodedPath: string
+  try {
+    decodedPath = decodeURIComponent(pathname)
+  } catch {
+    return null
+  }
+
+  const publicRoot = path.join(process.cwd(), 'public')
+  const publicFile = path.resolve(publicRoot, decodedPath.replace(/^\/+/, ''))
+  if (publicFile.startsWith(publicRoot + path.sep) && fs.existsSync(publicFile) && fs.statSync(publicFile).isFile()) {
+    return `/${path.relative(publicRoot, publicFile).split(path.sep).map(encodeURIComponent).join('/')}${suffix}`
+  }
+
+  const basename = path.basename(decodedPath)
+  const publishedAsset = path.join(publicRoot, 'content', item.module, basename)
+  if (basename && fs.existsSync(publishedAsset) && fs.statSync(publishedAsset).isFile()) {
+    return `/content/${item.module}/${encodeURIComponent(basename)}${suffix}`
+  }
+
+  if (/\.mdx?$/i.test(basename)) {
+    const targetPath = path.resolve(path.dirname(item.filePath), decodedPath)
+    const exact = items.find(candidate => candidate.filePath === targetPath)
+    if (exact) return `/${exact.module}/${exact.slug}/${suffix}`
+
+    // La importación aplana carpetas: foo.md puede publicarse como Clase_01__foo.md.
+    const targetSlug = slugify(basename.replace(/\.mdx?$/i, ''))
+    const candidates = items.filter(candidate => candidate.module === item.module && (
+      candidate.slug === targetSlug || candidate.slug.endsWith(`-${targetSlug}`)
+    ))
+    const sameSection = candidates.filter(candidate => candidate.section === item.section)
+    const matches = sameSection.length ? sameSection : candidates
+    if (matches.length === 1) return `/${matches[0].module}/${matches[0].slug}/${suffix}`
+    return null
+  }
+
+  const legacySection = decodedPath.includes('01_notas_finales/') ? 'Notas de clase'
+    : decodedPath.includes('02_Lecturas_Base/') ? 'Lecturas' : null
+  if (legacySection && items.some(candidate => candidate.section === legacySection)) {
+    return `/${item.module}/#${anchorId(legacySection)}`
+  }
+
+  // Las rutas web actuales siguen siendo válidas; las carpetas del respaldo no.
+  if (decodedPath.startsWith('/') && !/\.[a-z\d]+$/i.test(decodedPath)) return href
+  return null
 }
 
 export function searchContent(query: string): ContentItem[] {

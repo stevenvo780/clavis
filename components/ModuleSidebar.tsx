@@ -2,11 +2,13 @@
 
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
-import { ContentItem, Module } from '@/lib/content'
+import type { ContentItem, Module } from '@/lib/content'
+
+type SidebarItem = Pick<ContentItem, 'slug' | 'title' | 'section'>
 
 interface Props {
   module: Module
-  items: ContentItem[]
+  items: SidebarItem[]
   activeSlug?: string
   /** Kept for API compatibility; color now comes from the brand palette. */
   accentColor?: string
@@ -23,7 +25,7 @@ export default function ModuleSidebar({ module, items, activeSlug }: Props) {
   }, [activeSlug])
 
   // Group by section
-  const grouped: Record<string, ContentItem[]> = {}
+  const grouped: Record<string, SidebarItem[]> = {}
   for (const item of items) {
     if (!grouped[item.section]) grouped[item.section] = []
     grouped[item.section].push(item)

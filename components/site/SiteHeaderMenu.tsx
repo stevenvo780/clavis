@@ -24,8 +24,13 @@ export default function SiteHeaderMenu() {
   const [mounted, setMounted] = useState(false)
   const toggleRef = useRef<HTMLButtonElement>(null)
   const firstLinkRef = useRef<HTMLAnchorElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    setMounted(true)
+    document.documentElement.classList.add('menu-ready')
+    return () => document.documentElement.classList.remove('menu-ready')
+  }, [])
 
   useEffect(() => {
     const header = document.querySelector<HTMLElement>('.site-header')
@@ -36,7 +41,7 @@ export default function SiteHeaderMenu() {
       raf = 0
       const y = window.scrollY
       header.dataset.scrolled = y > 24 ? 'true' : 'false'
-      if (!open && y > 240 && y > last + 6) header.dataset.hidden = 'true'
+      if (!open && !header.contains(document.activeElement) && y > 240 && y > last + 6) header.dataset.hidden = 'true'
       else if (y < last - 6 || y < 240 || open) header.dataset.hidden = 'false'
       last = y
     }
@@ -44,9 +49,12 @@ export default function SiteHeaderMenu() {
       if (!raf) raf = requestAnimationFrame(update)
     }
     update()
+    const onFocus = () => { header.dataset.hidden = 'false' }
     window.addEventListener('scroll', onScroll, { passive: true })
+    header.addEventListener('focusin', onFocus)
     return () => {
       window.removeEventListener('scroll', onScroll)
+      header.removeEventListener('focusin', onFocus)
       cancelAnimationFrame(raf)
     }
   }, [open])
@@ -54,49 +62,82 @@ export default function SiteHeaderMenu() {
   useEffect(() => setOpen(false), [pathname])
 
   useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 900px)')
+    const closeOnDesktop = () => { if (desktop.matches) setOpen(false) }
+    desktop.addEventListener('change', closeOnDesktop)
+    const close = () => setOpen(false)
+    window.addEventListener('hashchange', close)
+    window.addEventListener('popstate', close)
+    return () => {
+      desktop.removeEventListener('change', closeOnDesktop)
+      window.removeEventListener('hashchange', close)
+      window.removeEventListener('popstate', close)
+    }
+  }, [])
+
+  useEffect(() => {
     const header = document.querySelector<HTMLElement>('.site-header')
     if (header) header.dataset.open = open ? 'true' : 'false'
 
-    let cancelled = false
     if (!open) {
       document.documentElement.classList.remove('menu-open')
-      void import('./SmoothScroll').then((m) => {
-        if (!cancelled) m.getLenis()?.start()
-      })
-      return () => {
-        cancelled = true
-      }
+      window.dispatchEvent(new Event('paideia:menu'))
+      return
     }
     document.documentElement.classList.add('menu-open')
-    firstLinkRef.current?.focus()
-    void import('./SmoothScroll').then((m) => {
-      if (!cancelled) m.getLenis()?.stop()
-    })
+    window.dispatchEvent(new Event('paideia:menu'))
+    const background = [...document.querySelectorAll<HTMLElement>('main, .site-footer, .skip-link, .brand-mark, .brand-word, .site-nav')]
+    const previousInert = background.map((el) => el.inert)
+    background.forEach((el) => { el.inert = true })
+    const focusFrame = requestAnimationFrame(() => firstLinkRef.current?.focus())
+    const focusable = () => [
+      toggleRef.current,
+      ...overlayRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])') ?? [],
+    ].filter((el): el is HTMLElement => !!el)
+    const onFocus = (e: FocusEvent) => {
+      if (!focusable().includes(e.target as HTMLElement)) firstLinkRef.current?.focus()
+    }
+    document.addEventListener('focusin', onFocus)
     const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        const items = focusable()
+        const index = items.indexOf(document.activeElement as HTMLElement)
+        if (e.shiftKey && index <= 0) {
+          e.preventDefault()
+          items.at(-1)?.focus()
+        } else if (!e.shiftKey && (index === -1 || index === items.length - 1)) {
+          e.preventDefault()
+          items[0]?.focus()
+        }
+      }
       if (e.key === 'Escape') {
+        e.preventDefault()
         setOpen(false)
         toggleRef.current?.focus()
       }
     }
     window.addEventListener('keydown', onKey)
     return () => {
-      cancelled = true
+      cancelAnimationFrame(focusFrame)
       window.removeEventListener('keydown', onKey)
+      document.removeEventListener('focusin', onFocus)
+      background.forEach((el, i) => { el.inert = previousInert[i] })
       document.documentElement.classList.remove('menu-open')
-      void import('./SmoothScroll').then((m) => m.getLenis()?.start())
+      window.dispatchEvent(new Event('paideia:menu'))
     }
   }, [open])
 
   const onNav = (href: string) => (e: MouseEvent<HTMLAnchorElement>) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    setOpen(false)
     if (pathname === '/' && href.startsWith('/#')) {
       e.preventDefault()
-      setOpen(false)
       void import('./SmoothScroll')
-        .then((m) => m.scrollToTarget(href.slice(1), -24))
+        .then((m) => m.scrollToTarget(href.slice(1), -72))
         .catch(() => {
-          document.querySelector(href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+          document.querySelector(href.slice(1))?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
         })
-      history.replaceState(null, '', href)
+      if (location.hash !== href.slice(1)) history.pushState(history.state, '', href)
     }
   }
 
@@ -104,6 +145,7 @@ export default function SiteHeaderMenu() {
     mounted &&
     createPortal(
       <div
+        ref={overlayRef}
         id="menu-overlay"
         className="menu-overlay"
         data-open={open}

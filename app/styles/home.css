@@ -482,6 +482,23 @@
   }
 }
 
+/* En horizontal o con poco alto el panel puede superar el viewport fijo. */
+@media (max-height: 600px) {
+  .elements-panel {
+    top: calc(var(--header-h) + 3rem);
+    bottom: 3rem;
+    translate: none;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    padding-right: 0.6rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--el) transparent;
+  }
+  .elements-greek {
+    font-size: clamp(3rem, 8vw, 4.25rem);
+  }
+}
+
 /* ---------- Ponencias (carril horizontal) ---------- */
 .rail {
   position: relative;

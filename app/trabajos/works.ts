@@ -16,7 +16,7 @@ export interface Work {
 export const works: Work[] = [
   {
     id: 'congreso-filosofia',
-    titulo: 'Filosofía en conversación — Cuaderno del congreso',
+    titulo: 'Congreso de filosofía — Filosofía en conversación',
     tipo: 'cuaderno',
     abstract: 'Cuaderno interactivo para recorrer seis ponencias sobre inteligencia artificial, conocimiento y juicio. Sigue los argumentos con diagramas, conecta conceptos en mapas y guarda o exporta tus propias notas.',
     topics: ['IA y filosofía', 'epistemología', 'ética y juicio', 'mapas conceptuales', 'notas personales', 'congreso'],

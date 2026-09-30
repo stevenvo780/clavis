@@ -642,6 +642,7 @@
   line-height: 1.02;
   letter-spacing: -0.02em;
   color: var(--text);
+  overflow-wrap: anywhere;
 }
 .article-meta {
   display: flex;
@@ -694,6 +695,7 @@
   font-family: var(--font-display);
   font-size: 1.2rem;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 .article-back {
   margin-top: 2rem;
@@ -706,14 +708,41 @@
 }
 
 /* Prosa: ajustes sobre la base de globals.css */
+.article-toc {
+  margin-bottom: 2rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text-soft);
+  background: var(--surface);
+}
+.article-toc summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text);
+}
+.article-toc ol {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding-left: 1.25rem;
+}
+.article-toc a {
+  color: var(--c, var(--gold));
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
 .article .prose {
   font-size: 1.06rem;
   line-height: 1.8;
   color: var(--text-soft);
+  overflow-wrap: anywhere;
 }
-.article .prose > h1:first-child {
-  /* El título ya va en la cabecera del artículo (sale de este mismo encabezado). */
-  display: none;
+.article .prose [id] {
+  scroll-margin-top: calc(var(--header-h) + 1.5rem);
+}
+.article-heading-anchor {
+  display: block;
 }
 .article .prose h2 {
   margin-top: 2.2em;
@@ -738,9 +767,32 @@
   line-height: 1.5;
   color: var(--text);
 }
-.article .prose table {
-  display: block;
+.article-table-scroll {
+  max-width: 100%;
+  margin: 1.5em 0;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+.article .prose .article-table-scroll table {
+  display: table;
+  min-width: 100%;
+  margin: 0;
+}
+.article .prose th,
+.article .prose td {
+  min-width: 7rem;
+}
+.article .prose pre {
+  overflow-wrap: normal;
+}
+.article .prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.article-resource-unavailable small {
+  color: var(--text-muted);
+  font-size: 0.8em;
 }
 .article .prose hr {
   margin: 2.5rem 0;

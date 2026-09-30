@@ -260,8 +260,8 @@ summary:focus-visible,
 
 /* ============================================================
    Sistema de revelado (RevealManager pone data-in al entrar en pantalla).
-   Los estados iniciales solo aplican con JS (html.js); en la portada además
-   esperan a que termine el preloader (html:not(.intro-done)).
+   Solo se oculta contenido después de preparar el observador (html.reveal-ready).
+   El HTML inicial y los elementos ya visibles permanecen legibles.
    Se anima `translate` (no `transform`) para no pisar la inclinación 3D.
    ============================================================ */
 [data-reveal='up'],
@@ -270,19 +270,16 @@ summary:focus-visible,
   transition: var(--reveal-transition);
 }
 
-html.js:not(.no-motion) [data-reveal='up']:not([data-in]),
-html.js:not(.intro-done) [data-reveal='up'] {
+html.reveal-ready:not(.no-motion) [data-reveal='up']:not([data-in]) {
   opacity: 0;
   translate: 0 28px;
 }
 
-html.js:not(.no-motion) [data-reveal='fade']:not([data-in]),
-html.js:not(.intro-done) [data-reveal='fade'] {
+html.reveal-ready:not(.no-motion) [data-reveal='fade']:not([data-in]) {
   opacity: 0;
 }
 
-html.js:not(.no-motion) [data-reveal='card']:not([data-in]),
-html.js:not(.intro-done) [data-reveal='card'] {
+html.reveal-ready:not(.no-motion) [data-reveal='card']:not([data-in]) {
   opacity: 0;
   translate: 0 60px;
 }
@@ -291,8 +288,7 @@ html.js:not(.intro-done) [data-reveal='card'] {
   clip-path: inset(-20% -5% -30% -5%);
   transition: clip-path 1.3s var(--ease-out) var(--d, 0ms), translate 1.3s var(--ease-out) var(--d, 0ms);
 }
-html.js:not(.no-motion) [data-reveal='clip']:not([data-in]),
-html.js:not(.intro-done) [data-reveal='clip'] {
+html.reveal-ready:not(.no-motion) [data-reveal='clip']:not([data-in]) {
   clip-path: inset(0 0 100% 0);
   translate: 0 35%;
 }
@@ -314,10 +310,18 @@ html.js:not(.intro-done) [data-reveal='clip'] {
   color: var(--gold);
   font-style: italic;
 }
-html.js:not(.no-motion) [data-reveal='split']:not([data-in]) .split-char,
-html.js:not(.intro-done) [data-reveal='split'] .split-char {
+html.reveal-ready:not(.no-motion) [data-reveal='split']:not([data-in]) .split-char {
   translate: 0 112%;
   opacity: 0;
+}
+
+/* El foco de teclado nunca espera el escalonado de una animación. */
+[data-reveal]:focus-within,
+[data-reveal]:focus-within .split-char {
+  opacity: 1 !important;
+  translate: none !important;
+  clip-path: none !important;
+  transition: none !important;
 }
 
 /* Wireframes SVG de los sólidos */

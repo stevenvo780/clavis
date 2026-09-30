@@ -21,7 +21,9 @@ export default function MiniCrystalSlot({ solid, color, label }: { solid: SolidK
       setSupported(false)
     }
     const el = ref.current
-    if (!el) return
+    // Sin observador queda el respaldo SVG ya visible; no arranques WebGL sin
+    // poder pausar la escena al salir de pantalla.
+    if (!el || typeof IntersectionObserver === 'undefined') return
     const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { rootMargin: '100px' })
     io.observe(el)
     return () => io.disconnect()

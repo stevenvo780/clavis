@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { CSSProperties } from 'react'
 import readingTime from 'reading-time'
 import type { ContentItem, Module } from '@/lib/content'
+import { resolveArticleLink } from '@/lib/content'
 import { MODULE_VISUAL } from '@/lib/modules'
 import ModuleSidebar from './ModuleSidebar'
 import MarkdownRenderer from './MarkdownRenderer'
@@ -17,7 +18,11 @@ export default function ArticleView({ module, item, allItems }: { module: Module
 
   return (
     <div className="article-page container-wide" style={{ '--c': visual.color } as CSSProperties}>
-      <ModuleSidebar module={module} items={allItems} activeSlug={item.slug} />
+      <ModuleSidebar
+        module={module}
+        items={allItems.map(({ slug, title, section }) => ({ slug, title, section }))}
+        activeSlug={item.slug}
+      />
       <article className="article">
         <nav className="article-crumbs" aria-label="Ruta">
           <Link href={`/${module}`} className="article-crumb-link">
@@ -35,7 +40,11 @@ export default function ArticleView({ module, item, allItems }: { module: Module
             <span>{minutes} min de lectura</span>
           </p>
         </header>
-        <MarkdownRenderer content={item.content} />
+        <MarkdownRenderer
+          content={item.content}
+          hideTitle
+          resolveLink={href => resolveArticleLink(item, href, allItems)}
+        />
 
         <nav className="article-pager" aria-label="Documentos contiguos">
           {prev ? (
