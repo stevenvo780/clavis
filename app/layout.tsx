@@ -167,11 +167,11 @@ const jsonLd = {
 
 /**
  * Corre antes del primer pintado: marca que hay JS (los estados iniciales de las
- * animaciones viven bajo `html.js`) y decide si la portada muestra el preloader.
- * Intro failsafe ≤600ms so overlay never owns LCP; 8s hydrated failsafe remains.
+ * animaciones se arman luego con RevealManager) y decide si la portada muestra el preloader.
+ * Intro failsafe ≤600ms; la lectura inicial no depende de la hidratación.
  * No brand-hold: Stev HARD_BLOCK — brand/hero must be solid SSR at t0 (no opacity blank).
  */
-const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');var seen=false;try{seen=!!sessionStorage.getItem('paideia:intro')}catch(e){}var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;function release(n){if(!d.classList.contains('intro-pending'))return;d.classList.remove('intro-pending');d.classList.add('intro-done');if(n)d.classList.add('no-motion');try{sessionStorage.setItem('paideia:intro','1')}catch(e){}try{window.dispatchEvent(new Event('paideia:intro'))}catch(e){}}if(location.pathname!=='/'||seen||rm){d.classList.add('intro-done')}else{d.classList.add('intro-pending');setTimeout(function(){release(false)},600)}setTimeout(function(){if(!d.classList.contains('hydrated')){release(true)}},8000)})();`
+const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');var seen=false;try{seen=!!sessionStorage.getItem('paideia:intro')}catch(e){}var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;function release(n){if(n)d.classList.add('no-motion');if(!d.classList.contains('intro-pending'))return;d.classList.remove('intro-pending');d.classList.add('intro-done');try{sessionStorage.setItem('paideia:intro','1')}catch(e){}try{window.dispatchEvent(new Event('paideia:intro'))}catch(e){}}if(location.pathname!=='/'||seen||rm){d.classList.add('intro-done')}else{d.classList.add('intro-pending');setTimeout(function(){release(false)},600)}setTimeout(function(){if(!d.classList.contains('hydrated')){release(true)}},8000)})();`
 
 const fontVars = `${inter.variable} ${jetbrainsMono.variable} ${cormorantGaramond.variable} ${ebGaramond.variable}`
 

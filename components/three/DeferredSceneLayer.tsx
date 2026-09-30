@@ -2,8 +2,9 @@
 
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
-import { markSceneReady, setSolidity } from '@/lib/experience'
+import { experience, markSceneReady, setSolidity } from '@/lib/experience'
 import SolidGlyph from '@/components/visual/SolidGlyph'
+import { applyScene, SCENE } from '@/components/home/useSceneSection'
 
 const SceneLayer = dynamic(() => import('./SceneLayer'), { ssr: false })
 
@@ -16,6 +17,12 @@ export default function DeferredSceneLayer() {
   const [mountScene, setMountScene] = useState(false)
 
   useEffect(() => {
+    // El estado compartido sobrevive a la navegación SPA. Restablece el hero antes
+    // de cargar el canvas, incluso al volver desde una sección con la escena apagada.
+    applyScene(SCENE.hero)
+    experience.pointer.x = 0
+    experience.pointer.y = 0
+    experience.velocity = 0
     // Unblock preloader / intro without waiting for Three.js.
     markSceneReady()
 
@@ -25,9 +32,8 @@ export default function DeferredSceneLayer() {
     if (document.documentElement.classList.contains('intro-done')) solidify()
     else window.addEventListener('paideia:intro', solidify, { once: true })
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduced) return () => window.removeEventListener('paideia:intro', solidify)
-
+    // SceneLayer también dirige el SVG con movimiento reducido; solo monta WebGL
+    // cuando la preferencia permite animación.
     const timer = window.setTimeout(() => setMountScene(true), 900)
     return () => {
       window.clearTimeout(timer)

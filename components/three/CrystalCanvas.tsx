@@ -59,9 +59,25 @@ const live = {
   time: 0,
 }
 
-function Director() {
+function Director({ onReady }: { onReady?: () => void }) {
   const invalidate = useThree((s) => s.invalidate)
+  const get = useThree((s) => s.get)
   const frames = useRef(0)
+
+  useLayoutEffect(() => {
+    const { size } = get()
+    const narrow = size.width < 768 || size.width / size.height < 0.85
+    const layout = narrow ? experience.layoutMobile : experience.layout
+    live.weights = [...experience.weights]
+    live.solidity = 0
+    live.x = layout.x
+    live.y = layout.y
+    live.scale = layout.scale
+    live.spin = 0
+    live.px = 0
+    live.py = 0
+    live.time = 0
+  }, [get])
 
   useEffect(() => {
     experience.invalidate = () => invalidate()
@@ -93,6 +109,7 @@ function Director() {
     frames.current++
     if (frames.current === (rm ? 1 : 3)) {
       markSceneReady()
+      onReady?.()
       if (rm) invalidate()
     }
   }, PRIORITY)
@@ -429,7 +446,7 @@ function Aurora() {
   )
 }
 
-export default function CrystalCanvas({ active }: { active: boolean }) {
+export default function CrystalCanvas({ active, onReady }: { active: boolean; onReady?: () => void }) {
   const [quality, setQuality] = useState<Quality>(initialQuality)
   const reduced = experience.reducedMotion
 
@@ -443,7 +460,7 @@ export default function CrystalCanvas({ active }: { active: boolean }) {
       style={{ position: 'absolute', inset: 0 }}
     >
       <PerformanceMonitor flipflops={2} onDecline={() => setQuality(LOW)} />
-      <Director />
+      <Director onReady={onReady} />
       <Studio />
       <Aurora />
       <Stars count={quality.stars} />

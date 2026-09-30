@@ -51,7 +51,7 @@
   backdrop-filter: blur(16px) saturate(1.4);
   border-color: var(--line);
 }
-.site-header[data-hidden='true'] {
+.site-header[data-hidden='true']:not(:focus-within) {
   transform: translateY(-100%);
 }
 .site-header[data-open='true'] {
@@ -201,8 +201,8 @@
     display: inline-flex;
   }
 
-  /* Sin JavaScript o hidratación, el menú desplegable no funciona. */
-  :is(html:not(.js), html.no-motion:not(.hydrated)) .site-nav {
+  /* Navegación disponible hasta que el menú interactivo esté preparado. */
+  html:not(.menu-ready) .site-nav {
     position: fixed;
     inset: auto 0 0;
     z-index: 55;
@@ -215,14 +215,14 @@
     border-top: 1px solid var(--line-strong);
     background: #0b1417;
   }
-  :is(html:not(.js), html.no-motion:not(.hydrated)) .site-nav-link {
+  html:not(.menu-ready) .site-nav-link {
     flex: none;
     font-size: 0.75rem;
   }
-  :is(html:not(.js), html.no-motion:not(.hydrated)) .menu-toggle {
+  html:not(.menu-ready) .menu-toggle {
     display: none;
   }
-  :is(html:not(.js), html.no-motion:not(.hydrated)) body {
+  html:not(.menu-ready) body {
     padding-bottom: calc(3rem + env(safe-area-inset-bottom));
   }
 }
@@ -234,13 +234,15 @@
   z-index: 45;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: safe center;
   padding: calc(var(--header-h) + 1rem) var(--gutter) 2rem;
   background: rgba(7, 12, 14, 0.97);
   clip-path: circle(0% at calc(100% - 2.5rem) 2.25rem);
   visibility: hidden;
   transition: clip-path 0.9s var(--ease-in-out), visibility 0s linear 0.9s;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .menu-overlay[data-open='true'] {
   clip-path: circle(150% at calc(100% - 2.5rem) 2.25rem);
@@ -265,6 +267,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
 .menu-overlay-link {
   display: grid;
@@ -301,6 +304,7 @@
 }
 .menu-overlay-foot {
   position: relative;
+  flex-shrink: 0;
   margin-top: 2.5rem;
   font-size: 0.85rem;
   color: var(--text-muted);

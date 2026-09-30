@@ -10,9 +10,11 @@ export default function Counter({ value, pad = 0, className = '' }: { value: num
 
   useEffect(() => {
     const el = ref.current
-    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches || typeof IntersectionObserver === 'undefined') return
+    const rect = el.getBoundingClientRect()
+    // Las cifras del encabezado deben ser correctas incluso si Next aún restaura el scroll.
+    if (el.closest('.page-hero') || (rect.bottom > 0 && rect.top < window.innerHeight)) return
     const state = { v: 0 }
-    el.textContent = fmt(0)
     let tween: { kill: () => void } | null = null
     let cancelled = false
     const io = new IntersectionObserver(
@@ -25,11 +27,13 @@ export default function Counter({ value, pad = 0, className = '' }: { value: num
             v: value,
             duration: 1.8,
             ease: 'power3.out',
-            delay: 0.15,
+            // El valor SSR permanece hasta que el motor esté listo para animar.
             onUpdate: () => {
               el.textContent = fmt(state.v)
             },
           })
+        }).catch(() => {
+          if (!cancelled) el.textContent = fmt(value)
         })
       },
       { threshold: 0.4 },
