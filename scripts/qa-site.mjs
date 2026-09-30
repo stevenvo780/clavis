@@ -26,7 +26,9 @@ async function inspect(page, path, delay = 150) {
     if (!r?.ok() && r?.status() !== 304) failures.push({ path, error: `HTTP ${r?.status()}` })
     await new Promise((resolve) => setTimeout(resolve, delay))
     // Leer tras un pintado evita medir la geometría entre dos cambios de layout.
-    await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))))
+    if (page.isJavaScriptEnabled()) {
+      await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))))
+    }
     const result = await page.evaluate(() => {
       const visible = (el) => {
         for (let node = el; node instanceof HTMLElement; node = node.parentElement) {
