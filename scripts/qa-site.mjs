@@ -43,6 +43,7 @@ async function inspect(page, path, delay = 150) {
       }).map((el) => el.textContent.trim().slice(0, 70))
       return {
         h1: document.querySelectorAll('main h1').length,
+        title: document.title,
         width: innerWidth,
         titleVisible: [...document.querySelectorAll('main h1')].every((h1) => visible(h1) && [...h1.querySelectorAll('.split-char')].every(visible)),
         overflow: document.documentElement.scrollWidth - innerWidth,
@@ -53,6 +54,7 @@ async function inspect(page, path, delay = 150) {
       }
     })
     if (result.h1 !== 1) failures.push({ path, error: `${result.h1} encabezados h1` })
+    if (/(?: · Mouseîon){2}$/.test(result.title)) failures.push({ path, error: 'Marca duplicada en el título de la pestaña' })
     if (!result.titleVisible) failures.push({ path, error: 'Título de la vista oculto' })
     if (result.overflow > 1) failures.push({ path, width: result.width, error: `Desborde horizontal: ${result.overflow}px` })
     if (result.hidden.length) failures.push({ path, error: 'Contenido inicial oculto', details: result.hidden })
