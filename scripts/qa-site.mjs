@@ -25,6 +25,8 @@ async function inspect(page, path, delay = 150) {
     // Chrome puede conservar el cuerpo y devolver 304 al revalidar la navegación.
     if (!r?.ok() && r?.status() !== 304) failures.push({ path, error: `HTTP ${r?.status()}` })
     await new Promise((resolve) => setTimeout(resolve, delay))
+    // Leer tras un pintado evita medir la geometría entre dos cambios de layout.
+    await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))))
     const result = await page.evaluate(() => {
       const visible = (el) => {
         for (let node = el; node instanceof HTMLElement; node = node.parentElement) {
@@ -39,6 +41,7 @@ async function inspect(page, path, delay = 150) {
       }).map((el) => el.textContent.trim().slice(0, 70))
       return {
         h1: document.querySelectorAll('main h1').length,
+        width: innerWidth,
         titleVisible: [...document.querySelectorAll('main h1')].every((h1) => visible(h1) && [...h1.querySelectorAll('.split-char')].every(visible)),
         overflow: document.documentElement.scrollWidth - innerWidth,
         hidden,
@@ -49,7 +52,7 @@ async function inspect(page, path, delay = 150) {
     })
     if (result.h1 !== 1) failures.push({ path, error: `${result.h1} encabezados h1` })
     if (!result.titleVisible) failures.push({ path, error: 'Título de la vista oculto' })
-    if (result.overflow > 1) failures.push({ path, error: `Desborde horizontal: ${result.overflow}px` })
+    if (result.overflow > 1) failures.push({ path, width: result.width, error: `Desborde horizontal: ${result.overflow}px` })
     if (result.hidden.length) failures.push({ path, error: 'Contenido inicial oculto', details: result.hidden })
     if (result.images.length) failures.push({ path, error: 'Imágenes rotas', details: result.images })
     if (errors.length) failures.push({ path, error: 'Errores de navegador', details: errors })
