@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { MODULE_VISUAL, type ModuleKey } from '@/lib/modules'
 import SolidGlyph from '@/components/visual/SolidGlyph'
 import type { SolidKey } from '@/lib/solids'
+import { foldSearchText as fold, getSearchParts } from '@/lib/search'
 
 interface SearchItem {
   slug: string
@@ -25,31 +26,10 @@ type FilterKey = ModuleKey | 'obras'
 const SEARCH_VISUAL = { ...MODULE_VISUAL, obras: { label: 'Obras y cuadernos', solid: 'dodecaedro' as SolidKey, color: '#e0a85e' } }
 const MODULES = Object.keys(SEARCH_VISUAL) as FilterKey[]
 
-/** Pliega acentos y espíritus letra por letra, así los índices coinciden con el original. */
-function fold(text: string) {
-  let out = ''
-  for (const ch of text) {
-    const base = ch.normalize('NFD').replace(/[̀-ͯ͂̓ͅ]/g, '').toLowerCase()
-    out += base.length === 1 ? base : ch.toLowerCase().slice(0, 1) || ' '
-  }
-  return out
-}
-
 function highlight(text: string, q: string): ReactNode {
-  if (!q) return text
-  const chars = [...text]
-  const folded = fold(text)
-  const parts: ReactNode[] = []
-  let from = 0
-  let at = folded.indexOf(q)
-  while (at !== -1) {
-    if (at > from) parts.push(chars.slice(from, at).join(''))
-    parts.push(<mark key={at}>{chars.slice(at, at + q.length).join('')}</mark>)
-    from = at + q.length
-    at = folded.indexOf(q, from)
-  }
-  if (from < chars.length) parts.push(chars.slice(from).join(''))
-  return parts
+  return getSearchParts(text, q).map((part, index) =>
+    part.matched ? <mark key={index}>{part.text}</mark> : part.text,
+  )
 }
 
 export default function SearchClient({ allItems }: Props) {
