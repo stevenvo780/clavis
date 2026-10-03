@@ -4,6 +4,7 @@ import puppeteer from 'puppeteer-core'
 // Ejecutar contra un export servido por HTTP o contra la URL publicada.
 const base = new URL(process.argv[2] || 'http://127.0.0.1:4370/')
 const failures = []
+const searchChecks = []
 const internal = new Map()
 const mainRoutes = ['/', '/ponencias/', '/buscar/', '/griego/', '/neurofilosofia/', '/filosofia-ciudad/']
 const response = await fetch(new URL('sitemap.xml', base))
@@ -134,7 +135,60 @@ try {
   const query = async (value) => {
     await page.$eval('input[type="search"]', (input) => input.select())
     await page.keyboard.type(value)
+    await page.waitForFunction((expected) => document.querySelector('input[type="search"]')?.value === expected, {}, value)
+    await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))))
   }
+  const searchSnapshot = () => page.evaluate(() => ({
+    status: document.querySelector('.search-status')?.textContent,
+    filters: document.querySelector('.search-filters')?.textContent,
+    pager: document.querySelector('.search-pager')?.textContent,
+    hits: [...document.querySelectorAll('.search-hit')].map((hit) => ({
+      href: hit.href,
+      title: hit.querySelector('.search-hit-title')?.textContent,
+      excerpt: hit.querySelector('.search-hit-excerpt')?.textContent,
+      marks: [...hit.querySelectorAll('mark')].map((mark) => mark.textContent),
+    })),
+  }))
+  // Referencia positiva de app/trabajos/works.ts; no se modifica el corpus.
+  const reference = {
+    href: 'https://retorica.stevenvallejo.com/',
+    title: 'La retórica como τέχνη y no ἐμπειρία',
+    excerpt: 'La retórica como arte técnico (τέχνη) frente a la mera experiencia (ἐμπειρία), fundada en principios sistemáticos y metodológicos. retórica · téchne · Platón · Gorgias · filosofía · arte técnico',
+  }
+  const referenceMark = `.search-hit[href="${reference.href}"] mark`
+  // test-search.mjs cubre además textos sintéticos NFC/NFD y coincidencias mixtas.
+  for (const word of ['Platón', 'τέχνη', 'ἐμπειρία']) {
+    await query(word)
+    await page.waitForSelector(referenceMark, { visible: true })
+    const composed = await searchSnapshot()
+    const hit = composed.hits.find((hit) => hit.href === reference.href)
+    const expectedMarks = word === 'Platón' ? [word] : [word, word]
+    if (!hit || hit.title !== reference.title || hit.excerpt !== reference.excerpt || JSON.stringify(hit.marks) !== JSON.stringify(expectedMarks)) {
+      failures.push({ path: '/buscar/', error: 'La referencia pierde texto original o resaltados', word, hit })
+    }
+    const plain = word.normalize('NFD').replace(/\p{M}/gu, '')
+    for (const variant of [word.normalize('NFD'), plain]) {
+      await query(variant)
+      await page.waitForSelector(referenceMark, { visible: true })
+      const actual = await searchSnapshot()
+      if (JSON.stringify(actual) !== JSON.stringify(composed)) {
+        failures.push({ path: '/buscar/', error: 'La normalización cambia resultados, texto o resaltados', word, variant, composed, actual })
+      }
+    }
+    const marks = composed.hits.flatMap((hit) => hit.marks)
+    if (!marks.length || marks.some((mark) => !mark || mark.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase() !== plain.toLowerCase())) {
+      failures.push({ path: '/buscar/', error: 'Resaltado fuera de la coincidencia original', word, marks })
+    }
+    searchChecks.push({ word, status: composed.status, visibleHits: composed.hits.length, highlights: marks.length })
+  }
+  const negativeQuery = 'τεχνηzxqvnoexiste'
+  await query(negativeQuery)
+  await page.waitForSelector('.search-empty')
+  const negative = await searchSnapshot()
+  if (negative.status !== '0 resultados' || negative.hits.length || negative.pager || await page.$('.search-results mark')) {
+    failures.push({ path: '/buscar/', error: 'La consulta negativa conserva resultados o resaltados', negative })
+  }
+  searchChecks.push({ word: negativeQuery, status: negative.status, visibleHits: negative.hits.length, highlights: negative.hits.flatMap((hit) => hit.marks).length })
   await query('de')
   await page.waitForSelector('.search-pager')
   const firstPage = await page.$eval('.search-hit', (a) => a.href)
@@ -143,15 +197,21 @@ try {
   const count = await page.$$eval('.search-hit', (links) => links.length)
   if (count > 20) failures.push({ path: '/buscar/', error: 'Paginación supera 20 resultados' })
   await page.click('.search-filters button:nth-child(2)')
+  const filterPage = await page.evaluate(() => document.querySelector('.search-pager')?.textContent)
+  if (filterPage && !filterPage.includes('Página 1 de')) failures.push({ path: '/buscar/', error: 'El filtro no reinicia la paginación' })
   const moduleLinks = await page.$$eval('.search-hit', (links) => links.map((a) => a.href))
+  if (!moduleLinks.length) failures.push({ path: '/buscar/', error: 'El filtro deja vacía la primera página' })
   if (moduleLinks.some((href) => !new URL(href).pathname.startsWith('/griego/'))) failures.push({ path: '/buscar/', error: 'Filtro de módulo incorrecto' })
   await query('zxqvnoexiste')
   await page.waitForSelector('.search-empty')
   await page.click('.search-filters button:first-child')
   await page.click('.search-clear')
   await page.waitForSelector('.search-idle')
+  if (await page.$('.search-hit, .search-pager, .search-filters')) failures.push({ path: '/buscar/', error: 'Borrar búsqueda conserva resultados o controles' })
   await page.click('.search-suggestions button')
   await page.waitForSelector('.search-hit')
+  const suggestion = await page.$eval('input[type="search"]', (input) => input.value)
+  if (suggestion !== 'Platón') failures.push({ path: '/buscar/', error: 'La sugerencia no actualiza la consulta', suggestion })
   await page.setViewport({ width: 320, height: 740 })
   await page.click('.menu-toggle')
   await page.waitForSelector('.menu-toggle[aria-expanded="true"]')
@@ -176,5 +236,5 @@ try {
 }
 
 const unique = [...new Map(failures.map((failure) => [JSON.stringify(failure), failure])).values()]
-console.log(JSON.stringify({ base: base.href, routes: routes.length, firstLoadChecks: mainRoutes.length * 4, failures: unique }, null, 2))
+console.log(JSON.stringify({ base: base.href, routes: routes.length, firstLoadChecks: mainRoutes.length * 4, searchChecks, failures: unique }, null, 2))
 process.exitCode = unique.length ? 1 : 0
