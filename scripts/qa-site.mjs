@@ -149,28 +149,46 @@ try {
       marks: [...hit.querySelectorAll('mark')].map((mark) => mark.textContent),
     })),
   }))
-  // El corpus no se modifica: las variantes NFD deben recuperar y resaltar lo mismo.
+  // Referencia positiva de app/trabajos/works.ts; no se modifica el corpus.
+  const reference = {
+    href: 'https://retorica.stevenvallejo.com/',
+    title: 'La retórica como τέχνη y no ἐμπειρία',
+    excerpt: 'La retórica como arte técnico (τέχνη) frente a la mera experiencia (ἐμπειρία), fundada en principios sistemáticos y metodológicos. retórica · téchne · Platón · Gorgias · filosofía · arte técnico',
+  }
+  const referenceMark = `.search-hit[href="${reference.href}"] mark`
   // test-search.mjs cubre además textos sintéticos NFC/NFD y coincidencias mixtas.
-  for (const word of ['Platón', 'λόγος', 'ἄνθρωπος', 'τέχνη', 'ἐμπειρία']) {
+  for (const word of ['Platón', 'τέχνη', 'ἐμπειρία']) {
     await query(word)
+    await page.waitForSelector(referenceMark, { visible: true })
     const composed = await searchSnapshot()
-    if (['Platón', 'τέχνη', 'ἐμπειρία'].includes(word) && !composed.hits.length) {
-      failures.push({ path: '/buscar/', error: 'Falta el término de referencia', word })
+    const hit = composed.hits.find((hit) => hit.href === reference.href)
+    const expectedMarks = word === 'Platón' ? [word] : [word, word]
+    if (!hit || hit.title !== reference.title || hit.excerpt !== reference.excerpt || JSON.stringify(hit.marks) !== JSON.stringify(expectedMarks)) {
+      failures.push({ path: '/buscar/', error: 'La referencia pierde texto original o resaltados', word, hit })
     }
     const plain = word.normalize('NFD').replace(/\p{M}/gu, '')
     for (const variant of [word.normalize('NFD'), plain]) {
       await query(variant)
+      await page.waitForSelector(referenceMark, { visible: true })
       const actual = await searchSnapshot()
       if (JSON.stringify(actual) !== JSON.stringify(composed)) {
         failures.push({ path: '/buscar/', error: 'La normalización cambia resultados, texto o resaltados', word, variant, composed, actual })
       }
     }
     const marks = composed.hits.flatMap((hit) => hit.marks)
-    if (marks.some((mark) => mark.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase() !== plain.toLowerCase())) {
+    if (!marks.length || marks.some((mark) => !mark || mark.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase() !== plain.toLowerCase())) {
       failures.push({ path: '/buscar/', error: 'Resaltado fuera de la coincidencia original', word, marks })
     }
     searchChecks.push({ word, status: composed.status, visibleHits: composed.hits.length, highlights: marks.length })
   }
+  const negativeQuery = 'τεχνηzxqvnoexiste'
+  await query(negativeQuery)
+  await page.waitForSelector('.search-empty')
+  const negative = await searchSnapshot()
+  if (negative.status !== '0 resultados' || negative.hits.length || negative.pager || await page.$('.search-results mark')) {
+    failures.push({ path: '/buscar/', error: 'La consulta negativa conserva resultados o resaltados', negative })
+  }
+  searchChecks.push({ word: negativeQuery, status: negative.status, visibleHits: negative.hits.length, highlights: negative.hits.flatMap((hit) => hit.marks).length })
   await query('de')
   await page.waitForSelector('.search-pager')
   const firstPage = await page.$eval('.search-hit', (a) => a.href)
