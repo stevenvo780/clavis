@@ -1210,6 +1210,8 @@ html.no-motion .work-card-solid .solid-glyph-front {
 }
 .outro-greek {
   margin-top: 1.75rem;
+  /* Los glifos aleatorios de Scramble también deben caber en pantallas estrechas. */
+  overflow-wrap: anywhere;
   font-family: var(--font-greek);
   font-weight: 400;
   font-size: clamp(2.5rem, 7vw, 7.5rem);
